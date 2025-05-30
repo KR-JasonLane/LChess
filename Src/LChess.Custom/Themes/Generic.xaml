@@ -1,4 +1,9 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/LChess.Custom;component/Themes/Unit/LChessButton.xaml"/>
+        <ResourceDictionary Source="/LChess.Custom;component/Themes/Unit/LChessWindow.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
     
 </ResourceDictionary>

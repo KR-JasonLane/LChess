@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LChess.Content\LChess.Content.csproj" />
+    <ProjectReference Include="..\LChess.Custom\LChess.Custom.csproj" />
     <ProjectReference Include="..\LChess.DataBinding\LChess.DataBinding.csproj" />
   </ItemGroup>
 

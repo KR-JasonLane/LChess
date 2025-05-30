@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:LChess.DataBinding.ViewModel.Content;assembly=LChess.DataBinding"
+                    xmlns:v="clr-namespace:LChess.Content.View;assembly=LChess.Content">
+
+    <DataTemplate DataType="{x:Type vm:HomeContentViewModel}">
+        <v:HomeContentView/>
+    </DataTemplate>
+    
+</ResourceDictionary>

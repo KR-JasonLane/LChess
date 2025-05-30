@@ -1,4 +1,7 @@
-﻿namespace LChess.Boot.DI;
+﻿using LChess.DataBinding.Shell;
+using LChess.DataBinding.ViewModel.Content;
+
+namespace LChess.Boot.DI;
 
 /// <summary>
 /// Ioc 빌더
@@ -35,7 +38,8 @@ internal class IocBuilder
 		/// ViewModel 등록
 		////////////////////////////////////////
 		{
-
+			services.AddTransient<LChessWindowViewModel>();
+			services.AddTransient<HomeContentViewModel >();
 		}
 
 		return services.BuildServiceProvider();
