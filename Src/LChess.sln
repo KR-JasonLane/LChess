@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LChess.Abstract", "LChess.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LChess.Service", "LChess.Service\LChess.Service.csproj", "{41B3EB3B-66CB-4C63-869F-5FCD5D99A2D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LChess.Util", "LChess.Util\LChess.Util.csproj", "{EE26C542-F065-4CEC-8779-30DE298A4C15}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{41B3EB3B-66CB-4C63-869F-5FCD5D99A2D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41B3EB3B-66CB-4C63-869F-5FCD5D99A2D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41B3EB3B-66CB-4C63-869F-5FCD5D99A2D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE26C542-F065-4CEC-8779-30DE298A4C15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE26C542-F065-4CEC-8779-30DE298A4C15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE26C542-F065-4CEC-8779-30DE298A4C15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE26C542-F065-4CEC-8779-30DE298A4C15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

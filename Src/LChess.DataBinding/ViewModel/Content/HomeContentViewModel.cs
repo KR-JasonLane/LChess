@@ -1,6 +1,4 @@
-﻿using LChess.Abstract.ViewModel;
-
-namespace LChess.DataBinding.ViewModel.Content;
+﻿namespace LChess.DataBinding.ViewModel.Content;
 
 /// <summary>
 /// 홈 컨텐츠 뷰모델

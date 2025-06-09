@@ -9,22 +9,20 @@
              d:DesignWidth="600">
 
     <UserControl.Resources>
+        
         <Style x:Key="HomeContentButtonStyle" TargetType="{x:Type ui:LChessButton}">
-            <Setter Property="Margin" Value="30"/>
-            <Setter Property="FontSize" Value="40"/>
             <Setter Property="Grid.ColumnSpan" Value="2"/>
+            <Setter Property="Width" Value="400"/>
+            <Setter Property="Height" Value="100"/>
+            <Setter Property="Margin" Value="15"/>
+            <Setter Property="FontSize" Value="40"/>
         </Style>
+        
     </UserControl.Resources>
 
     <Grid>
-        
-        <!--For the Background-->
-        <Grid>
 
-
-        </Grid>
-
-        <Grid>
+        <Grid Background="LightCyan">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*"/>
@@ -37,10 +35,6 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
-            <Border Grid.RowSpan="4"
-                    Grid.Column="0"
-                    Background="LightCyan"/>
 
             <Border Grid.RowSpan="4"
                     Grid.Column="1"
@@ -57,8 +51,17 @@
 
             <ui:LChessButton Grid.Row="1"
                              Style="{StaticResource HomeContentButtonStyle}"
-                             Content="AI"
-                             FontSize="20"/>
+                             Content="AI 대국"/>
+
+
+            <ui:LChessButton Grid.Row="2"
+                             Style="{StaticResource HomeContentButtonStyle}"
+                             Content="기보분석"/>
+
+
+            <ui:LChessButton Grid.Row="3"
+                             Style="{StaticResource HomeContentButtonStyle}"
+                             Content="환경설정"/>
 
         </Grid>
 

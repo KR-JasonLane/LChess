@@ -1,5 +1,6 @@
 ﻿using LChess.Custom.UI.Unit;
-using LChess.DataBinding.Shell;
+
+using LChess.DataBinding.ViewModel.Shell;
 
 namespace LChess.Boot.App;
 
@@ -21,8 +22,8 @@ public class LChessApp : Application
 		////////////////////////////////////////
 		{
 			this.MergedDictionaries();
-			this.CreateWindow      ();
-		}		
+			this.CreateWindow();
+		}
 	}
 
 	/// <summary>
@@ -30,6 +31,7 @@ public class LChessApp : Application
 	/// </summary>
 	private void MergedDictionaries()
 	{
+		//데이터템플릿 리소스 사전 병합
 		this.Resources.MergedDictionaries.Add(new ResourceDictionary
 		{
 			Source = new Uri("pack://application:,,,/LChess;component/Themes/Generic.xaml")

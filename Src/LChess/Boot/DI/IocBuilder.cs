@@ -1,5 +1,10 @@
-﻿using LChess.DataBinding.Shell;
+﻿using LChess.Abstract.Service;
+
+using LChess.DataBinding.ViewModel.Shell;
 using LChess.DataBinding.ViewModel.Content;
+
+using LChess.Service.Setting;
+using LChess.Service.Window;
 
 namespace LChess.Boot.DI;
 
@@ -30,7 +35,8 @@ internal class IocBuilder
 		/// Service 등록
 		////////////////////////////////////////
 		{
-
+			services.AddSingleton<IWindowHandlingService, WindowHandlingService>();
+			services.AddSingleton<IUserSettingService   , UserSettingService   >();
 		}
 
 

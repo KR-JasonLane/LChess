@@ -7,4 +7,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LChess.Util\LChess.Util.csproj" />
+  </ItemGroup>
+
 </Project>
