@@ -51,7 +51,8 @@
 
             <ui:LChessButton Grid.Row="1"
                              Style="{StaticResource HomeContentButtonStyle}"
-                             Content="AI 대국"/>
+                             Content="AI 대국"
+                             Command="{Binding MoveToChessGameCommand}"/>
 
 
             <ui:LChessButton Grid.Row="2"

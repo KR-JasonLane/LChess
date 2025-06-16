@@ -1,5 +1,9 @@
-﻿using LChess.DataBinding.Messenger;
+﻿using LChess.Abstract.Service;
+using LChess.Abstract.ViewModel;
+
+using LChess.DataBinding.Messenger;
 using LChess.DataBinding.ViewModel.Content;
+
 
 namespace LChess.DataBinding.ViewModel.Shell;
 
@@ -13,8 +17,15 @@ public partial class LChessWindowViewModel : ObservableRecipient, ILChessWindowV
 	/// <summary>
 	/// 생성자
 	/// </summary>
-	public LChessWindowViewModel()
-	{
+	public LChessWindowViewModel(IWindowHandlingService windowHandlingService)
+	{ 
+		////////////////////////////////////////
+		/// 서비스
+		////////////////////////////////////////
+		{
+			_windowHandlingService = windowHandlingService;
+		}
+
 		////////////////////////////////////////
 		/// Content 초기화
 		////////////////////////////////////////
@@ -32,12 +43,35 @@ public partial class LChessWindowViewModel : ObservableRecipient, ILChessWindowV
 			{
 				IsVisibleDimming = m.Value;
 			});
+
+			// Content 이동 메시지
+			WeakReferenceMessenger.Default.Register<MoveContentMessage>(this, (r, m) =>
+			{
+				if (CurrentContent?.ContentType == m.Value) return;
+
+				IsVisibleDimming = true;
+
+				CurrentContent = m.Value switch
+				{
+					LChessContentType.Home => Ioc.Default.GetService<HomeContentViewModel>(),
+					//LChessContentType.ChessGame => Ioc.Default.GetService<GameContentViewModel>(),
+					//LChessContentType.Settings  => Ioc.Default.GetService<SettingContentViewModel>(),
+					_ => null
+				};
+
+				IsVisibleDimming = false;
+			});
 		}
 	}
 
 	#endregion
 
 	#region :: Services ::
+
+	/// <summary>
+	/// 윈도우 핸들링 서비스
+	/// </summary>
+	private readonly IWindowHandlingService _windowHandlingService;
 
 	#endregion
 
@@ -62,6 +96,24 @@ public partial class LChessWindowViewModel : ObservableRecipient, ILChessWindowV
 	#endregion
 
 	#region :: Commands ::
+
+	/// <summary>
+	/// 윈도우 숨김
+	/// </summary>
+	[RelayCommand]
+	private void WindowMinimize() => _windowHandlingService.Minimize();
+
+	/// <summary>
+	/// 윈도우 최대화
+	/// </summary>
+	[RelayCommand]
+	private void WindowMaximize() => _windowHandlingService.MaximizeOrRestore();
+
+	/// <summary>
+	/// 윈도우 닫기
+	/// </summary>
+	[RelayCommand]
+	private void WindowClose() => _windowHandlingService.Close();
 
 	#endregion
 }

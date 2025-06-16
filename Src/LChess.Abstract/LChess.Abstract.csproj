@@ -11,4 +11,8 @@
     <Folder Include="ViewModel\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LChess.Util\LChess.Util.csproj" />
+  </ItemGroup>
+
 </Project>

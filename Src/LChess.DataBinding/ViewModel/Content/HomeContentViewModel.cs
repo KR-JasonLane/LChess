@@ -1,9 +1,13 @@
-﻿namespace LChess.DataBinding.ViewModel.Content;
+﻿using LChess.Abstract.ViewModel;
+
+using LChess.DataBinding.Messenger;
+
+namespace LChess.DataBinding.ViewModel.Content;
 
 /// <summary>
 /// 홈 컨텐츠 뷰모델
 /// </summary>
-public class HomeContentViewModel : ObservableRecipient, IContentViewModel
+public partial class HomeContentViewModel : ObservableRecipient, IContentViewModel
 {
 	#region :: Constructor ::
 
@@ -12,7 +16,7 @@ public class HomeContentViewModel : ObservableRecipient, IContentViewModel
 	/// </summary>
 	public HomeContentViewModel()
 	{
-
+		ContentType = LChessContentType.Home;
 	}
 
 	#endregion
@@ -23,6 +27,11 @@ public class HomeContentViewModel : ObservableRecipient, IContentViewModel
 
 	#region :: Properties ::
 
+	/// <summary>
+	/// Content Type 지정
+	/// </summary>
+	public LChessContentType ContentType { get; init; }
+
 	#endregion
 
 	#region :: Methods ::
@@ -30,6 +39,12 @@ public class HomeContentViewModel : ObservableRecipient, IContentViewModel
 	#endregion
 
 	#region :: Commands ::
+
+	/// <summary>
+	/// 체스 게임으로 이동
+	/// </summary>
+	[RelayCommand]
+	private void MoveToChessGame() => WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChessGame));
 
 	#endregion
 

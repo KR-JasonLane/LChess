@@ -5,5 +5,8 @@
 /// </summary>
 public interface IContentViewModel
 {
-
+	/// <summary>
+	/// Content Type 지정
+	/// </summary>
+	public LChessContentType ContentType { get; init; }
 }

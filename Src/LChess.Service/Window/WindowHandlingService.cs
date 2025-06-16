@@ -7,27 +7,31 @@ namespace LChess.Service.Window;
 /// </summary>
 public class WindowHandlingService : IWindowHandlingService
 {
+	#region ::  Properties  ::
+
+	/// <summary>
+	/// 윈도우 기억
+	/// </summary>
+	private readonly System.Windows.Window _shellWindow = Application.Current.MainWindow;
+
+	#endregion
+
+	#region ::  Methods  ::
+
 	/// <summary>
 	/// 쉘 윈도우 최대화
 	/// </summary>
-	public void MaximizeShellWindow()
-	{
-
-	}
+	public void MaximizeOrRestore() => _shellWindow.WindowState = _shellWindow.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
 
 	/// <summary>
-	/// 쉘 윈도우 크기 복구
+	/// 쉘 윈도우 숨김
 	/// </summary>
-	public void RestoreShellWindow()
-	{
-
-	}
+	public void Minimize() => _shellWindow.WindowState = WindowState.Minimized;
 
 	/// <summary>
 	/// 쉘 윈도우 닫기
 	/// </summary>
-	public void CloseShellWindow()
-	{
+	public void Close() => _shellWindow.Close();
 
-	}
+	#endregion
 }
