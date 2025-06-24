@@ -54,7 +54,7 @@ public partial class LChessWindowViewModel : ObservableRecipient, ILChessWindowV
 				CurrentContent = m.Value switch
 				{
 					LChessContentType.Home => Ioc.Default.GetService<HomeContentViewModel>(),
-					//LChessContentType.ChessGame => Ioc.Default.GetService<GameContentViewModel>(),
+					LChessContentType.ChessGame => Ioc.Default.GetService<ChessGameContentViewModel>(),
 					//LChessContentType.Settings  => Ioc.Default.GetService<SettingContentViewModel>(),
 					_ => null
 				};

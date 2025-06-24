@@ -1,4 +1,5 @@
-﻿using LChess.Abstract.ViewModel;
+﻿using LChess.Abstract.Service;
+using LChess.Abstract.ViewModel;
 
 using LChess.DataBinding.Messenger;
 
@@ -14,9 +15,11 @@ public partial class HomeContentViewModel : ObservableRecipient, IContentViewMod
 	/// <summary>
 	/// 생성자
 	/// </summary>
-	public HomeContentViewModel()
+	public HomeContentViewModel(IStockfishEngineService stockfishEngineService)
 	{
 		ContentType = LChessContentType.Home;
+
+		_stockfishEngineService = stockfishEngineService;
 	}
 
 	#endregion
@@ -32,6 +35,8 @@ public partial class HomeContentViewModel : ObservableRecipient, IContentViewMod
 	/// </summary>
 	public LChessContentType ContentType { get; init; }
 
+	private readonly IStockfishEngineService _stockfishEngineService;
+
 	#endregion
 
 	#region :: Methods ::
@@ -44,7 +49,12 @@ public partial class HomeContentViewModel : ObservableRecipient, IContentViewMod
 	/// 체스 게임으로 이동
 	/// </summary>
 	[RelayCommand]
-	private void MoveToChessGame() => WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChessGame));
+	private void MoveToChessGame()
+	{
+		_stockfishEngineService.StartEngineAsync(1000);
+
+		WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChessGame));
+	}
 
 	#endregion
 

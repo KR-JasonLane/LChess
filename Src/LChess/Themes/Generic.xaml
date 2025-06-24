@@ -6,5 +6,9 @@
     <DataTemplate DataType="{x:Type vm:HomeContentViewModel}">
         <v:HomeContentView/>
     </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:ChessGameContentViewModel}">
+        <v:ChessGameContentView/>
+    </DataTemplate>
     
 </ResourceDictionary>

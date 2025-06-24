@@ -7,12 +7,23 @@ namespace LChess.Service.Window;
 /// </summary>
 public class WindowHandlingService : IWindowHandlingService
 {
+	#region :: Constructor::
+
+	public WindowHandlingService(IStockfishEngineService stockfishEngineService)
+	{
+		_stockfishEngineService = stockfishEngineService;
+	}
+
+	#endregion
+
 	#region ::  Properties  ::
 
 	/// <summary>
 	/// 윈도우 기억
 	/// </summary>
 	private readonly System.Windows.Window _shellWindow = Application.Current.MainWindow;
+
+	private readonly IStockfishEngineService _stockfishEngineService;
 
 	#endregion
 
@@ -31,7 +42,11 @@ public class WindowHandlingService : IWindowHandlingService
 	/// <summary>
 	/// 쉘 윈도우 닫기
 	/// </summary>
-	public void Close() => _shellWindow.Close();
+	public void Close()
+	{
+		_stockfishEngineService.StopEngine();
+		_shellWindow.Close();
+	}
 
 	#endregion
 }

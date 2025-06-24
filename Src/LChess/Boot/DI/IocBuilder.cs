@@ -5,6 +5,7 @@ using LChess.DataBinding.ViewModel.Content;
 
 using LChess.Service.Setting;
 using LChess.Service.Window;
+using LChess.Service.Engine;
 
 namespace LChess.Boot.DI;
 
@@ -35,8 +36,9 @@ internal class IocBuilder
 		/// Service 등록
 		////////////////////////////////////////
 		{
-			services.AddSingleton<IWindowHandlingService, WindowHandlingService>();
-			services.AddSingleton<IUserSettingService   , UserSettingService   >();
+			services.AddSingleton<IStockfishEngineService, StockfishEngineService>();
+			services.AddSingleton<IWindowHandlingService , WindowHandlingService >();
+			services.AddSingleton<IUserSettingService    , UserSettingService    >();
 		}
 
 
@@ -44,8 +46,9 @@ internal class IocBuilder
 		/// ViewModel 등록
 		////////////////////////////////////////
 		{
-			services.AddTransient<LChessWindowViewModel>();
-			services.AddTransient<HomeContentViewModel >();
+			services.AddTransient<LChessWindowViewModel    >();
+			services.AddTransient<HomeContentViewModel     >();
+			services.AddTransient<ChessGameContentViewModel>();
 		}
 
 		return services.BuildServiceProvider();

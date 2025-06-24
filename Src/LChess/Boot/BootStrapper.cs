@@ -1,5 +1,6 @@
 ﻿using LChess.Boot.App;
 using LChess.Boot.DI;
+using LChess.Util.Debugging;
 
 namespace LChess.Boot;
 
@@ -16,6 +17,7 @@ internal class BootStrapper
 	{
 		// Ioc 컨테이너 빌드
 		IocBuilder.Build(); 
+		LogBuilder.Build();
 
 		// LChessApp 인스턴스를 생성하고 실행
 		var app = new LChessApp();

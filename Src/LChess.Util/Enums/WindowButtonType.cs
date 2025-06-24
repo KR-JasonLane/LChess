@@ -1,4 +1,9 @@
-﻿public enum WindowButtonType
+﻿namespace LChess.Util.Enums;
+
+/// <summary>
+/// 윈도우 버튼 타입 열거형
+/// </summary>
+public enum WindowButtonType
 {
 	/// <summary>
 	/// 닫기 버튼
