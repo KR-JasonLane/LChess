@@ -18,12 +18,13 @@ public partial class ChessBoardUnitModel : ObservableObject
 	/// 체스판 색상
 	/// </summary>
 	[ObservableProperty]
-	private ChessBoardColorType _boardColorType;
+	private ChessTileColorType _tileColorType;
 
 	/// <summary>
 	/// 말
 	/// </summary>
 	[ObservableProperty]
 	private ChessUnitType _unitType;
+
 	#endregion
 }

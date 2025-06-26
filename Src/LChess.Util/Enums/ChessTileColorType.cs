@@ -3,7 +3,7 @@
 /// <summary>
 /// 체스보드 색상 타입 열거형
 /// </summary>
-public enum ChessBoardColorType
+public enum ChessTileColorType
 {
 	// 밝은색 칸
 	LightCyan,

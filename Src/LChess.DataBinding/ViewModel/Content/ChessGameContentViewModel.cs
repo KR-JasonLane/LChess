@@ -1,4 +1,5 @@
 ﻿using LChess.Abstract.ViewModel;
+using LChess.Util.Enums;
 
 namespace LChess.DataBinding.ViewModel.Content;
 public class ChessGameContentViewModel : ObservableRecipient, IContentViewModel

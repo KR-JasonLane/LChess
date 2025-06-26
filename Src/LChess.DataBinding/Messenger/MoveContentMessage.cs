@@ -1,4 +1,6 @@
-﻿namespace LChess.DataBinding.Messenger;
+﻿using LChess.Util.Enums;
+
+namespace LChess.DataBinding.Messenger;
 
 /// <summary>
 /// Content 이동 메시지

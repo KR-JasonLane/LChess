@@ -1,6 +1,8 @@
 ﻿using LChess.Abstract.Service;
 using LChess.Abstract.ViewModel;
 
+using LChess.Util.Enums;
+
 using LChess.DataBinding.Messenger;
 
 namespace LChess.DataBinding.ViewModel.Content;
@@ -49,11 +51,15 @@ public partial class HomeContentViewModel : ObservableRecipient, IContentViewMod
 	/// 체스 게임으로 이동
 	/// </summary>
 	[RelayCommand]
-	private void MoveToChessGame()
+	private async Task MoveToChessGame()
 	{
-		_stockfishEngineService.StartEngineAsync(1000);
+		WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(true));
+
+		await Task.Run(() => _stockfishEngineService.StartEngineAsync(1000));
 
 		WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChessGame));
+
+		WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
 	}
 
 	#endregion

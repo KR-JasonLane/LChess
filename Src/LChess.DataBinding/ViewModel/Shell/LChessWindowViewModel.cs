@@ -1,6 +1,8 @@
 ﻿using LChess.Abstract.Service;
 using LChess.Abstract.ViewModel;
 
+using LChess.Util.Enums;
+
 using LChess.DataBinding.Messenger;
 using LChess.DataBinding.ViewModel.Content;
 

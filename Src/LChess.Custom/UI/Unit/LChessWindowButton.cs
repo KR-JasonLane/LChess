@@ -1,4 +1,6 @@
-﻿namespace LChess.Custom.UI.Unit;
+﻿using LChess.Util.Enums;
+
+namespace LChess.Custom.UI.Unit;
 
 /// <summary>
 /// LChess 커스텀 윈도우 버튼
