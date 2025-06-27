@@ -1,13 +1,15 @@
-﻿using LChess.Util.Enums;
+﻿using LChess.Abstract.Model;
+using LChess.Util.Enums;
 
 namespace LChess.DataBinding.Model;
 
 /// <summary>
 /// 체스보드 요소 모델
 /// </summary>
-public partial class ChessBoardUnitModel : ObservableObject
+public partial class ChessBoardUnitModel : ObservableObject, IChessBoardUnitModel
 {
 	#region :: Properties ::
+
 	/// <summary>
 	/// 기물 색상
 	/// </summary>

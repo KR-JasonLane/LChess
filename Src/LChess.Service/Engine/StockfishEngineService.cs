@@ -30,15 +30,23 @@ public class StockfishEngineService : IStockfishEngineService
 
 	#endregion
 
+	/// <summary>
+	/// 생성자
+	/// </summary>
 	public StockfishEngineService()
 	{
+		// Stockfish 엔진 디렉터리 및 실행 파일 경로 설정
 		_stockfishEngineDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Engine");
-		_stockfishExecutablePath = Path.Combine(_stockfishEngineDirectory, "Stockfish.exe");
+		_stockfishExecutablePath  = Path.Combine(_stockfishEngineDirectory, "Stockfish.exe");
 	}
 
 	#region :: Methods ::
 
-	public async Task<bool> StartEngineAsync(int timeout)
+	/// <summary>
+	/// 엔진 시작 (비동기)
+	/// </summary>
+	/// <returns> 성공여부 </returns>
+	public async Task<bool> StartEngineAsync()
 	{
 		Log.Information("Stockfish 엔진 시작...");
 
@@ -64,11 +72,15 @@ public class StockfishEngineService : IStockfishEngineService
 		}
 
 		//4. 엔진 초기화 커맨드 전송 후 결과 대기
-		var response = await SendCommandAsync("uci");
+		var response = await SendCommandAsync("uci", "uciok");
 
 		return response?.Contains("uciok") ?? false;
 	}
 
+	/// <summary>
+	/// 엔진 종료
+	/// </summary>
+	/// <returns> 성공여부 </returns>
 	public bool StopEngine()
 	{
 		try
@@ -217,9 +229,11 @@ public class StockfishEngineService : IStockfishEngineService
 
 	/// <summary>
 	/// 엔진에 커맨드 전송 (비동기)
+	/// Stockfish 엔진에 커맨드를 전송하고 응답을 기다립니다.
 	/// </summary>
 	/// <param name="command"> 전송 할 커맨드 </param>
-	public async Task<string?> SendCommandAsync(string command)
+	/// <param name="output"> stockfish 응답 </param>
+	public async Task<string?> SendCommandAsync(string command, string output)
 	{
 		if(_stockfishInput == null || _stockfishOutput == null)
 		{
@@ -227,12 +241,26 @@ public class StockfishEngineService : IStockfishEngineService
 			return null;
 		}
 
+		Log.Information($"커맨드 전송 : '{command}'");
+
+		//1. 커맨드 전송
 		await _stockfishInput.WriteLineAsync(command);
 		await _stockfishInput.FlushAsync();
 
-		var output = await _stockfishOutput.ReadLineAsync();
+		//2. Stockfish의 응답은 멀티라인이기 때문에,
+		//   한줄씩 읽으면서 특정 단어가 들어가 있는 응답을 찾아야함.
+		while (true)
+		{
+			//현재 라인
+			var result = await _stockfishOutput.ReadLineAsync();
 
-		return output;
+			// 응답을 찾았는지 확인
+			if (result?.Contains(output) ?? false)
+			{
+				Log.Information($"응답 : '{result}'");
+				return result;
+			}
+		}
 	}
 
 	#endregion

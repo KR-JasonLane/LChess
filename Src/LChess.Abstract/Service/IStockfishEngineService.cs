@@ -9,7 +9,7 @@ public interface IStockfishEngineService
 	/// 엔진 시작 (비동기)
 	/// </summary>
 	/// <returns> 성공여부 </returns>
-	public Task<bool> StartEngineAsync(int timeout);
+	public Task<bool> StartEngineAsync();
 
 	/// <summary>
 	/// 엔진 종료
@@ -22,5 +22,5 @@ public interface IStockfishEngineService
 	/// </summary>
 	/// <param name="command"> 전송 할 커맨드 </param>
 	/// <returns> 엔진 응답 </returns>
-	public Task<string?> SendCommandAsync(string command);
+	public Task<string?> SendCommandAsync(string command, string output);
 }

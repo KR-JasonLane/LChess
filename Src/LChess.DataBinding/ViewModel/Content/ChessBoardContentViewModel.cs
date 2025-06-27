@@ -1,5 +1,5 @@
-﻿using LChess.Abstract.ViewModel;
-using LChess.DataBinding.Model;
+﻿using LChess.Abstract.Model;
+using LChess.Abstract.ViewModel;
 using LChess.Util.Enums;
 
 namespace LChess.DataBinding.ViewModel.Content;
@@ -30,7 +30,7 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
 	public LChessContentType ContentType { get; init; }
 
 	[ObservableProperty]
-	private ObservableCollection<ObservableCollection<ChessBoardUnitModel>>? _chessBoardSource;
+	private List<List<IChessBoardUnitModel>>? _chessBoardSource;
 
 	#endregion
 
