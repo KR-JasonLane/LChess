@@ -5,8 +5,12 @@
 /// </summary>
 public enum ChessTileColorType
 {
-	// 밝은색 칸
-	LightCyan,
-	//어두운색 칸
+    /// <summary>
+    /// 밝은색 칸
+    /// </summary>
+    SkyBlue,
+	/// <summary>
+	/// 어두운색 칸
+	/// </summary>
 	DeepSkyBlue,
 }

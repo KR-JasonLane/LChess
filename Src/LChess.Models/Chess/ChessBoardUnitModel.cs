@@ -1,12 +1,11 @@
-﻿using LChess.Abstract.Model;
-using LChess.Util.Enums;
+﻿using LChess.Util.Enums;
 
-namespace LChess.DataBinding.Model;
+namespace LChess.Models.Chess;
 
 /// <summary>
 /// 체스보드 요소 모델
 /// </summary>
-public partial class ChessBoardUnitModel : ObservableObject, IChessBoardUnitModel
+public partial class ChessBoardUnitModel : ObservableObject
 {
 	#region :: Properties ::
 

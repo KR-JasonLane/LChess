@@ -9,6 +9,9 @@ public class WindowHandlingService : IWindowHandlingService
 {
 	#region :: Constructor::
 
+	/// <summary>
+	/// 생성자
+	/// </summary>
 	public WindowHandlingService(IStockfishEngineService stockfishEngineService)
 	{
 		_stockfishEngineService = stockfishEngineService;
@@ -23,6 +26,9 @@ public class WindowHandlingService : IWindowHandlingService
 	/// </summary>
 	private readonly System.Windows.Window _shellWindow = Application.Current.MainWindow;
 
+	/// <summary>
+	/// Sockfish 엔진 서비스
+	/// </summary>
 	private readonly IStockfishEngineService _stockfishEngineService;
 
 	#endregion

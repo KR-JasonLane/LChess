@@ -1,14 +1,17 @@
 ﻿using LChess.Abstract.ViewModel;
+
 using LChess.Util.Enums;
 
-namespace LChess.DataBinding.ViewModel.Content;
-public class ChessGameContentViewModel : ObservableRecipient, IContentViewModel
+namespace LChess.ViewModels.Contents;
+public partial class ChessGameContentViewModel : ObservableRecipient, IContentViewModel
 {
 	#region :: Constructor ::
 
 	public ChessGameContentViewModel()
 	{
 		ContentType = LChessContentType.ChessGame;
+
+		ChessBoardContent = Ioc.Default.GetService<ChessBoardContentViewModel>();
 	}
 
 	#endregion
@@ -23,6 +26,12 @@ public class ChessGameContentViewModel : ObservableRecipient, IContentViewModel
 	/// Content Type 지정
 	/// </summary>
 	public LChessContentType ContentType { get; init; }
+
+	/// <summary>
+	/// 체스보드 
+	/// </summary>
+	[ObservableProperty]
+	private IContentViewModel? _chessBoardContent;
 
 	#endregion
 

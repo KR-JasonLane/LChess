@@ -3,11 +3,11 @@ using LChess.Abstract.ViewModel;
 
 using LChess.Util.Enums;
 
-using LChess.DataBinding.Messenger;
-using LChess.DataBinding.ViewModel.Content;
+using LChess.ViewModels.Messenger;
+using LChess.ViewModels.Contents;
 
 
-namespace LChess.DataBinding.ViewModel.Shell;
+namespace LChess.ViewModels.Shell;
 
 /// <summary>
 /// LChess 윈도우 뷰모델

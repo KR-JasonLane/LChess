@@ -23,4 +23,10 @@ public interface IStockfishEngineService
 	/// <param name="command"> 전송 할 커맨드 </param>
 	/// <returns> 엔진 응답 </returns>
 	public Task<string?> SendCommandAsync(string command, string output);
+
+	/// <summary>
+	/// 현재 보드 상태 반환
+	/// </summary>
+	/// <returns> StockFish 엔진 응답 </returns>
+	public Task<List<string>?> GetCurrentBoard();
 }

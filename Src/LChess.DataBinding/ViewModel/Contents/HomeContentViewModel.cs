@@ -3,9 +3,9 @@ using LChess.Abstract.ViewModel;
 
 using LChess.Util.Enums;
 
-using LChess.DataBinding.Messenger;
+using LChess.ViewModels.Messenger;
 
-namespace LChess.DataBinding.ViewModel.Content;
+namespace LChess.ViewModels.Contents;
 
 /// <summary>
 /// 홈 컨텐츠 뷰모델
@@ -55,7 +55,7 @@ public partial class HomeContentViewModel : ObservableRecipient, IContentViewMod
 	{
 		WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(true));
 
-		await Task.Run(() => _stockfishEngineService.StartEngineAsync(1000));
+		await Task.Run(() => _stockfishEngineService.StartEngineAsync());
 
 		WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChessGame));
 

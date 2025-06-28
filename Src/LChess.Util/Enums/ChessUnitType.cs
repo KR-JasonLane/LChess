@@ -5,20 +5,36 @@
 /// </summary>
 public enum ChessUnitType
 {
-	// 빈 칸
-	Empty = 0, 
-	// 하이라이트 (움직일 수 있는 범위 표시)
+	/// <summary>
+	/// 빈 칸
+	/// </summary>
+	Empty = 0,
+	/// <summary>
+	/// 하이라이트 (움직일 수 있는 범위 표시)
+	/// </summary>
 	HighLight,
-	// 폰
+	/// <summary>
+	/// 폰
+	/// </summary>
 	Pawn,
-	// 나이트
+	/// <summary>
+	/// 나이트
+	/// </summary>
 	Knight,
-	// 비숍
+	/// <summary>
+	/// 비숍
+	/// </summary>
 	Bishop,
-	// 룩
+	/// <summary>
+	/// 룩
+	/// </summary>
 	Rook,
-	// 퀸
+	/// <summary>
+	/// 퀸
+	/// </summary>
 	Queen,
-	// 킹
+	/// <summary>
+	/// 킹
+	/// </summary>
 	King, 
 }

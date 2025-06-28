@@ -51,7 +51,7 @@
 
                             <!--Custom Title Bar-->
                             <Grid Grid.Row="0"
-                                  Background="CornflowerBlue">
+                                  Background="LightCyan">
 
                                 <!-- 타이틀바 Behavior -->
                                 <i:Interaction.Behaviors>

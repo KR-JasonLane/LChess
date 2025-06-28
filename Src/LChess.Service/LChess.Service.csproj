@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LChess.Abstract\LChess.Abstract.csproj" />
+    <ProjectReference Include="..\LChess.DataBinding\LChess.ViewModels.csproj" />
     <ProjectReference Include="..\LChess.Util\LChess.Util.csproj" />
   </ItemGroup>
 

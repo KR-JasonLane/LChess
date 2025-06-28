@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="LChess.Content.View.ChessGameContentView"
+﻿<UserControl x:Class="LChess.Views.Contents.ChessGameContentView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">

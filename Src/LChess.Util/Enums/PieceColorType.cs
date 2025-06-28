@@ -5,9 +5,12 @@
 /// </summary>
 public enum PieceColorType
 {
-	//백색
+	/// <summary>
+	/// 백색
+	/// </summary>
 	White = 0,
-
-	//흑색
+	/// <summary>
+	/// 흑색
+	/// </summary>
 	Black,
 }

@@ -82,20 +82,20 @@ public class TitleBarMouseBehavior : Behavior<FrameworkElement>
 		var mouseScreenPos = _mainWindow.PointToScreen(e.GetPosition(_mainWindow));
 
 		// 마우스 위치 좌표
-		double mouseX = mouseScreenPos.X;
-		double mouseY = mouseScreenPos.Y;
+		var mouseX = mouseScreenPos.X;
+		var mouseY = mouseScreenPos.Y;
 
 		// 최대화 이전의 창 크기
 		var restoreBounds    = _mainWindow.RestoreBounds;
-		double restoreWidth  = restoreBounds.Width;
-		double restoreHeight = restoreBounds.Height;
+		var restoreWidth  = restoreBounds.Width;
+		var restoreHeight = restoreBounds.Height;
 
 		// 작업 영역 너비
-		double screenWidth = SystemParameters.WorkArea.Width;
+		var screenWidth = SystemParameters.WorkArea.Width;
 
 		// 좌측 위치 계산
-		double halfWidth  = restoreWidth / 2;
-		double targetLeft = Math.Clamp(mouseX - halfWidth, 0, screenWidth - restoreWidth);
+		var halfWidth  = restoreWidth / 2;
+		var targetLeft = Math.Clamp(mouseX - halfWidth, 0, screenWidth - restoreWidth);
 
 		// 창 상태 복원
 		_mainWindow.WindowState = WindowState.Normal;
@@ -104,6 +104,7 @@ public class TitleBarMouseBehavior : Behavior<FrameworkElement>
 		_mainWindow.Left = targetLeft;
 		_mainWindow.Top  = mouseY - 20; // 타이틀바 높이 감안 
 	}
+
 	#endregion
 
 }

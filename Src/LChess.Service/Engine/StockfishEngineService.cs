@@ -10,6 +10,9 @@ public class StockfishEngineService : IStockfishEngineService
 {
 	#region :: Properties ::
 
+	/// <summary>
+	/// 엔진 경로
+	/// </summary>
 	private readonly string _stockfishEngineDirectory;
 	private readonly string _stockfishExecutablePath;
 
@@ -65,7 +68,7 @@ public class StockfishEngineService : IStockfishEngineService
 		}
 
 		//3. 엔진 프로세스 시작
-		if (!StartStockfishProcess())
+		if (!await StartStockfishProcess())
 		{
 			Log.Error("엔진 프로세스 시작 실패.");
 			return false;
@@ -195,7 +198,7 @@ public class StockfishEngineService : IStockfishEngineService
 	/// Stockfish 엔진 프로세스를 시작.
 	/// </summary>
 	/// <returns> 성공여부 </returns>
-	private bool StartStockfishProcess()
+	private async Task<bool> StartStockfishProcess()
 	{
 		try
 		{
@@ -217,8 +220,10 @@ public class StockfishEngineService : IStockfishEngineService
 			_stockfishInput = _stockfishProcess.StandardInput;
 			_stockfishOutput = _stockfishProcess.StandardOutput;
 
+			var output = await _stockfishOutput.ReadLineAsync();
+
 			Log.Information("Stockfish 엔진 프로세스 시작.");
-			return true;
+			return output?.Contains("Stockfish") ?? false;
 		}
 		catch (Exception ex)
 		{
@@ -261,6 +266,46 @@ public class StockfishEngineService : IStockfishEngineService
 				return result;
 			}
 		}
+	}
+
+	/// <summary>
+	/// 현재 보드 상태 반환
+	/// </summary>
+	/// <returns> StockFish 엔진 응답 </returns>
+	public async Task<List<string>?> GetCurrentBoard()
+	{
+		if (_stockfishInput == null || _stockfishOutput == null)
+		{
+			Log.Fatal("Stockfish 엔진 입력 스트림이 초기화되지 않음.");
+			return null;
+		}
+
+		Log.Information($"커맨드 전송 : 'd'");
+
+		//1. 커맨드 전송
+		await _stockfishInput.WriteLineAsync("d");
+		await _stockfishInput.FlushAsync();
+
+		var result = new List<string>();
+
+		//2. Stockfish의 응답은 멀티라인이기 때문에,
+		while (true)
+		{
+			//현재 라인
+			var line = await _stockfishOutput.ReadLineAsync();
+
+			//마지막줄이면 루프 탈출
+			if (line?.Contains("Checkers") ?? false) break;
+
+			// 응답을 찾았는지 확인
+			if (line?.Contains(@"|") ?? false)
+			{
+				Log.Information($"응답 : '{result}'");
+				result.Add(line);
+			}
+		}
+
+		return result;
 	}
 
 	#endregion

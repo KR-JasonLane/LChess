@@ -1,6 +1,6 @@
 ﻿using LChess.Custom.UI.Unit;
 
-using LChess.DataBinding.ViewModel.Shell;
+using LChess.ViewModels.Shell;
 
 namespace LChess.Boot.App;
 

@@ -1,4 +1,288 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="clr-namespace:LChess.Custom.UI.Unit">
+
+    <Style TargetType="{x:Type ui:LChessBoardUnit}">
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ui:LChessBoardUnit}">
+                    <Border Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}">
+
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="Background" Value="DeepSkyBlue"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessTileColorType}" Value="SkyBlue">
+                                        <Setter Property="Background" Value="SkyBlue"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Image Stretch="Fill"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+
+                                    <Style.Resources>
+                                        
+                                        <!--Black-->
+                                        <DrawingImage x:Key="RookBlack">
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup ClipGeometry="M-64,0 V512 H448 V-64 H0 Z">
+                                                    <DrawingGroup.Transform>
+                                                        <TranslateTransform X="255" Y="0" />
+                                                    </DrawingGroup.Transform>
+                                                    <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M368,32L312,32A16,16,0,0,0,296,48L296,96 248,96 248,48A16,16,0,0,0,232,32L152,32A16,16,0,0,0,136,48L136,96 88.1,96 88.1,48A16,16,0,0,0,72.1,32L16,32A16,16,0,0,0,0,48L0,224 64,256C64,304.33,62.46,351,50.79,416L333.21,416C321.54,351,320,303.72,320,256L384,224 384,48A16,16,0,0,0,368,32z M224,320L160,320 160,256A32,32,0,0,1,224,256z M368,448L16,448A16,16,0,0,0,0,464L0,496A16,16,0,0,0,16,512L368,512A16,16,0,0,0,384,496L384,464A16,16,0,0,0,368,448z" />
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+                                        
+                                        <DrawingImage x:Key="PawnBlack">
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup ClipGeometry="M-96,0 V512 H416 V-96 H0 Z">
+                                                    <DrawingGroup.Transform>
+                                                        <TranslateTransform X="96" Y="0" />
+                                                    </DrawingGroup.Transform>
+                                                    <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M105.1,224L80,224A16,16,0,0,0,64,240L64,272A16,16,0,0,0,80,288L96,288 96,293.49C96,337.49,91.86,380.09,72,416L248,416C228.11,380.09,224,337.49,224,293.49L224,288 240,288A16,16,0,0,0,256,272L256,240A16,16,0,0,0,240,224L214.9,224C244.29,205.62,264,173.22,264,136A104,104,0,0,0,56,136C56,173.22,75.71,205.62,105.1,224z M304,448L16,448A16,16,0,0,0,0,464L0,496A16,16,0,0,0,16,512L304,512A16,16,0,0,0,320,496L320,464A16,16,0,0,0,304,448z" />
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+                                        
+                                        <DrawingImage x:Key="QueenBlack">
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup ClipGeometry="M0,0 V512 H512 V0 H0 Z">
+                                                    <DrawingGroup.Transform>
+                                                        <TranslateTransform X="0.00054245814681053162" Y="0.0016344612231478095" />
+                                                    </DrawingGroup.Transform>
+                                                    <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M256,112A56,56,0,1,0,200,56A56,56,0,0,0,256,112z M432,448L80,448A16,16,0,0,0,64,464L64,496A16,16,0,0,0,80,512L432,512A16,16,0,0,0,448,496L448,464A16,16,0,0,0,432,448z M504.87,184.16L476.36,168.24C468.92,163.24,459.45,165.78,454.07,172.92A47.59,47.59,0,0,1,406.84,191.15C383.7,186.86,368,164.93,368,141.4A13.4,13.4,0,0,0,354.6,128L315.83,128C309.83,128,304.22,132,302.97,137.91A48,48,0,0,1,209.03,137.91C207.78,131.99,202.21,128,196.17,128L157.4,128A13.4,13.4,0,0,0,144,141.4C144,167.09,125,190.15,99.33,191.89A47.5,47.5,0,0,1,57.79,172.74C52.51,165.65,43.06,163.29,35.7,168.2L7.13,184.2A16,16,0,0,0,1.69,204.67L104.24,416 407.76,416 510.31,204.63A16,16,0,0,0,504.87,184.16z" />
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+                                        
+                                        <DrawingImage x:Key="KnightBlack">
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup ClipGeometry="M-64,0 V512 H448 V-64 H0 Z">
+                                                    <DrawingGroup.Transform>
+                                                        <TranslateTransform X="64" Y="0" />
+                                                    </DrawingGroup.Transform>
+                                                    <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M19,272.47L59.63,290.53A32,32,0,0,0,84.51,291L97.29,285.88A32,32,0,0,0,116.05,265.38L125.27,234.73A24,24,0,0,1,137.82,219.08L159.94,208 159.94,258.33A48,48,0,0,1,133.41,301.27L76.19,329.92A80,80,0,0,0,32,401.48L32,416 351.86,416 351.86,224C351.86,118,265.94,32,159.94,32L12,32A12,12,0,0,0,0,44A16.9,16.9,0,0,0,1.79,51.58L16,80 7,89A24,24,0,0,0,0,106L0,243.21A32,32,0,0,0,19,272.47z M52,128A20,20,0,1,1,32,148A20,20,0,0,1,52,128z M368,448L16,448A16,16,0,0,0,0,464L0,496A16,16,0,0,0,16,512L368,512A16,16,0,0,0,384,496L384,464A16,16,0,0,0,368,448z" />
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+
+                                        <DrawingImage x:Key="KingBlack">
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup ClipGeometry="M-32,0 V512 H480 V-32 H0 Z">
+                                                    <DrawingGroup.Transform>
+                                                        <TranslateTransform X="32" Y="0" />
+                                                    </DrawingGroup.Transform>
+                                                    <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M400,448L48,448A16,16,0,0,0,32,464L32,496A16,16,0,0,0,48,512L400,512A16,16,0,0,0,416,496L416,464A16,16,0,0,0,400,448z M416,160L256,160 256,112 296,112A8,8,0,0,0,304,104L304,56A8,8,0,0,0,296,48L256,48 256,8A8,8,0,0,0,248,0L200,0A8,8,0,0,0,192,8L192,48 152,48A8,8,0,0,0,144,56L144,104A8,8,0,0,0,152,112L192,112 192,160 32,160A32,32,0,0,0,1.48,201.54L74.56,416 373.44,416 446.52,201.54A32,32,0,0,0,416,160z" />
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+                                        
+                                        <DrawingImage x:Key="BishopBlack">
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup ClipGeometry="M0,0 V512 H512 V0 H0 Z">
+                                                    <DrawingGroup Opacity="1" Transform="1,0,0,1,96,0">
+                                                        <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M8,287.88C8,339.52,30.14,361.71,64,372.48L64,416 256,416 256,372.48C289.86,361.71 312,339.48 312,287.88 312,257.27 301.27,220.78 285.31,185.32L185,285.65A8,8,0,0,1,173.69,285.65L162.38,274.34A8,8,0,0,1,162.38,263.03L270.27,155.1C249.47,117.19 223.8,83 199.4,62.51 213.4,59.09 224,47.05 224,32A32,32,0,0,0,192,0L128,0A32,32,0,0,0,96,32C96,47 106.6,59.09 120.6,62.51 67.81,106.8 8,214.5 8,287.88z M304,448L16,448A16,16,0,0,0,0,464L0,496A16,16,0,0,0,16,512L304,512A16,16,0,0,0,320,496L320,464A16,16,0,0,0,304,448z" />
+                                                    </DrawingGroup>
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+
+                                        <!--White-->
+                                        <DrawingImage x:Key="RookWhite">
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup ClipGeometry="M-64,0 V512 H448 V-64 H0 Z">
+                                                    <DrawingGroup.Transform>
+                                                        <TranslateTransform X="64" Y="0" />
+                                                    </DrawingGroup.Transform>
+                                                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M512,512z M0,0z M368,32L312,32A16,16,0,0,0,296,48L296,96 248,96 248,48A16,16,0,0,0,232,32L152,32A16,16,0,0,0,136,48L136,96 88.1,96 88.1,48A16,16,0,0,0,72.1,32L16,32A16,16,0,0,0,0,48L0,224 64,256C64,304.33,62.46,351,50.79,416L333.21,416C321.54,351,320,303.72,320,256L384,224 384,48A16,16,0,0,0,368,32z M224,320L160,320 160,256A32,32,0,0,1,224,256z M368,448L16,448A16,16,0,0,0,0,464L0,496A16,16,0,0,0,16,512L368,512A16,16,0,0,0,384,496L384,464A16,16,0,0,0,368,448z" />
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+
+                                        <DrawingImage x:Key="PawnWhite">
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup ClipGeometry="M-96,0 V512 H416 V-96 H0 Z">
+                                                    <DrawingGroup.Transform>
+                                                        <TranslateTransform X="96" Y="0" />
+                                                    </DrawingGroup.Transform>
+                                                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M512,512z M0,0z M105.1,224L80,224A16,16,0,0,0,64,240L64,272A16,16,0,0,0,80,288L96,288 96,293.49C96,337.49,91.86,380.09,72,416L248,416C228.11,380.09,224,337.49,224,293.49L224,288 240,288A16,16,0,0,0,256,272L256,240A16,16,0,0,0,240,224L214.9,224C244.29,205.62,264,173.22,264,136A104,104,0,0,0,56,136C56,173.22,75.71,205.62,105.1,224z M304,448L16,448A16,16,0,0,0,0,464L0,496A16,16,0,0,0,16,512L304,512A16,16,0,0,0,320,496L320,464A16,16,0,0,0,304,448z" />
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+
+                                        <DrawingImage x:Key="QueenWhite">
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup ClipGeometry="M0,0 V512 H512 V0 H0 Z">
+                                                    <DrawingGroup.Transform>
+                                                        <TranslateTransform X="0.00054245814681053162" Y="0.0016344612231478095" />
+                                                    </DrawingGroup.Transform>
+                                                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M512,512z M0,0z M256,112A56,56,0,1,0,200,56A56,56,0,0,0,256,112z M432,448L80,448A16,16,0,0,0,64,464L64,496A16,16,0,0,0,80,512L432,512A16,16,0,0,0,448,496L448,464A16,16,0,0,0,432,448z M504.87,184.16L476.36,168.24C468.92,163.24,459.45,165.78,454.07,172.92A47.59,47.59,0,0,1,406.84,191.15C383.7,186.86,368,164.93,368,141.4A13.4,13.4,0,0,0,354.6,128L315.83,128C309.83,128,304.22,132,302.97,137.91A48,48,0,0,1,209.03,137.91C207.78,131.99,202.21,128,196.17,128L157.4,128A13.4,13.4,0,0,0,144,141.4C144,167.09,125,190.15,99.33,191.89A47.5,47.5,0,0,1,57.79,172.74C52.51,165.65,43.06,163.29,35.7,168.2L7.13,184.2A16,16,0,0,0,1.69,204.67L104.24,416 407.76,416 510.31,204.63A16,16,0,0,0,504.87,184.16z" />
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+
+                                        <DrawingImage x:Key="KnightWhite">
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup ClipGeometry="M-64,0 V512 H448 V-64 H0 Z">
+                                                    <DrawingGroup.Transform>
+                                                        <TranslateTransform X="64" Y="0" />
+                                                    </DrawingGroup.Transform>
+                                                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M512,512z M0,0z M19,272.47L59.63,290.53A32,32,0,0,0,84.51,291L97.29,285.88A32,32,0,0,0,116.05,265.38L125.27,234.73A24,24,0,0,1,137.82,219.08L159.94,208 159.94,258.33A48,48,0,0,1,133.41,301.27L76.19,329.92A80,80,0,0,0,32,401.48L32,416 351.86,416 351.86,224C351.86,118,265.94,32,159.94,32L12,32A12,12,0,0,0,0,44A16.9,16.9,0,0,0,1.79,51.58L16,80 7,89A24,24,0,0,0,0,106L0,243.21A32,32,0,0,0,19,272.47z M52,128A20,20,0,1,1,32,148A20,20,0,0,1,52,128z M368,448L16,448A16,16,0,0,0,0,464L0,496A16,16,0,0,0,16,512L368,512A16,16,0,0,0,384,496L384,464A16,16,0,0,0,368,448z" />
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+
+                                        <DrawingImage x:Key="KingWhite">
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup ClipGeometry="M-32,0 V512 H480 V-32 H0 Z">
+                                                    <DrawingGroup.Transform>
+                                                        <TranslateTransform X="32" Y="0" />
+                                                    </DrawingGroup.Transform>
+                                                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M512,512z M0,0z M400,448L48,448A16,16,0,0,0,32,464L32,496A16,16,0,0,0,48,512L400,512A16,16,0,0,0,416,496L416,464A16,16,0,0,0,400,448z M416,160L256,160 256,112 296,112A8,8,0,0,0,304,104L304,56A8,8,0,0,0,296,48L256,48 256,8A8,8,0,0,0,248,0L200,0A8,8,0,0,0,192,8L192,48 152,48A8,8,0,0,0,144,56L144,104A8,8,0,0,0,152,112L192,112 192,160 32,160A32,32,0,0,0,1.48,201.54L74.56,416 373.44,416 446.52,201.54A32,32,0,0,0,416,160z" />
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+
+                                        <DrawingImage x:Key="BishopWhite">
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup ClipGeometry="M0,0 V512 H512 V0 H0 Z">
+                                                    <DrawingGroup Opacity="1" Transform="1,0,0,1,96,0">
+                                                        <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M512,512z M0,0z M8,287.88C8,339.52,30.14,361.71,64,372.48L64,416 256,416 256,372.48C289.86,361.71 312,339.48 312,287.88 312,257.27 301.27,220.78 285.31,185.32L185,285.65A8,8,0,0,1,173.69,285.65L162.38,274.34A8,8,0,0,1,162.38,263.03L270.27,155.1C249.47,117.19 223.8,83 199.4,62.51 213.4,59.09 224,47.05 224,32A32,32,0,0,0,192,0L128,0A32,32,0,0,0,96,32C96,47 106.6,59.09 120.6,62.51 67.81,106.8 8,214.5 8,287.88z M304,448L16,448A16,16,0,0,0,0,464L0,496A16,16,0,0,0,16,512L304,512A16,16,0,0,0,320,496L320,464A16,16,0,0,0,304,448z" />
+                                                    </DrawingGroup>
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+
+                                    </Style.Resources>
+
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="Black"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Pawn"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Source" Value="{StaticResource PawnBlack}"/>
+                                            <Setter Property="Margin" Value="5 5 -3 5"/>
+                                        </MultiDataTrigger>
+
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="Black"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Rook"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Source" Value="{StaticResource RookBlack}"/>
+                                            <Setter Property="Margin" Value="5 3 0 3"/>
+                                        </MultiDataTrigger>
+
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="Black"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Bishop"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Source" Value="{StaticResource BishopBlack}"/>
+                                            <Setter Property="Margin" Value="6 3 -2 3"/>
+                                        </MultiDataTrigger>
+                                        
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="Black"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Knight"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Source" Value="{StaticResource KnightBlack}"/>
+                                            <Setter Property="Margin" Value="6 3 -2 3"/>
+                                        </MultiDataTrigger>
+
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="Black"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Queen"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Source" Value="{StaticResource QueenBlack}"/>
+                                            <Setter Property="Margin" Value="3"/>
+                                        </MultiDataTrigger>
+
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="Black"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="King"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Source" Value="{StaticResource KingBlack}"/>
+                                            <Setter Property="Margin" Value="5 3 2 3"/>
+                                        </MultiDataTrigger>
+
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="White"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Pawn"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Source" Value="{StaticResource PawnWhite}"/>
+                                            <Setter Property="Margin" Value="5 5 -3 5"/>
+                                        </MultiDataTrigger>
+
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="White"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Rook"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Source" Value="{StaticResource RookWhite}"/>
+                                            <Setter Property="Margin" Value="5 3 0 3"/>
+                                        </MultiDataTrigger>
+
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="White"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Bishop"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Source" Value="{StaticResource BishopWhite}"/>
+                                            <Setter Property="Margin" Value="6 3 -2 3"/>
+                                        </MultiDataTrigger>
+
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="White"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Knight"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Source" Value="{StaticResource KnightWhite}"/>
+                                            <Setter Property="Margin" Value="6 3 -2 3"/>
+                                        </MultiDataTrigger>
+
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="White"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Queen"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Source" Value="{StaticResource QueenWhite}"/>
+                                            <Setter Property="Margin" Value="3"/>
+                                        </MultiDataTrigger>
+
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="White"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="King"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Source" Value="{StaticResource KingWhite}"/>
+                                            <Setter Property="Margin" Value="5 3 2 3"/>
+                                        </MultiDataTrigger>
+                                        
+                                    </Style.Triggers>
+                                    
+                                </Style>
+                            </Image.Style>
+                        </Image>
+
+                    </Border>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     
 </ResourceDictionary>
