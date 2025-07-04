@@ -12,6 +12,7 @@
 
         <Setter Property="MinWidth" Value="1000"/>
         <Setter Property="MinHeight" Value="800"/>
+        <Setter Property="Opacity" Value="0.1"/>
 
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>

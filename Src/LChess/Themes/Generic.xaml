@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:vm="clr-namespace:LChess.ViewModels.Contents;assembly=LChess.ViewModels"
+                    xmlns:vm="clr-namespace:LChess.ViewModels.DataContext.Contents;assembly=LChess.ViewModels"
                     xmlns:v="clr-namespace:LChess.Views.Contents;assembly=LChess.Views">
 
     <DataTemplate DataType="{x:Type vm:HomeContentViewModel}">
@@ -13,6 +13,10 @@
 
     <DataTemplate DataType="{x:Type vm:ChessBoardContentViewModel}">
         <v:ChessBoardContentView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:ChoicePieceColorContentViewModel}">
+        <v:ChoicePieceColorContentView/>
     </DataTemplate>
     
 </ResourceDictionary>

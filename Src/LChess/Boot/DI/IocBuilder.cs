@@ -1,7 +1,7 @@
 ﻿using LChess.Abstract.Service;
 
 using LChess.ViewModels.Shell;
-using LChess.ViewModels.Contents;
+using LChess.ViewModels.DataContext.Contents;
 
 using LChess.Service.Setting;
 using LChess.Service.Window;
@@ -48,11 +48,12 @@ internal class IocBuilder
 		/// ViewModel 등록
 		////////////////////////////////////////
 		{
-			services.AddTransient<LChessWindowViewModel     >();
-			services.AddTransient<HomeContentViewModel      >();
-			services.AddTransient<ChessGameContentViewModel >();
-			services.AddTransient<ChessBoardContentViewModel>();
-		}
+			services.AddTransient<LChessWindowViewModel           >();
+			services.AddTransient<HomeContentViewModel            >();
+			services.AddTransient<ChessGameContentViewModel       >();
+			services.AddTransient<ChessBoardContentViewModel      >();
+			services.AddTransient<ChoicePieceColorContentViewModel>();
+        }
 
 		return services.BuildServiceProvider();
 	}

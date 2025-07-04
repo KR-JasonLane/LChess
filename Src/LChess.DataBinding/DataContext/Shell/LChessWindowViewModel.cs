@@ -4,7 +4,7 @@ using LChess.Abstract.ViewModel;
 using LChess.Util.Enums;
 
 using LChess.ViewModels.Messenger;
-using LChess.ViewModels.Contents;
+using LChess.ViewModels.DataContext.Contents;
 
 
 namespace LChess.ViewModels.Shell;
@@ -51,17 +51,14 @@ public partial class LChessWindowViewModel : ObservableRecipient, ILChessWindowV
 			{
 				if (CurrentContent?.ContentType == m.Value) return;
 
-				IsVisibleDimming = true;
-
 				CurrentContent = m.Value switch
 				{
-					LChessContentType.Home => Ioc.Default.GetService<HomeContentViewModel>(),
-					LChessContentType.ChessGame => Ioc.Default.GetService<ChessGameContentViewModel>(),
+					LChessContentType.Home             => Ioc.Default.GetService<HomeContentViewModel            >(),
+					LChessContentType.ChoicePieceColor => Ioc.Default.GetService<ChoicePieceColorContentViewModel>(),
+                    LChessContentType.ChessGame        => Ioc.Default.GetService<ChessGameContentViewModel       >(),
 					//LChessContentType.Settings  => Ioc.Default.GetService<SettingContentViewModel>(),
 					_ => null
 				};
-
-				IsVisibleDimming = false;
 			});
 		}
 	}

@@ -2,16 +2,31 @@
 
 using LChess.Util.Enums;
 
-namespace LChess.ViewModels.Contents;
+namespace LChess.ViewModels.DataContext.Contents;
+
+/// <summary>
+/// 체스게임 Content 뷰모델
+/// </summary>
 public partial class ChessGameContentViewModel : ObservableRecipient, IContentViewModel
 {
 	#region :: Constructor ::
 
 	public ChessGameContentViewModel()
-	{
-		ContentType = LChessContentType.ChessGame;
+    {
+        ////////////////////////////////////////
+        /// 타입 지정
+        ////////////////////////////////////////
+        {
+            ContentType = LChessContentType.ChessGame;
+        }
 
-		ChessBoardContent = Ioc.Default.GetService<ChessBoardContentViewModel>();
+
+        ////////////////////////////////////////
+        /// 체스보드 Content 뷰모델 생성
+        ////////////////////////////////////////
+        {
+            ChessBoardContent = Ioc.Default.GetService<ChessBoardContentViewModel>();
+		}
 	}
 
 	#endregion
@@ -34,7 +49,6 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
 	private IContentViewModel? _chessBoardContent;
 
 	#endregion
-
 
 	#region :: Methods ::
 

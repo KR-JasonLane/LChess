@@ -33,7 +33,7 @@ public class LChessBoardUnit : Control
 	/// LChess 보드타일 색상 타입 의존프로퍼티
 	/// </summary>
 	public static readonly DependencyProperty LChessTileColorTypeProperty =
-		DependencyProperty.Register(nameof(LChessTileColorType), typeof(ChessTileColorType), typeof(LChessBoardUnit), new FrameworkPropertyMetadata(ChessTileColorType.SkyBlue));
+		DependencyProperty.Register(nameof(LChessTileColorType), typeof(ChessTileColorType), typeof(LChessBoardUnit), new FrameworkPropertyMetadata(ChessTileColorType.Light));
 
 	/// <summary>
 	/// LChess 보드타일 색상 타입

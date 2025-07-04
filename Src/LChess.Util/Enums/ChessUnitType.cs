@@ -10,10 +10,6 @@ public enum ChessUnitType
 	/// </summary>
 	Empty = 0,
 	/// <summary>
-	/// 하이라이트 (움직일 수 있는 범위 표시)
-	/// </summary>
-	HighLight,
-	/// <summary>
 	/// 폰
 	/// </summary>
 	Pawn,

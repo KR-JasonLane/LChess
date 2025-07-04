@@ -8,9 +8,13 @@ public enum ChessTileColorType
     /// <summary>
     /// 밝은색 칸
     /// </summary>
-    SkyBlue,
+    Light,
 	/// <summary>
 	/// 어두운색 칸
 	/// </summary>
-	DeepSkyBlue,
+	Dark,
+    /// <summary>
+    /// 하이라이트 색
+    /// </summary>
+    HighLight,
 }

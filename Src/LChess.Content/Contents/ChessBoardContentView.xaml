@@ -2,7 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:ui="clr-namespace:LChess.Custom.UI.Unit;assembly=LChess.Custom">
+             xmlns:ui="clr-namespace:LChess.Custom.UI.Unit;assembly=LChess.Custom"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
 
     <Viewbox>
 
@@ -18,7 +19,17 @@
                                                     LChessPieceColorType="{Binding PieceColorType}"
                                                     LChessUnitType="{Binding UnitType}"
                                                     Width="50"
-                                                    Height="50"/>
+                                                    Height="50">
+                                    
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.SelectTileCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+                                                                   CommandParameter="{Binding}"
+                                                                   EventArgsParameterPath="False"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    
+                                </ui:LChessBoardUnit>
                             </DataTemplate>                            
                         </ItemsControl.ItemTemplate>
 

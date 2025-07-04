@@ -14,9 +14,13 @@ public enum LChessContentType
 	/// </summary>
 	ChessGame,
 	/// <summary>
-	/// 체스 보드 컨텐츠
+	/// 기물색상 선택 컨텐츠
 	/// </summary>
-	ChessBoard,
+    ChoicePieceColor,
+    /// <summary>
+    /// 체스 보드 컨텐츠
+    /// </summary>
+    ChessBoard,
 	/// <summary>
 	/// 설정 컨텐츠
 	/// </summary>

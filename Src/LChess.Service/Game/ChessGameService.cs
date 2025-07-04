@@ -3,7 +3,7 @@
 using LChess.Models.Chess;
 
 using LChess.Util.Enums;
-using System.Collections.ObjectModel;
+using LChess.Util.Extension;
 
 namespace LChess.Service.Game;
 
@@ -24,80 +24,148 @@ public class ChessGameService : IChessGameService
 
 	#endregion
 
-	#region :: Properties ::
+	#region :: Services ::
 
 	/// <summary>
 	/// 엔진관리 서비스
 	/// </summary>
 	private readonly IStockfishEngineService _stockfishEngineService;
 
-	#endregion
+    #endregion
 
-	#region :: Methods ::
+    #region :: Properties ::
 
-	/// <summary>
-	/// 현재 보드상태
-	/// </summary>
-	/// <returns></returns>
-	public async Task<List<List<ChessBoardUnitModel>>?> DrawBoard()
+    /// <summary>
+    /// 유저 기물색상 기억
+    /// </summary>
+    private PieceColorType _userPieceColor;
+
+    /// <summary>
+    /// 체스보드 유닛 모델 리스트
+    /// </summary>
+    private List<List<ChessBoardUnitModel>>? _chessBoardUnits;
+
+    /// <summary>
+    /// 선택된 유닛
+    /// </summary>
+    private ChessBoardUnitModel? _selectedUnit;
+
+    #endregion
+
+    #region :: Methods ::
+
+    /// <summary>
+    /// 현재 보드상태
+    /// </summary>
+    /// <returns></returns>
+    public async Task<List<List<ChessBoardUnitModel>>?> CurrentBoard()
 	{
-		var stockfishOutput = await _stockfishEngineService.GetCurrentBoard();
+        if(_chessBoardUnits == null)
+        {
+            var stockfishOutput = await _stockfishEngineService.GetCurrentBoard();
 
-		var result = new List<List<ChessBoardUnitModel>>();
-		var currentTile = ChessTileColorType.DeepSkyBlue;
-
-		for (int i = 0; i < 8; i++)
-		{
-			var line = new List<ChessBoardUnitModel>();
-
-            for (int j = 1; j <= 8; j++)
-			{
-				var tile = new ChessBoardUnitModel()
-				{
-					TileColorType = currentTile,
-					UnitType = GetUnitType(stockfishOutput?[i][ j * 4 - 1] ?? ' ', out var pieceColor),
-					PieceColorType = pieceColor
-                };
-
-				line.Add(tile);
-
-				if(j != 8)
-                {
-                    currentTile = currentTile == ChessTileColorType.SkyBlue ? ChessTileColorType.DeepSkyBlue : ChessTileColorType.SkyBlue;
-                }
+            if (_userPieceColor == PieceColorType.Black)
+            {
+                _chessBoardUnits = CreateBlackBoardData(stockfishOutput);
             }
-
-			result.Add(line);
+            else
+            {
+                _chessBoardUnits = CreateWhiteBoardData(stockfishOutput);
+            }
         }
 
-
-        return result;
-	}
+        return _chessBoardUnits;
+    }
 
 	/// <summary>
 	/// 게임 초기화
 	/// </summary>
 	/// <returns></returns>
 	public void ClearMoves()
-	{
-		throw new NotImplementedException();
-	}
-
-	private ChessUnitType GetUnitType(char stockfishUnit, out PieceColorType color)
-	{
-		color = char.IsLower(stockfishUnit) ? PieceColorType.White : PieceColorType.Black;
-
-        return char.ToUpper(stockfishUnit) switch
-		{
-			'P' => ChessUnitType.Pawn,
-			'R' => ChessUnitType.Rook,
-			'N' => ChessUnitType.Knight,
-			'B' => ChessUnitType.Bishop,
-			'Q' => ChessUnitType.Queen,
-			'K' => ChessUnitType.King,
-			_ => ChessUnitType.Empty
-		};
+    {
+        _stockfishEngineService.SendCommandAsync("ucinewgame", string.Empty);
     }
 
-	#endregion
+    /// <summary>
+    /// 사용자 기물색상 설정
+    /// </summary>
+    /// <param name="pieceColor"> 기물색상 타입 </param>
+    public void SetUserPieceColor(PieceColorType pieceColor) => _userPieceColor = pieceColor;
+
+	/// <summary>
+	/// 체스보드 데이터 만들기 - 백색 기준 (정방향)
+	/// </summary>
+	/// <param name="stockfishOutput"> Stockfish 엔진에서 받은 보드 문자열 리스트 </param>
+	/// <returns> 생성된 데이터 </returns>
+	private List<List<ChessBoardUnitModel>>? CreateWhiteBoardData(List<string>? stockfishOutput)
+    {
+        var result = new List<List<ChessBoardUnitModel>>();
+        var tileColor = ChessTileColorType.Dark;
+
+        for (int row = 0; row < 8; row++)
+        {
+            var line = new List<ChessBoardUnitModel>();
+
+            for (int column = 1; column <= 8; column++)
+            {
+                line.Add(new ChessBoardUnitModel(tileColor, row, column, stockfishOutput?[row][column * 4 - 1] ?? ' '));
+
+                if (column != 8)
+                {
+                    tileColor = tileColor.ChangeColor();
+                }
+            }
+
+            result.Add(line);
+        }
+
+		return result;
+    }
+
+    /// <summary>
+    /// 체스보드 데이터 만들기 - 흑색 기준 (역방향)
+    /// </summary>
+    /// <param name="stockfishOutput"> Stockfish 엔진에서 받은 보드 문자열 리스트 </param>
+    /// <returns> 생성된 데이터 </returns>
+    private List<List<ChessBoardUnitModel>>? CreateBlackBoardData(List<string>? stockfishOutput)
+    {
+        var result = new List<List<ChessBoardUnitModel>>();
+        var tileColor = ChessTileColorType.Dark;
+
+        for (int row = 7; row >= 0; row--)
+        {
+            var line = new List<ChessBoardUnitModel>();
+
+            for (int column = 8; column >= 1; column--)
+            {
+                line.Add(new ChessBoardUnitModel(tileColor, row, column, stockfishOutput?[row][column * 4 - 1] ?? ' '));
+
+                if (column != 1)
+                {
+                    tileColor = tileColor.ChangeColor();
+                }
+            }
+
+            result.Add(line);
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// 체스보드	유닛 선택
+    /// </summary>
+    /// <param name="selectedUnit"> 선택된 유닛 모델 </param>
+    /// <returns> 유닛 선택 시 하이라이트 된 보드 반환 </returns>
+    public List<List<ChessBoardUnitModel>> SelectUnit(ChessBoardUnitModel selectedUnit)
+    {
+        var result = new List<List<ChessBoardUnitModel>>();
+
+        _selectedUnit = selectedUnit;
+        //TODO : 유닛 선택 로직 구현 (타일색상 하이라이트)
+
+        return result;
+    }
+
+    #endregion
 }
