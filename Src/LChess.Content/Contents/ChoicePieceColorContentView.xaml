@@ -2,7 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:ui="clr-namespace:LChess.Custom.UI.Unit;assembly=LChess.Custom">
+             xmlns:ui="clr-namespace:LChess.Custom.UI.Unit;assembly=LChess.Custom"
+             xmlns:enum="clr-namespace:LChess.Util.Enums;assembly=LChess.Util">
 
     <UserControl.Resources>
 
@@ -30,7 +31,8 @@
             <ui:LChessButton Content="White"
                              Style="{StaticResource ChoicePieceColorButtonStyle}"
                              HorizontalAlignment="Right"
-                             Command="{Binding SelectWhiteCommand}"/>
+                             Command="{Binding SelectColorCommand}"
+                             CommandParameter="{x:Static enum:PieceColorType.White}"/>
 
         </Grid>
 
@@ -40,7 +42,8 @@
             <ui:LChessButton Content="Black"
                              Style="{StaticResource ChoicePieceColorButtonStyle}"
                              HorizontalAlignment="Left"
-                             Command="{Binding SelectBlackCommand}"/>
+                             Command="{Binding SelectColorCommand}"
+                             CommandParameter="{x:Static enum:PieceColorType.Black}"/>
             
         </Grid>
 

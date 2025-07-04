@@ -7,19 +7,40 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ui:LChessBoardUnit}">
-                    <Border Width="{TemplateBinding Width}"
-                            Height="{TemplateBinding Height}">
 
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="Background" Value="DeepSkyBlue"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessTileColorType}" Value="SkyBlue">
-                                        <Setter Property="Background" Value="SkyBlue"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
+                    <Grid>
+                        
+                        <Border Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}">
+
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="Background" Value="DeepSkyBlue"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessTileColorType}" Value="Light">
+                                            <Setter Property="Background" Value="SkyBlue"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+
+                        <Border Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}">
+
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=IsHighLight}" Value="True">
+                                            <Setter Property="Background" Value="Green"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                        </Border>
 
                         <Image Stretch="Fill"
                                VerticalAlignment="Center"
@@ -278,7 +299,7 @@
                             </Image.Style>
                         </Image>
 
-                    </Border>
+                    </Grid>
 
                 </ControlTemplate>
             </Setter.Value>

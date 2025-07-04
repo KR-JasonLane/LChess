@@ -62,18 +62,21 @@ public partial class ChoicePieceColorContentViewModel : ObservableRecipient, ICo
 
     #region :: Methods ::
 
-    private async Task MoveToChessGame()
+    private async Task MoveToChessGame(PieceColorType color)
     {
         //1. 딤 켜기
         WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(true));
 
         //2. 비동기 엔진 시작
-        await Task.Run(() => _stockfishEngineService.StartEngineAsync());
+        await Task.Run(_stockfishEngineService.StartEngineAsync);
 
         //3. 체스 게임 컨텐츠로 이동
-        WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChessGame));        
+        WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChessGame));
 
-        //4. 딤 끄기
+        //4. 사용자 색상 전달
+        WeakReferenceMessenger.Default.Send(new SelectUserPieceColorMessage(color));
+
+        //5. 딤 끄기
         WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
     }
 
@@ -82,25 +85,12 @@ public partial class ChoicePieceColorContentViewModel : ObservableRecipient, ICo
     #region :: Commands ::
 
     /// <summary>
-    /// 흰색 기물 선택
+    /// 기물 색상 선택
     /// </summary>
     [RelayCommand]
-    private async Task SelectWhite()
+    private async Task SelectColor(PieceColorType color)
     {
-        _chessGameService.SetUserPieceColor(PieceColorType.White);
-
-        await MoveToChessGame();
-    }
-
-    /// <summary>
-    /// 검은색 기물 선택
-    /// </summary>
-    [RelayCommand]
-    private async Task SelectBlack()
-    {
-        _chessGameService.SetUserPieceColor(PieceColorType.Black);
-
-        await MoveToChessGame();
+        await MoveToChessGame(color);
     }
 
     #endregion

@@ -14,10 +14,10 @@ public class ChessPositionModel
     /// </summary>
     public ChessPositionModel(int row, int column)
     {
-        Row    = row   ;
         Column = column;
+        Row    = row   ;
 
-        Position = CalcPosition(row, column);
+        Code = CalcPositionCode(row, column);
     }
 
     #endregion
@@ -37,7 +37,7 @@ public class ChessPositionModel
     /// <summary>
     /// 포지션 코드
     /// </summary>
-    public ChessPosition Position { get; init; }
+    public ChessPosition Code { get; init; }
 
     #endregion
 
@@ -47,12 +47,12 @@ public class ChessPositionModel
     /// 현재 위치 기준 위쪽방향 포지션들을 반환
     /// </summary>
     /// <returns> 현재 위치로부터 보드 끝까지의 위치 리스트 </returns>
-    public List<ChessPosition> GetTopLinePositions()
+    public List<ChessPosition> GetTopLinePositions(int max = 8)
     {
         var positions = new List<ChessPosition>();
-        for (int i = 1; i <= 8; i++)
+        for (int i = 1; i <= max; i++)
         {
-            var topPosition = CalcPosition(Row - i, Column);
+            var topPosition = CalcPositionCode(Row - i, Column);
 
             if (topPosition == ChessPosition.Invalid) break;
 
@@ -65,12 +65,12 @@ public class ChessPositionModel
     /// 현재 위치 기준 아래쪽방향 포지션들을 반환
     /// </summary>
     /// <returns> 현재 위치로부터 보드 끝까지의 위치 리스트 </returns>
-    public List<ChessPosition> GetBottomLinePositions()
+    public List<ChessPosition> GetBottomLinePositions(int max = 8)
     {
         var positions = new List<ChessPosition>();
-        for (int i = 1; i <= 8; i++)
+        for (int i = 1; i <= max; i++)
         {
-            var topPosition = CalcPosition(Row + i, Column);
+            var topPosition = CalcPositionCode(Row + i, Column);
 
             if (topPosition == ChessPosition.Invalid) break;
 
@@ -83,12 +83,12 @@ public class ChessPositionModel
     /// 현재 위치 기준 왼쪽방향 포지션들을 반환
     /// </summary>
     /// <returns> 현재 위치로부터 보드 끝까지의 위치 리스트 </returns>
-    public List<ChessPosition> GetLeftLinePositions()
+    public List<ChessPosition> GetLeftLinePositions(int max = 8)
     {
         var positions = new List<ChessPosition>();
-        for (int i = 1; i <= 8; i++)
+        for (int i = 1; i <= max; i++)
         {
-            var topPosition = CalcPosition(Row, Column - i);
+            var topPosition = CalcPositionCode(Row, Column - i);
 
             if (topPosition == ChessPosition.Invalid) break;
 
@@ -101,12 +101,12 @@ public class ChessPositionModel
     /// 현재 위치 기준 오른쪽방향 포지션들을 반환
     /// </summary>
     /// <returns> 현재 위치로부터 보드 끝까지의 위치 리스트 </returns>
-    public List<ChessPosition> GetRightLinePositions()
+    public List<ChessPosition> GetRightLinePositions(int max = 8)
     {
         var positions = new List<ChessPosition>();
-        for (int i = 1; i <= 8; i++)
+        for (int i = 1; i <= max; i++)
         {
-            var topPosition = CalcPosition(Row, Column + i);
+            var topPosition = CalcPositionCode(Row, Column + i);
 
             if (topPosition == ChessPosition.Invalid) break;
 
@@ -121,7 +121,7 @@ public class ChessPositionModel
     /// <param name="row"> 행 </param>
     /// <param name="column"> 열 </param>
     /// <returns> 변환된 위치 </returns>
-    private static ChessPosition CalcPosition(int row, int column)
+    private static ChessPosition CalcPositionCode(int row, int column)
     {
         var position = row * 10 + column;
         if (Enum.TryParse(position.ToString(), out ChessPosition result))

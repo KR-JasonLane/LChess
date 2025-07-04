@@ -4,6 +4,7 @@ using LChess.Abstract.ViewModel;
 using LChess.Models.Chess;
 
 using LChess.Util.Enums;
+using LChess.ViewModels.Messenger;
 
 namespace LChess.ViewModels.DataContext.Contents;
 
@@ -17,13 +18,13 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
 	/// <summary>
 	/// 생성자
 	/// </summary>
-	public ChessBoardContentViewModel(IChessGameService chessGameService)
+	public ChessBoardContentViewModel(IStockfishEngineService stockfishEngineService)
     {
         ////////////////////////////////////////
         /// 서비스 등록
         ////////////////////////////////////////
         {
-            _chessGameService = chessGameService;
+            _stockfishEngineService = stockfishEngineService;
         }
 
 
@@ -32,14 +33,19 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
         ////////////////////////////////////////
         {
             ContentType = LChessContentType.ChessBoard;
-		}
+        }
 
 
         ////////////////////////////////////////
-        /// 초기화
+        /// 메시지 등록
         ////////////////////////////////////////
         {
-            DrawBoard();
+            WeakReferenceMessenger.Default.Register<SelectUserPieceColorMessage>(this, (s, m) =>
+            {
+                ChessBoardSource = new ChessBoardModel(m.Value);
+
+                InitBoardSource();
+            });
         }
 	}
 
@@ -48,9 +54,9 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
     #region :: Services ::
 
     /// <summary>
-    /// 체스게임 관리 서비스
+    /// Stockfish 엔전 관리 서비스
     /// </summary>
-    private readonly IChessGameService _chessGameService;
+    private readonly IStockfishEngineService _stockfishEngineService;
 
     #endregion
 
@@ -65,16 +71,18 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
 	/// 체스보드 데이터 소스
 	/// </summary>
 	[ObservableProperty]
-	private List<List<ChessBoardUnitModel>>? _chessBoardSource;
+	private ChessBoardModel? _chessBoardSource;
 
-	#endregion
+    #endregion
 
-	#region :: Methods ::
+    #region :: Methods ::
 
-	/// <summary>
-	/// 체스보드 그리기
-	/// </summary>
-	private async void DrawBoard() => ChessBoardSource = await _chessGameService.CurrentBoard();
+    private async void InitBoardSource()
+    {
+        var stockfishUnitCodes = await _stockfishEngineService.GetCurrentBoard();
+
+        ChessBoardSource?.SetUnits(stockfishUnitCodes);
+    }
 
 	#endregion
 
@@ -87,9 +95,9 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
 	[RelayCommand]
 	private void SelectTile(object param)
 	{
-		if(param is ChessBoardUnitModel model)
+		if(param is ChessBoardUnitModel model && ChessBoardSource != null)
 		{
-
+            ChessBoardSource.SelectUnit(model);
         }
 	}
 

@@ -20,7 +20,7 @@ public partial class ChessBoardUnitModel : ObservableObject
         UnitType = CreateUnitType(unitCode, out var pieceColor);
 
         PieceColorType = pieceColor;
-        TileColorType = tileColor;
+        TileColorType  = tileColor ;
     }
 
     #endregion
@@ -44,6 +44,12 @@ public partial class ChessBoardUnitModel : ObservableObject
     /// </summary>
     [ObservableProperty]
     private ChessUnitType _unitType;
+
+    /// <summary>
+    /// 타일 하이라이트 여부
+    /// </summary>
+    [ObservableProperty]
+    private bool _isHighLight;
 
     /// <summary>
     /// 해당 모델의 위치

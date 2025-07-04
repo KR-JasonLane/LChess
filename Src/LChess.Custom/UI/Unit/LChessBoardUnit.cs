@@ -57,7 +57,22 @@ public class LChessBoardUnit : Control
 	{
 		get => (ChessUnitType)GetValue(LChessUnitTypeProperty);
 		set => SetValue(LChessUnitTypeProperty, value);
-	}
+    }
 
-	#endregion
+    /// <summary>
+    /// 하이라이트 여부 의존 프로퍼티
+    /// </summary>
+    public static readonly DependencyProperty IsHighLightProperty =
+        DependencyProperty.Register(nameof(IsHighLight), typeof(bool), typeof(LChessBoardUnit), new FrameworkPropertyMetadata(false));
+
+    /// <summary>
+    /// 하이라이트 여부
+    /// </summary>
+    public bool IsHighLight
+    {
+        get => (bool)GetValue(LChessUnitTypeProperty);
+        set => SetValue(LChessUnitTypeProperty, value);
+    }
+
+    #endregion
 }
