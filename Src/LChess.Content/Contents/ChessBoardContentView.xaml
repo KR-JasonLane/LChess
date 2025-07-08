@@ -7,7 +7,7 @@
 
     <Viewbox>
 
-        <ItemsControl ItemsSource="{Binding ChessBoardSource.Units}">
+        <ItemsControl ItemsSource="{Binding ChessBoardSource.Tiles}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     
@@ -15,10 +15,12 @@
                         
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <ui:LChessBoardUnit LChessTileColorType="{Binding TileColorType}"
+                                <ui:LChessBoardTile LChessTileColorType="{Binding TileColorType}"
                                                     LChessPieceColorType="{Binding PieceColorType}"
                                                     LChessUnitType="{Binding UnitType}"
-                                                    IsHighLight="{Binding IsHighLight}"
+                                                    IsSelected="{Binding IsSelected}"
+                                                    IsHighLightEnemy="{Binding IsHighLightEnemy}"
+                                                    IsHighLightMove="{Binding IsHighLightMove}"
                                                     Width="50"
                                                     Height="50">
                                     
@@ -30,7 +32,7 @@
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                     
-                                </ui:LChessBoardUnit>
+                                </ui:LChessBoardTile>
                             </DataTemplate>                            
                         </ItemsControl.ItemTemplate>
 

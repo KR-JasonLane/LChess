@@ -252,9 +252,15 @@ public class StockfishEngineService : IStockfishEngineService
 		await _stockfishInput.WriteLineAsync(command);
 		await _stockfishInput.FlushAsync();
 
-		//2. Stockfish의 응답은 멀티라인이기 때문에,
-		//   한줄씩 읽으면서 특정 단어가 들어가 있는 응답을 찾아야함.
-		while (true)
+        //2. 응답이 지정되어있지 않으면 응답을 기다리지 않고 null 반환
+        if (string.IsNullOrEmpty(output))
+        {
+            return null;
+        }
+
+        //3. Stockfish의 응답은 멀티라인이기 때문에,
+        //   한줄씩 읽으면서 특정 단어가 들어가 있는 응답을 찾아야함.
+        while (true)
 		{
 			//현재 라인
 			var result = await _stockfishOutput.ReadLineAsync();

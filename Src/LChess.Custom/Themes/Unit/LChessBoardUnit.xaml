@@ -2,11 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ui="clr-namespace:LChess.Custom.UI.Unit">
 
-    <Style TargetType="{x:Type ui:LChessBoardUnit}">
+    <Style TargetType="{x:Type ui:LChessBoardTile}">
 
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ui:LChessBoardUnit}">
+                <ControlTemplate TargetType="{x:Type ui:LChessBoardTile}">
 
                     <Grid>
                         
@@ -17,7 +17,7 @@
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="Background" Value="DeepSkyBlue"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessTileColorType}" Value="Light">
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessTileColorType}" Value="Light">
                                             <Setter Property="Background" Value="SkyBlue"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -26,14 +26,49 @@
                         </Border>
 
                         <Border Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}"
+                                Margin="15">
+
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Opacity" Value="0.7"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=IsHighLightMove}" Value="True">
+                                            <Setter Property="Background" Value="Black"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                        </Border>
+
+                        <Border Width="{TemplateBinding Width}"
                                 Height="{TemplateBinding Height}">
 
                             <Border.Style>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="Opacity" Value="0.5"/>
+                                    <Setter Property="Opacity" Value="0.7"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=IsHighLight}" Value="True">
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=IsHighLightEnemy}" Value="True">
+                                            <Setter Property="Background" Value="Red"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                        </Border>
+
+                        <Border Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}">
+
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Opacity" Value="0.7"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=IsSelected}" Value="True">
                                             <Setter Property="Background" Value="Green"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -187,17 +222,17 @@
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="Black"/>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Pawn"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessPieceColorType}" Value="Black"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessUnitType}" Value="Pawn"/>
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Source" Value="{StaticResource PawnBlack}"/>
-                                            <Setter Property="Margin" Value="5 5 -3 5"/>
+                                            <Setter Property="Margin" Value="5 5 -5 5"/>
                                         </MultiDataTrigger>
 
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="Black"/>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Rook"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessPieceColorType}" Value="Black"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessUnitType}" Value="Rook"/>
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Source" Value="{StaticResource RookBlack}"/>
                                             <Setter Property="Margin" Value="5 3 0 3"/>
@@ -205,17 +240,17 @@
 
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="Black"/>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Bishop"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessPieceColorType}" Value="Black"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessUnitType}" Value="Bishop"/>
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Source" Value="{StaticResource BishopBlack}"/>
-                                            <Setter Property="Margin" Value="6 3 -2 3"/>
+                                            <Setter Property="Margin" Value="6 3 -4 3"/>
                                         </MultiDataTrigger>
                                         
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="Black"/>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Knight"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessPieceColorType}" Value="Black"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessUnitType}" Value="Knight"/>
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Source" Value="{StaticResource KnightBlack}"/>
                                             <Setter Property="Margin" Value="6 3 -2 3"/>
@@ -223,8 +258,8 @@
 
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="Black"/>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Queen"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessPieceColorType}" Value="Black"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessUnitType}" Value="Queen"/>
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Source" Value="{StaticResource QueenBlack}"/>
                                             <Setter Property="Margin" Value="3"/>
@@ -232,8 +267,8 @@
 
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="Black"/>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="King"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessPieceColorType}" Value="Black"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessUnitType}" Value="King"/>
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Source" Value="{StaticResource KingBlack}"/>
                                             <Setter Property="Margin" Value="5 3 2 3"/>
@@ -241,17 +276,17 @@
 
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="White"/>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Pawn"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessPieceColorType}" Value="White"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessUnitType}" Value="Pawn"/>
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Source" Value="{StaticResource PawnWhite}"/>
-                                            <Setter Property="Margin" Value="5 5 -3 5"/>
+                                            <Setter Property="Margin" Value="5 5 -5 5"/>
                                         </MultiDataTrigger>
 
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="White"/>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Rook"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessPieceColorType}" Value="White"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessUnitType}" Value="Rook"/>
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Source" Value="{StaticResource RookWhite}"/>
                                             <Setter Property="Margin" Value="5 3 0 3"/>
@@ -259,17 +294,17 @@
 
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="White"/>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Bishop"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessPieceColorType}" Value="White"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessUnitType}" Value="Bishop"/>
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Source" Value="{StaticResource BishopWhite}"/>
-                                            <Setter Property="Margin" Value="6 3 -2 3"/>
+                                            <Setter Property="Margin" Value="6 3 -4 3"/>
                                         </MultiDataTrigger>
 
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="White"/>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Knight"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessPieceColorType}" Value="White"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessUnitType}" Value="Knight"/>
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Source" Value="{StaticResource KnightWhite}"/>
                                             <Setter Property="Margin" Value="6 3 -2 3"/>
@@ -277,8 +312,8 @@
 
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="White"/>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="Queen"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessPieceColorType}" Value="White"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessUnitType}" Value="Queen"/>
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Source" Value="{StaticResource QueenWhite}"/>
                                             <Setter Property="Margin" Value="3"/>
@@ -286,8 +321,8 @@
 
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessPieceColorType}" Value="White"/>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardUnit}}, Path=LChessUnitType}" Value="King"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessPieceColorType}" Value="White"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=LChessUnitType}" Value="King"/>
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Source" Value="{StaticResource KingWhite}"/>
                                             <Setter Property="Margin" Value="5 3 2 3"/>

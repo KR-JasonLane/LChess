@@ -5,10 +5,14 @@
 /// </summary>
 public enum PieceColorType
 {
-	/// <summary>
-	/// 백색
-	/// </summary>
-	White = 0,
+    /// <summary>
+    /// 해당되지 않음.
+    /// </summary>
+    None = -1,
+    /// <summary>
+    /// 백색
+    /// </summary>
+    White,
 	/// <summary>
 	/// 흑색
 	/// </summary>

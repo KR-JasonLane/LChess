@@ -18,13 +18,13 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
 	/// <summary>
 	/// 생성자
 	/// </summary>
-	public ChessBoardContentViewModel(IStockfishEngineService stockfishEngineService)
+	public ChessBoardContentViewModel(IChessGameService chessGameService)
     {
         ////////////////////////////////////////
         /// 서비스 등록
         ////////////////////////////////////////
         {
-            _stockfishEngineService = stockfishEngineService;
+            _chessGameService = chessGameService;
         }
 
 
@@ -42,9 +42,7 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
         {
             WeakReferenceMessenger.Default.Register<SelectUserPieceColorMessage>(this, (s, m) =>
             {
-                ChessBoardSource = new ChessBoardModel(m.Value);
-
-                InitBoardSource();
+                InitBoardSource(m.Value);
             });
         }
 	}
@@ -56,7 +54,7 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
     /// <summary>
     /// Stockfish 엔전 관리 서비스
     /// </summary>
-    private readonly IStockfishEngineService _stockfishEngineService;
+    private readonly IChessGameService _chessGameService;
 
     #endregion
 
@@ -77,11 +75,29 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
 
     #region :: Methods ::
 
-    private async void InitBoardSource()
+    /// <summary>
+    /// 보드 데이터 초기화
+    /// </summary>
+    /// <param name="color"> 기준 색상 </param>
+    private async void InitBoardSource(PieceColorType color)
     {
-        var stockfishUnitCodes = await _stockfishEngineService.GetCurrentBoard();
+        //보드데이터 없으면 생성
+        ChessBoardSource ??= new ChessBoardModel(color);
 
-        ChessBoardSource?.SetUnits(stockfishUnitCodes);
+        // 새 게임 시작
+        var unitCodes = await _chessGameService.NewGame();
+        ChessBoardSource.ParseCodes(unitCodes);
+
+        // 유저기물이 흑색이면 백색인 AI부터 시작
+        if(color == PieceColorType.Black)
+        {
+            // 1초 대기 (빠른진행을 막기 위함)
+            await Task.Delay(1000);
+
+            //AI 턴 처리
+            var aiMove = await _chessGameService.ExecuteAIMove();
+            ChessBoardSource.ParseCodes(aiMove);
+        }
     }
 
 	#endregion
@@ -93,11 +109,41 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
 	/// </summary>
 	/// <param name="param"> 선택된 타일 모델 </param>
 	[RelayCommand]
-	private void SelectTile(object param)
+	private async Task SelectTile(object param)
 	{
-		if(param is ChessBoardUnitModel model && ChessBoardSource != null)
+		if(param is ChessBoardTileModel model && ChessBoardSource != null)
 		{
-            ChessBoardSource.SelectUnit(model);
+            // 체스보드 모델에 타일 선택 알려줌.
+            ChessBoardSource.SelectTile(model, out string notation);
+
+            // 이동 데이터가 있으면
+            if (!string.IsNullOrEmpty(notation))
+            {
+                ////////////////////////////////////////
+                /// 유저 기물이동 처리
+                ////////////////////////////////////////
+                {
+                    var userMove = await _chessGameService.MovePiece(notation);
+                    ChessBoardSource.ParseCodes(userMove);
+                }
+
+
+                ////////////////////////////////////////
+                /// 1초 대기 (빠른진행을 막기 위함)
+                ////////////////////////////////////////
+                {
+                    await Task.Delay(1000);
+                }
+
+
+                ////////////////////////////////////////
+                /// ai 턴 처리
+                ////////////////////////////////////////
+                {
+                    var aiMove = await _chessGameService.ExecuteAIMove();
+                    ChessBoardSource.ParseCodes(aiMove);
+                }
+            }
         }
 	}
 

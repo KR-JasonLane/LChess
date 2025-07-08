@@ -68,7 +68,7 @@ public partial class ChoicePieceColorContentViewModel : ObservableRecipient, ICo
         WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(true));
 
         //2. 비동기 엔진 시작
-        await Task.Run(_stockfishEngineService.StartEngineAsync);
+        await _stockfishEngineService.StartEngineAsync();
 
         //3. 체스 게임 컨텐츠로 이동
         WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChessGame));
@@ -88,10 +88,7 @@ public partial class ChoicePieceColorContentViewModel : ObservableRecipient, ICo
     /// 기물 색상 선택
     /// </summary>
     [RelayCommand]
-    private async Task SelectColor(PieceColorType color)
-    {
-        await MoveToChessGame(color);
-    }
+    private async Task SelectColor(PieceColorType color) => await MoveToChessGame(color);
 
     #endregion
 }
