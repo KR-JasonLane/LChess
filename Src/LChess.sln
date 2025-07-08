@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LChess.Views", "LChess.Cont
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LChess.Custom", "LChess.Custom\LChess.Custom.csproj", "{25A0407C-4C99-C91E-AD92-6A8354203E15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LChess.ViewModels", "LChess.DataBinding\LChess.ViewModels.csproj", "{69293B97-EF46-236F-CB27-9B549790AC41}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LChess.Abstract", "LChess.Abstract\LChess.Abstract.csproj", "{2E3A6D1E-99F0-445B-8E46-FEBEE6D78B92}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LChess.Service", "LChess.Service\LChess.Service.csproj", "{41B3EB3B-66CB-4C63-869F-5FCD5D99A2D3}"
@@ -18,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LChess.Util", "LChess.Util\LChess.Util.csproj", "{EE26C542-F065-4CEC-8779-30DE298A4C15}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LChess.Models", "LChess.Models\LChess.Models.csproj", "{E32E5FC6-F6F2-4DD7-B715-3BE77DDB142F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LChess.ViewModels", "LChess.ViewModels\LChess.ViewModels.csproj", "{87BD7914-8B6C-D4D7-9110-9AA99A77829F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +37,6 @@ Global
 		{25A0407C-4C99-C91E-AD92-6A8354203E15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25A0407C-4C99-C91E-AD92-6A8354203E15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25A0407C-4C99-C91E-AD92-6A8354203E15}.Release|Any CPU.Build.0 = Release|Any CPU
-		{69293B97-EF46-236F-CB27-9B549790AC41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{69293B97-EF46-236F-CB27-9B549790AC41}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{69293B97-EF46-236F-CB27-9B549790AC41}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{69293B97-EF46-236F-CB27-9B549790AC41}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2E3A6D1E-99F0-445B-8E46-FEBEE6D78B92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2E3A6D1E-99F0-445B-8E46-FEBEE6D78B92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E3A6D1E-99F0-445B-8E46-FEBEE6D78B92}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +53,10 @@ Global
 		{E32E5FC6-F6F2-4DD7-B715-3BE77DDB142F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E32E5FC6-F6F2-4DD7-B715-3BE77DDB142F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E32E5FC6-F6F2-4DD7-B715-3BE77DDB142F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87BD7914-8B6C-D4D7-9110-9AA99A77829F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87BD7914-8B6C-D4D7-9110-9AA99A77829F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87BD7914-8B6C-D4D7-9110-9AA99A77829F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87BD7914-8B6C-D4D7-9110-9AA99A77829F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
