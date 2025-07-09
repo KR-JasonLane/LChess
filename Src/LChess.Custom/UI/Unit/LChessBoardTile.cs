@@ -48,7 +48,7 @@ public class LChessBoardTile : Control
 	/// LChess 기물 타입 의존프로퍼티
 	/// </summary>
 	public static readonly DependencyProperty LChessUnitTypeProperty =
-		DependencyProperty.Register(nameof(LChessUnitType), typeof(ChessUnitType), typeof(LChessBoardTile), new FrameworkPropertyMetadata(ChessUnitType.Pawn));
+		DependencyProperty.Register(nameof(LChessUnitType), typeof(ChessUnitType), typeof(LChessBoardTile), new FrameworkPropertyMetadata(ChessUnitType.Empty));
 
 	/// <summary>
 	/// LChess 기물 타입

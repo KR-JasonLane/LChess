@@ -4,6 +4,7 @@ using LChess.Abstract.ViewModel;
 using LChess.Models.Chess;
 
 using LChess.Util.Enums;
+
 using LChess.ViewModels.Messenger;
 
 namespace LChess.ViewModels.DataContext.Contents;

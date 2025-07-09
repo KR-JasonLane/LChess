@@ -1,4 +1,5 @@
-﻿using LChess.Util.Enums;
+﻿using LChess.Models.Chess.Base;
+using LChess.Util.Enums;
 using System.Data.Common;
 
 namespace LChess.Models.Chess;
@@ -17,9 +18,8 @@ public partial class ChessBoardTileModel : ObservableObject
     {
         Position = new ChessPositionModel(row, column);
 
-        UnitType = CreateUnitType(unitCode, out var pieceColor);
+        Unit = CreateUnitType(unitCode);
 
-        PieceColorType = pieceColor;
         TileColorType  = tileColor ;
     }
 
@@ -28,22 +28,16 @@ public partial class ChessBoardTileModel : ObservableObject
     #region :: Properties ::
 
     /// <summary>
-    /// 기물 색상
-    /// </summary>
-    [ObservableProperty]
-    private PieceColorType _pieceColorType;
-
-    /// <summary>
     /// 체스판 색상
     /// </summary>
     [ObservableProperty]
     private ChessTileColorType _tileColorType;
 
     /// <summary>
-    /// 말
+    /// 기물
     /// </summary>
     [ObservableProperty]
-    private ChessUnitType _unitType;
+    private ChessUnitModelBase? _unit;
 
     /// <summary>
     /// 타일 선택 여부
@@ -76,7 +70,7 @@ public partial class ChessBoardTileModel : ObservableObject
     /// <summary>
     /// 타일이 빈 칸인지 여부
     /// </summary>
-    public bool IsEmpty => UnitType == ChessUnitType.Empty && PieceColorType == PieceColorType.None;
+    public bool IsEmpty => Unit == null;
 
     #endregion
 
@@ -88,29 +82,22 @@ public partial class ChessBoardTileModel : ObservableObject
     /// <param name="unitCode"> Stockfish 기물코드 문자 </param>
     /// <param name="color"> 기물색상 </param>
     /// <returns> 체스 기물타입 </returns>
-    private static ChessUnitType CreateUnitType(char unitCode, out PieceColorType color)
+    private static ChessUnitModelBase? CreateUnitType(char unitCode)
     {
-        var unitType = char.ToUpper(unitCode) switch
+        if (unitCode == ' ') return null; // 빈 칸인 경우
+
+        var unitColor = char.IsLower(unitCode) ? PieceColorType.Black : PieceColorType.White;
+
+        return char.ToUpper(unitCode) switch
         {
-            'P' => ChessUnitType.Pawn,
-            'R' => ChessUnitType.Rook,
-            'N' => ChessUnitType.Knight,
-            'B' => ChessUnitType.Bishop,
-            'Q' => ChessUnitType.Queen,
-            'K' => ChessUnitType.King,
-            _ => ChessUnitType.Empty
+            'P' => new PawnModel  (unitColor),
+            'R' => new RookModel  (unitColor),
+            'N' => new KnightModel(unitColor),
+            'B' => new BishopModel(unitColor),
+            'Q' => new QueenModel (unitColor),
+            'K' => new KingModel  (unitColor),
+            _   => null
         };
-
-        if(unitType == ChessUnitType.Empty)
-        {
-            color = PieceColorType.None; // 빈 칸은 색상 없음
-        }
-        else
-        {
-            color = char.IsLower(unitCode) ? PieceColorType.Black : PieceColorType.White;
-        }
-
-        return unitType;
     }
 
     /// <summary>
@@ -122,27 +109,6 @@ public partial class ChessBoardTileModel : ObservableObject
         IsHighLightEnemy = false;
         IsSelected       = false;
     }
-
-    /// <summary>
-    /// 현재 기물 색상과 같은 색상인지 판단
-    /// </summary>
-    /// <param name="color"> 비교할 색상 </param>
-    /// <returns> 색상이 같은지 여부 </returns>
-    public bool IsSameColor(PieceColorType color) => PieceColorType == color;
-
-    /// <summary>
-    /// 타일에 적 기물이 있는지 판단
-    /// </summary>
-    /// <param name="otherTile"> 확인할 타일 </param>
-    /// <returns> 적 기물 유무 </returns>
-    public bool IsEnemyTile(ChessBoardTileModel otherTile) => !otherTile.IsEmpty && otherTile.PieceColorType != PieceColorType;
-
-    /// <summary>
-    /// 색깔로 적군 기물인지 판단
-    /// </summary>
-    /// <param name="color"> 확인할 색상 </param>
-    /// <returns> 적 색상 유무 </returns>
-    public bool IsEnemyColor(PieceColorType color) => PieceColorType != color && PieceColorType != PieceColorType.None && color != PieceColorType.None;
 
     #endregion
 }

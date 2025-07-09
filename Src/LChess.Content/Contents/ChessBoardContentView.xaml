@@ -16,8 +16,8 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <ui:LChessBoardTile LChessTileColorType="{Binding TileColorType}"
-                                                    LChessPieceColorType="{Binding PieceColorType}"
-                                                    LChessUnitType="{Binding UnitType}"
+                                                    LChessPieceColorType="{Binding Unit.ColorType}"
+                                                    LChessUnitType="{Binding Unit.UnitType}"
                                                     IsSelected="{Binding IsSelected}"
                                                     IsHighLightEnemy="{Binding IsHighLightEnemy}"
                                                     IsHighLightMove="{Binding IsHighLightMove}"

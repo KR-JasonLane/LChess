@@ -1,4 +1,5 @@
 ﻿using LChess.Util.Enums;
+
 using LChess.Util.Extension;
 
 namespace LChess.Models.Chess;
@@ -128,7 +129,7 @@ public partial class ChessBoardModel : ObservableObject
         }
 
         // 3. 현재 선택한 타일에 사용자 기물이 있는 경우
-        if (!selectedModel.IsEmpty && selectedModel.IsSameColor(_userPieceColor))
+        if (!selectedModel.IsEmpty && (selectedModel.Unit?.IsSameColor(_userPieceColor) ?? false))
         {
             // 3-1. 하이라이트 제거
             ClearAllHighLights();
@@ -144,30 +145,12 @@ public partial class ChessBoardModel : ObservableObject
     /// <param name="selectedModel"> 선택된 모델 </param>
     private void HighLightMovablePositions(ChessBoardTileModel selectedModel)
     {
-        switch (selectedModel.UnitType)
-        {
-            case ChessUnitType.Rook:
-                HighLightRookLoad(selectedModel);
-                break;
-            case ChessUnitType.Pawn:
-                HighLightPawnLoad(selectedModel);
-                break;
-            case ChessUnitType.Bishop:
-                HighLightBishopLoad(selectedModel);
-                break;
-            case ChessUnitType.Queen:
-                HighLightQueenLoad(selectedModel);
-                break;
-            case ChessUnitType.Knight:
-                HighLightKnightLoad(selectedModel);
-                break;
-            default:
-                // 다른 기물 타입은 선택하지 않음
-                break;
-        }
+        var availablePositions = selectedModel.Unit?.GetAvailablePositions(selectedModel.Position, _tilePositionMapper);
+
+        HighlightValidPositions(availablePositions);
 
         //선택유닛이 비어있지 않으면
-        if(selectedModel.UnitType != ChessUnitType.Empty)
+        if (selectedModel.IsEmpty)
         {
             // 선택된 타일 모델에 하이라이트 표시
             selectedModel.IsSelected = true;
@@ -199,135 +182,37 @@ public partial class ChessBoardModel : ObservableObject
     }
 
     /// <summary>
-    /// 룩 경로 하이라이트
-    /// </summary>
-    /// <param name="rookModel"> 룩 모델 </param>
-    private void HighLightRookLoad(ChessBoardTileModel rookModel)
-    {
-        var position = rookModel.Position;
-
-        HighlightValidPositions(position.GetTopLinePositions   ());
-        HighlightValidPositions(position.GetLeftLinePositions  ());
-        HighlightValidPositions(position.GetBottomLinePositions());
-        HighlightValidPositions(position.GetRightLinePositions ());
-    }
-
-    /// <summary>
-    /// 폰 경로 하이라이트
-    /// </summary>
-    /// <param name="pawnModel"> 폰 모델 </param>
-    private void HighLightPawnLoad(ChessBoardTileModel pawnModel)
-    {
-        var position = pawnModel.Position;  
-
-        List<ChessPosition> streight     ;
-        List<ChessPosition> leftDiagonal ;
-        List<ChessPosition> rightDiagonal;
-
-        if (_userPieceColor == PieceColorType.White)
-        {
-            int moveCount = pawnModel.Position.Code.ToString().Contains('2') ? 2 : 1;
-
-            streight      = position.GetTopLinePositions         (moveCount);
-            leftDiagonal  = position.GetLeftTopDiagonalPositions (1        );
-            rightDiagonal = position.GetRightTopDiagonalPositions(1        );
-        }
-        else
-        {
-            int moveCount = pawnModel.Position.Code.ToString().Contains('7') ? 2 : 1;
-            
-            streight      = position.GetBottomLinePositions         (moveCount);
-            leftDiagonal  = position.GetLeftBottomDiagonalPositions (1        );
-            rightDiagonal = position.GetRightBottomDiagonalPositions(1        );
-        }
-
-        HighlightValidPositions(streight);
-
-        // 폰은 대각선으로 이동할 때만 적군을 공격할 수 있으므로 적 기물 존재 여부에 따라 경로를 표시해준다.
-        if(leftDiagonal.Count > 0 && _tilePositionMapper.TryGetValue(leftDiagonal.First(), out var leftTile) && pawnModel.IsEnemyTile(leftTile))
-        {
-            HighlightValidPositions(leftDiagonal);
-        }
-        if (rightDiagonal.Count > 0 && _tilePositionMapper.TryGetValue(rightDiagonal.First(), out var rightTile) && pawnModel.IsEnemyTile(rightTile))
-        {
-            HighlightValidPositions(rightDiagonal);
-        }
-    }
-
-    /// <summary>
-    /// 비숍 경로 하이라이트
-    /// </summary>
-    /// <param name="bishopModel"> 비숍모델 </param>
-    private void HighLightBishopLoad(ChessBoardTileModel bishopModel)
-    {
-        var position = bishopModel.Position;
-
-        HighlightValidPositions(position.GetLeftTopDiagonalPositions    ());
-        HighlightValidPositions(position.GetLeftBottomDiagonalPositions ());
-        HighlightValidPositions(position.GetRightBottomDiagonalPositions());
-        HighlightValidPositions(position.GetRightTopDiagonalPositions   ());
-    }
-
-    /// <summary>
-    /// 비숍 경로 하이라이트
-    /// </summary>
-    /// <param name="bishopModel"> 비숍모델 </param>
-    private void HighLightQueenLoad(ChessBoardTileModel queenModel)
-    {
-        var position = queenModel.Position;
-
-        HighlightValidPositions(position.GetTopLinePositions            ());
-        HighlightValidPositions(position.GetLeftTopDiagonalPositions    ());
-        HighlightValidPositions(position.GetLeftLinePositions           ());
-        HighlightValidPositions(position.GetLeftBottomDiagonalPositions ());
-        HighlightValidPositions(position.GetBottomLinePositions         ());
-        HighlightValidPositions(position.GetRightBottomDiagonalPositions());
-        HighlightValidPositions(position.GetRightLinePositions          ());
-        HighlightValidPositions(position.GetRightTopDiagonalPositions   ());
-    }
-
-    private void HighLightKnightLoad(ChessBoardTileModel knightModel)
-    {
-        var position = knightModel.Position;
-
-        HighlightValidPositions(position.GetKnightPositions(), true);
-    }
-
-    /// <summary>
     /// 유효한 위치를 하이라이트
     /// </summary>
-    /// <param name="positions"> 하이라이트 대상 위치 리스트 </param>
+    /// <param name="availablePositions"> 하이라이트 대상 위치 리스트 </param>
     /// <param name="isKnight"> 나이트 인지 여부 </param>
-    private void HighlightValidPositions(List<ChessPosition>? positions, bool isKnight = false)
+    private void HighlightValidPositions(List<List<ChessPosition>>? availablePositions)
     {
-        if (positions == null) return;
+        if (availablePositions == null) return;
 
-        foreach (var position in positions)
+        foreach (var positionList in availablePositions)
         {
-            // 1. 유효하지 않거나 매핑이 안되는 경우 다음으로
-            if (position == ChessPosition.Invalid || !_tilePositionMapper.TryGetValue(position, out var tile) || tile == null) continue;
-
-            // 2. 타일이 비어있으면 이동경로로 하이라이트
-            if(tile.IsEmpty)
+            foreach (var position in positionList)
             {
-                tile.IsHighLightMove = true;
+                // 1. 유효하지 않거나 매핑이 안되는 경우 다음으로
+                if (position == ChessPosition.Invalid || !_tilePositionMapper.TryGetValue(position, out var tile) || tile == null) continue;
 
-                //계속 수행
-                continue;
+                // 2. 타일이 비어있으면 이동경로로 하이라이트
+                if (tile.IsEmpty)
+                {
+                    tile.IsHighLightMove = true;
+
+                    //계속 수행
+                    continue;
+                }
+
+                // 3. 적기물을 만난지 판단.
+                tile.IsHighLightEnemy = !tile.Unit?.IsSameColor(_userPieceColor) ?? false;
+
+                // 4. 비어있지 않거나, 적군기물이 아니면 아군 기물이므로 더이상 진행하지 않음.
+                break;
             }
-
-            // 3. 적군기물을 만나면
-            if (tile.IsEnemyColor(_userPieceColor))
-            {
-                // 적군 기물이 있는 타일 하이라이트
-                tile.IsHighLightEnemy = true;
-            }
-
-            // 4. 나이트가 아닌 경우
-            //    비어있지 않거나, 적군기물이 아니면 아군 기물이므로
-            //    더이상 진행하지 않음.
-            if (!isKnight) break;
-        }
+        }        
     }
 
     #endregion

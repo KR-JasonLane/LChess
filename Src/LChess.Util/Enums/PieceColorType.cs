@@ -6,10 +6,6 @@
 public enum PieceColorType
 {
     /// <summary>
-    /// 해당되지 않음.
-    /// </summary>
-    None = -1,
-    /// <summary>
     /// 백색
     /// </summary>
     White,
