@@ -18,7 +18,7 @@ public partial class ChessBoardTileModel : ObservableObject
     {
         Position = new ChessPositionModel(row, column);
 
-        Unit = CreateUnitType(unitCode);
+        Unit = ChessUnitModelBase.CreateUnitModel(unitCode);
 
         TileColorType  = tileColor ;
     }
@@ -75,30 +75,6 @@ public partial class ChessBoardTileModel : ObservableObject
     #endregion
 
     #region :: Methods ::
-
-    /// <summary>
-    /// Stockfish 기물코드 문자를 기물코드로 변환
-    /// </summary>
-    /// <param name="unitCode"> Stockfish 기물코드 문자 </param>
-    /// <param name="color"> 기물색상 </param>
-    /// <returns> 체스 기물타입 </returns>
-    private static ChessUnitModelBase? CreateUnitType(char unitCode)
-    {
-        if (unitCode == ' ') return null; // 빈 칸인 경우
-
-        var unitColor = char.IsLower(unitCode) ? PieceColorType.Black : PieceColorType.White;
-
-        return char.ToUpper(unitCode) switch
-        {
-            'P' => new PawnModel  (unitColor),
-            'R' => new RookModel  (unitColor),
-            'N' => new KnightModel(unitColor),
-            'B' => new BishopModel(unitColor),
-            'Q' => new QueenModel (unitColor),
-            'K' => new KingModel  (unitColor),
-            _   => null
-        };
-    }
 
     /// <summary>
     /// 모든 하이라이트 끄기

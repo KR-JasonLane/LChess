@@ -59,5 +59,28 @@ public abstract partial class ChessUnitModelBase : ObservableObject
     /// <returns> 각 방향마다의 포지션 리스트를 담은 리스트 </returns>
     public abstract List<List<ChessPosition>> GetAvailablePositions(ChessPositionModel position, Dictionary<ChessPosition, ChessBoardTileModel> mapper);
 
+    /// <summary>
+    /// 기물모델 생성
+    /// </summary>
+    /// <param name="unitCode"> Stockfish 기물코드 </param>
+    /// <returns> 생성된 기물 모델 </returns>
+    public static ChessUnitModelBase? CreateUnitModel(char unitCode)
+    {
+        if (unitCode == ' ') return null; // 빈 칸인 경우
+
+        var unitColor = char.IsLower(unitCode) ? PieceColorType.Black : PieceColorType.White;
+
+        return char.ToUpper(unitCode) switch
+        {
+            'P' => new PawnModel  (unitColor),
+            'R' => new RookModel  (unitColor),
+            'N' => new KnightModel(unitColor),
+            'B' => new BishopModel(unitColor),
+            'Q' => new QueenModel (unitColor),
+            'K' => new KingModel  (unitColor),
+            _   => null
+        };
+    }
+
     #endregion
 }
