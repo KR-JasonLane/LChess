@@ -1,5 +1,6 @@
 ﻿using LChess.Abstract.Service;
-using LChess.Models.Chess;
+
+using LChess.Util.Enums;
 
 namespace LChess.Service.Game;
 
@@ -42,10 +43,10 @@ public class ChessGameService : IChessGameService
 
     #region :: Methods ::
 
-	/// <summary>
-	/// 새게임 시작
-	/// </summary>
-	public async Task<List<string>?> NewGame()
+    /// <summary>
+    /// 새게임 시작
+    /// </summary>
+    public async Task<List<string>?> NewGame()
     {
         _notations.Clear();
 		await _stockfishEngineService.StartEngineAsync();

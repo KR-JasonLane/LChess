@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace LChess.Abstract.Service;
+﻿namespace LChess.Abstract.Service;
 
 /// <summary>
 /// 체스 게임 관리 서비스 인터페이스

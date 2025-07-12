@@ -7,7 +7,7 @@
 
     <Viewbox>
 
-        <ItemsControl ItemsSource="{Binding ChessBoardSource.Tiles}">
+        <ItemsControl ItemsSource="{Binding BoardModel.Source}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     

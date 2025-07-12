@@ -1,6 +1,10 @@
-﻿using LChess.Util.Enums;
+﻿using LChess.Models.Chess.Route.Base;
 
-namespace LChess.Models.Chess.Base;
+using LChess.Models.Chess.Board;
+
+using LChess.Util.Enums;
+
+namespace LChess.Models.Chess.Unit.Base;
 
 /// <summary>
 /// 체스 기물 모델의 부모 클래스
@@ -14,10 +18,12 @@ public abstract partial class ChessUnitModelBase : ObservableObject
     /// </summary>
     /// <param name="unitType"></param>
     /// <param name="pieceColorType"></param>
-    public ChessUnitModelBase(ChessUnitType unitType, PieceColorType pieceColorType)
+    public ChessUnitModelBase(ChessUnitType unitType, PieceColorType pieceColorType, ChessPosition position)
     {
         ColorType = pieceColorType;
         UnitType  = unitType      ;
+
+        RouteModel = ChessUnitRouteModelBase.CreateRouteModel(unitType, pieceColorType, position);
     }
 
     #endregion
@@ -34,6 +40,11 @@ public abstract partial class ChessUnitModelBase : ObservableObject
     /// </summary>
     [ObservableProperty]
     private ChessUnitType _unitType;
+
+    /// <summary>
+    /// 기물 경로모델
+    /// </summary>
+    public ChessUnitRouteModelBase? RouteModel { get; init; }
 
     #endregion
 
@@ -54,17 +65,11 @@ public abstract partial class ChessUnitModelBase : ObservableObject
     public bool IsEnemy(ChessUnitModelBase? otherUnit) => otherUnit != null && otherUnit.ColorType != ColorType;
 
     /// <summary>
-    /// 기물이 움직일 수 있는 영역을 반환
-    /// </summary>
-    /// <returns> 각 방향마다의 포지션 리스트를 담은 리스트 </returns>
-    public abstract List<List<ChessPosition>> GetAvailablePositions(ChessPositionModel position, Dictionary<ChessPosition, ChessBoardTileModel> mapper);
-
-    /// <summary>
     /// 기물모델 생성
     /// </summary>
     /// <param name="unitCode"> Stockfish 기물코드 </param>
     /// <returns> 생성된 기물 모델 </returns>
-    public static ChessUnitModelBase? CreateUnitModel(char unitCode)
+    public static ChessUnitModelBase? CreateUnitModel(char unitCode, ChessPosition position)
     {
         if (unitCode == ' ') return null; // 빈 칸인 경우
 
@@ -72,12 +77,12 @@ public abstract partial class ChessUnitModelBase : ObservableObject
 
         return char.ToUpper(unitCode) switch
         {
-            'P' => new PawnModel  (unitColor),
-            'R' => new RookModel  (unitColor),
-            'N' => new KnightModel(unitColor),
-            'B' => new BishopModel(unitColor),
-            'Q' => new QueenModel (unitColor),
-            'K' => new KingModel  (unitColor),
+            'P' => new PawnModel  (unitColor, position),
+            'R' => new RookModel  (unitColor, position),
+            'N' => new KnightModel(unitColor, position),
+            'B' => new BishopModel(unitColor, position),
+            'Q' => new QueenModel (unitColor, position),
+            'K' => new KingModel  (unitColor, position),
             _   => null
         };
     }

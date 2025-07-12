@@ -1,6 +1,6 @@
 ﻿using LChess.Util.Enums;
 
-namespace LChess.Models.Chess;
+namespace LChess.Models.Chess.Board;
 
 /// <summary>
 /// 체스 보드상의 기물 위치 모델
@@ -18,6 +18,18 @@ public class ChessPositionModel
         Row    = row   ;
 
         Code = CalcPositionCode(row, column);
+    }
+
+    /// <summary>
+    /// 생성자 오버로딩
+    /// </summary>
+    /// <param name="position"></param>
+    public ChessPositionModel(ChessPosition position)
+    {
+        Row    = (int)position / 10;
+        Column = (int)position % 10;
+
+        Code = position;
     }
 
     #endregion
@@ -100,18 +112,6 @@ public class ChessPositionModel
     public List<ChessPosition> GetRightTopDiagonalPositions(int max = 8) => CreatePositionsByOffset(-1, 1, max);
 
     /// <summary>
-    /// 나이트 포지션들 반환
-    /// </summary>
-    /// <returns> 현재 나이트 위치 기준 좌표 코드 리스트 </returns>
-    public List<ChessPosition> GetKnightPositions()
-    {
-        var positions = new List<ChessPosition>();
-
-
-        return positions;
-    }
-
-    /// <summary>
     /// 현재 위치 기준으로 주어진 방향으로 최대 길이만큼의 포지션 코드를 생성
     /// </summary>
     /// <param name="rowCorrection"> 행 보정값 </param>
@@ -123,7 +123,7 @@ public class ChessPositionModel
         var positions = new List<ChessPosition>();
         for (int i = 1; i <= max; i++)
         {
-            var position = CalcPositionCode(Row + (rowCorrection * i), Column + (columnCorrection * i));
+            var position = CalcPositionCode(Row + rowCorrection * i, Column + columnCorrection * i);
             if (position == ChessPosition.Invalid) break;
             positions.Add(position);
         }
@@ -136,7 +136,7 @@ public class ChessPositionModel
     /// <param name="row"> 행 </param>
     /// <param name="column"> 열 </param>
     /// <returns> 변환된 위치 </returns>
-    private static ChessPosition CalcPositionCode(int row, int column)
+    public static ChessPosition CalcPositionCode(int row, int column)
     {
         var position = row * 10 + column;
         if (Enum.TryParse(typeof(ChessPosition), position.ToString(), out var parse) && Enum.IsDefined(typeof(ChessPosition), parse) && parse is ChessPosition result)

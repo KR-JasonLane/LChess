@@ -306,7 +306,7 @@ public class StockfishEngineService : IStockfishEngineService
 			// 응답을 찾았는지 확인
 			if (line?.Contains(@"|") ?? false)
 			{
-				Log.Information($"응답 : '{result}'");
+				Log.Information($"응답 : '{line}'");
 				result.Add(line);
 			}
 		}

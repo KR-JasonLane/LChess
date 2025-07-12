@@ -70,7 +70,7 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
 	/// 체스보드 데이터 소스
 	/// </summary>
 	[ObservableProperty]
-	private ChessBoardModel? _chessBoardSource;
+	private ChessBoardModel? _boardModel;
 
     #endregion
 
@@ -80,24 +80,24 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
     /// 보드 데이터 초기화
     /// </summary>
     /// <param name="color"> 기준 색상 </param>
-    private async void InitBoardSource(PieceColorType color)
+    private async void InitBoardSource(PieceColorType userColor)
     {
         //보드데이터 없으면 생성
-        ChessBoardSource ??= new ChessBoardModel(color);
+        BoardModel ??= new ChessBoardModel(userColor);
 
         // 새 게임 시작
         var unitCodes = await _chessGameService.NewGame();
-        ChessBoardSource.ParseCodes(unitCodes);
+        BoardModel.ParseCodes(unitCodes);
 
         // 유저기물이 흑색이면 백색인 AI부터 시작
-        if(color == PieceColorType.Black)
+        if(userColor == PieceColorType.Black)
         {
             // 1초 대기 (빠른진행을 막기 위함)
             await Task.Delay(1000);
 
             //AI 턴 처리
             var aiMove = await _chessGameService.ExecuteAIMove();
-            ChessBoardSource.ParseCodes(aiMove);
+            BoardModel.ParseCodes(aiMove);
         }
     }
 
@@ -112,10 +112,10 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
 	[RelayCommand]
 	private async Task SelectTile(object param)
 	{
-		if(param is ChessBoardTileModel model && ChessBoardSource != null)
+		if(param is ChessBoardTileModel model && BoardModel != null)
 		{
             // 체스보드 모델에 타일 선택 알려줌.
-            ChessBoardSource.SelectTile(model, out string notation);
+            BoardModel.SelectTile(model, out string notation);
 
             // 이동 데이터가 있으면
             if (!string.IsNullOrEmpty(notation))
@@ -125,7 +125,7 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
                 ////////////////////////////////////////
                 {
                     var userMove = await _chessGameService.MovePiece(notation);
-                    ChessBoardSource.ParseCodes(userMove);
+                    BoardModel.ParseCodes(userMove);
                 }
 
 
@@ -142,7 +142,7 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
                 ////////////////////////////////////////
                 {
                     var aiMove = await _chessGameService.ExecuteAIMove();
-                    ChessBoardSource.ParseCodes(aiMove);
+                    BoardModel.ParseCodes(aiMove);
                 }
             }
         }

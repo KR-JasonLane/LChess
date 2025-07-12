@@ -1,6 +1,8 @@
-﻿using LChess.Models.Chess.Base;
+﻿using LChess.Models.Chess.Unit.Base;
+
+using LChess.Models.Chess.Board;
+
 using LChess.Util.Enums;
-using System.Data.Common;
 
 namespace LChess.Models.Chess;
 
@@ -18,7 +20,7 @@ public partial class ChessBoardTileModel : ObservableObject
     {
         Position = new ChessPositionModel(row, column);
 
-        Unit = ChessUnitModelBase.CreateUnitModel(unitCode);
+        Unit = ChessUnitModelBase.CreateUnitModel(unitCode, Position.Code);
 
         TileColorType  = tileColor ;
     }
@@ -63,18 +65,31 @@ public partial class ChessBoardTileModel : ObservableObject
     public readonly ChessPositionModel Position;
 
     /// <summary>
-    /// 기물이 해당 타일로 이동 가능한지 여부
+    /// 다른 기물이 해당 타일로 이동 가능한 상태인지 여부
     /// </summary>
     public bool IsMovableTarget => IsHighLightEnemy || IsHighLightMove;
 
     /// <summary>
     /// 타일이 빈 칸인지 여부
     /// </summary>
-    public bool IsEmpty => Unit == null;
+    public bool IsEmpty => Unit is null;
 
     #endregion
 
     #region :: Methods ::
+
+    /// <summary>
+    /// 기물 변경
+    /// </summary>
+    /// <param name="unitCode"> 변경할 기물 코드 </param>
+    public void UpdateUnit(char unitCode)
+    {
+        // 하이라이트 초기화
+        TurnOffHighLight();
+
+        //유닛 변경
+        Unit = ChessUnitModelBase.CreateUnitModel(unitCode, Position.Code);
+    }
 
     /// <summary>
     /// 모든 하이라이트 끄기
