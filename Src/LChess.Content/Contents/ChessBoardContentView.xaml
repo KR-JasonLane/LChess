@@ -21,6 +21,7 @@
                                                     IsSelected="{Binding IsSelected}"
                                                     IsHighLightEnemy="{Binding IsHighLightEnemy}"
                                                     IsHighLightMove="{Binding IsHighLightMove}"
+                                                    IsHighLightDanger="{Binding IsHighLightDanger}"
                                                     Width="50"
                                                     Height="50">
                                     

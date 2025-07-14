@@ -4,7 +4,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/LChess.Custom;component/Themes/Unit/LChessButton.xaml"      />
         <ResourceDictionary Source="/LChess.Custom;component/Themes/Unit/LChessWindow.xaml"      />
-        <ResourceDictionary Source="/LChess.Custom;component/Themes/Unit/LChessBoardUnit.xaml"   />
+        <ResourceDictionary Source="/LChess.Custom;component/Themes/Unit/LChessBoardTile.xaml"   />
         <ResourceDictionary Source="/LChess.Custom;component/Themes/Unit/LChessWindowButton.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     

@@ -60,6 +60,12 @@ public partial class ChessBoardTileModel : ObservableObject
     private bool _isHighLightEnemy;
 
     /// <summary>
+    /// 위험상태 하이라이트 여부
+    /// </summary>
+    [ObservableProperty]
+    private bool _isHighLightDanger;
+
+    /// <summary>
     /// 해당 모델의 위치
     /// </summary>
     public readonly ChessPositionModel Position;

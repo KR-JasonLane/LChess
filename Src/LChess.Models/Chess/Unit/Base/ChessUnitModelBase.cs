@@ -55,7 +55,7 @@ public abstract partial class ChessUnitModelBase : ObservableObject
     /// </summary>
     /// <param name="color"> 비교할 색상 </param>
     /// <returns> 색상이 같은지 여부 </returns>
-    public bool IsSameColor(PieceColorType color) => ColorType == color;
+    public bool IsSameColor(PieceColorType? color) => ColorType == color;
 
     /// <summary>
     /// 타일에 적 기물이 있는지 판단

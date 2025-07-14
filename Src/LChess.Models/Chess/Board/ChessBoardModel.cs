@@ -141,6 +141,19 @@ public partial class ChessBoardModel : ObservableObject
                 _managementModel.UpdateTileUnit(currentPosition, unitCodes?[row][column * 4 - 1] ?? ' ');
             }
         }
+
+        var checkerLineSplited = unitCodes?.Last().Split(' ');
+
+        var checker = checkerLineSplited?.Length >= 2 ? checkerLineSplited[1] : string.Empty;
+
+        if (!string.IsNullOrEmpty(checker))
+        {
+            _managementModel.KingInCheck(checker);
+        }
+        else
+        {
+            _managementModel.ClearAllDangerHighLights();
+        }
     }
 
     #endregion

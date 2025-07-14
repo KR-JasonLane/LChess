@@ -29,7 +29,7 @@ public class KnightRouteModel : ChessUnitRouteModelBase
     /// 기물의 이동경로를 활성화
     /// </summary>
     /// <param name="tileMapper"> 현재 위치/기물정보 맵퍼 </param>
-    public override void TurnOnUnitRoute(Dictionary<ChessPosition, ChessBoardTileModel> tileMapper)
+    public override void TurnOnUnitRoute(BoardManagementModel managementModel)
     {
         /*
           
@@ -39,7 +39,67 @@ public class KnightRouteModel : ChessUnitRouteModelBase
 
         var position = new ChessPositionModel(_currentPosition);
 
-        var positions = new List<List<ChessPosition>>()
+        var positions = CreateAllRoutes();
+
+        //방향별 위치 루프
+        foreach (var line in positions)
+        {
+            //각개 위치 루프
+            foreach (var go in line)
+            {
+                if (managementModel.TryGetTile(go, out var tile) && tile != null)
+                {
+                    //이동경로 표시여부 판단
+                    tile.IsHighLightMove = tile.IsEmpty;
+
+                    //타일이 비어있지 않으면, 적군인지만 판단 후
+                    tile.IsHighLightEnemy = !tile.IsEmpty && tile.Unit?.IsSameColor(_unitColor) == false;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 움직일 수 있는 경우의 수를 반환
+    /// </summary>
+    /// <param name="tileMapper"> 현재 위치/기물정보 맵퍼 </param>
+    /// <returns> 유닛 경로 상 현재 움직일 수 있는 모든 경우의수 </returns>
+    public override List<ChessPosition> GetMovablePositions(BoardManagementModel managementModel)
+    {
+        //반환 리스트 생성
+        var result = new List<ChessPosition>();
+
+        //움직일 수 있는 모든 경로 생성
+        var positions = CreateAllRoutes();
+
+        //방향별 위치 루프
+        foreach (var line in positions)
+        {
+            //각개 위치 루프
+            foreach (var go in line)
+            {
+                if (managementModel.TryGetTile(go, out var tile) && tile != null)
+                {
+                    if(tile.Unit?.IsSameColor(_unitColor) == false || tile.IsEmpty)
+                    {
+                        // 타일이 존재하고, 비어있거나 적군이면
+                        result.Add(go);
+                    }
+                }
+            }
+        }
+
+        //결과 반환
+        return result;
+    }
+
+    // 이동 가능한 모든 경로 생성
+    private List<List<ChessPosition>> CreateAllRoutes()
+    {
+        var position = new ChessPositionModel(_currentPosition);
+
+        //각 방향별 대각선 위치 생성
+        return new List<List<ChessPosition>>()
         {
             //좌측상단
             position.CreatePositionsByOffset(-2, -1, 1),
@@ -57,23 +117,6 @@ public class KnightRouteModel : ChessUnitRouteModelBase
             position.CreatePositionsByOffset(2, 1, 1),
             position.CreatePositionsByOffset(1, 2, 1)
         };
-
-        //방향별 위치 루프
-        foreach (var line in positions)
-        {
-            //각개 위치 루프
-            foreach (var go in line)
-            {
-                if (tileMapper.TryGetValue(go, out var tile) && tile != null)
-                {
-                    //이동경로 표시여부 판단
-                    tile.IsHighLightMove = tile.IsEmpty;
-
-                    //타일이 비어있지 않으면, 적군인지만 판단 후
-                    tile.IsHighLightEnemy = !tile.IsEmpty && (!tile.Unit?.IsSameColor(_unitColor) ?? false);
-                }
-            }
-        }
     }
 
     #endregion

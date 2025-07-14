@@ -104,5 +104,21 @@ public class LChessBoardTile : Control
         set => SetValue(IsHighLightMoveProperty, value);
     }
 
+
+    /// <summary>
+    /// 위험상태 하이라이트 여부 의존 프로퍼티
+    /// </summary>
+    public static readonly DependencyProperty IsHighLightDangerProperty =
+        DependencyProperty.Register(nameof(IsHighLightDanger), typeof(bool), typeof(LChessBoardTile), new FrameworkPropertyMetadata(false));
+
+    /// <summary>
+    /// 위험상태 하이라이트 여부
+    /// </summary>
+    public bool IsHighLightDanger
+    {
+        get => (bool)GetValue(IsHighLightDangerProperty);
+        set => SetValue(IsHighLightDangerProperty, value);
+    }
+
     #endregion
 }

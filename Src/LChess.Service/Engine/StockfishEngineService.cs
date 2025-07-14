@@ -77,7 +77,7 @@ public class StockfishEngineService : IStockfishEngineService
 		//4. 엔진 초기화 커맨드 전송 후 결과 대기
 		var response = await SendCommandAsync("uci", "uciok");
 
-		return response?.Contains("uciok") ?? false;
+		return response?.Contains("uciok") == true;
 	}
 
 	/// <summary>
@@ -223,7 +223,7 @@ public class StockfishEngineService : IStockfishEngineService
 			var output = await _stockfishOutput.ReadLineAsync();
 
 			Log.Information("Stockfish 엔진 프로세스 시작.");
-			return output?.Contains("Stockfish") ?? false;
+			return output?.Contains("Stockfish") == true;
 		}
 		catch (Exception ex)
 		{
@@ -266,7 +266,7 @@ public class StockfishEngineService : IStockfishEngineService
 			var result = await _stockfishOutput.ReadLineAsync();
 
 			// 응답을 찾았는지 확인
-			if (result?.Contains(output) ?? false)
+			if (result?.Contains(output) == true)
 			{
 				Log.Information($"응답 : '{result}'");
 				return result;
@@ -280,7 +280,7 @@ public class StockfishEngineService : IStockfishEngineService
 	/// <returns> StockFish 엔진 응답 </returns>
 	public async Task<List<string>?> GetCurrentBoard()
 	{
-		if (_stockfishInput == null || _stockfishOutput == null)
+        if (_stockfishInput == null || _stockfishOutput == null)
 		{
 			Log.Fatal("Stockfish 엔진 입력 스트림이 초기화되지 않음.");
 			return null;
@@ -300,16 +300,20 @@ public class StockfishEngineService : IStockfishEngineService
 			//현재 라인
 			var line = await _stockfishOutput.ReadLineAsync();
 
-			//마지막줄이면 루프 탈출
-			if (line?.Contains("Checkers") ?? false) break;
-
 			// 응답을 찾았는지 확인
-			if (line?.Contains(@"|") ?? false)
+			if (line?.Contains(@"|") == true)
 			{
 				Log.Information($"응답 : '{line}'");
 				result.Add(line);
 			}
-		}
+
+            //마지막줄이면 정보 저장 후 루프 탈출
+            if (line?.Contains("Checkers") == true)
+            {
+                result.Add(line);
+                break;
+            }
+        }
 
 		return result;
 	}

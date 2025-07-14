@@ -69,6 +69,11 @@ public class BoardManagementModel
     {
         var result = string.Empty;
 
+        if (IsCheckStatus(UserPieceColor))
+        {
+            return string.Empty;
+        }
+
         // 1. 이미 선택한 모델이면 수행하지 않음.
         if (_selectedTileModel == selectedTile) return result;
 
@@ -83,13 +88,13 @@ public class BoardManagementModel
         }
 
         // 3. 현재 선택한 타일에 사용자 기물이 있는 경우
-        else if (!selectedTile.IsEmpty && (selectedTile.Unit?.IsSameColor(UserPieceColor) ?? false))
+        else if (!selectedTile.IsEmpty && selectedTile.Unit?.IsSameColor(UserPieceColor) == true)
         {
             // 3-1. 하이라이트 제거
             ClearAllHighLights();
 
             // 3-2. 선택된 타일에 해당하는 기물에 맞게 이동가능 경로 하이라이트
-            selectedTile.Unit?.RouteModel?.TurnOnUnitRoute(_tileMapper);
+            selectedTile.Unit?.RouteModel?.TurnOnUnitRoute(this);
 
             // 3-3. 선택된 타일 모델 기억
             _selectedTileModel = selectedTile;
@@ -105,11 +110,72 @@ public class BoardManagementModel
     public void ClearAllHighLights()
     {
         //모든 하이라이트 상태 끄기
-        foreach (var unit in _tileMapper.Values) 
-            unit.TurnOffHighLight();
+        foreach (var tile in _tileMapper.Values) 
+            tile.TurnOffHighLight();
 
         //기억중인 타일 제거
         _selectedTileModel = null;
+    }
+
+    public void ClearAllDangerHighLights()
+    {
+        //모든 하이라이트 상태 끄기
+        foreach (var tile in _tileMapper.Values)
+            tile.IsHighLightDanger = false;
+    }
+
+    //현재 체크상태인지 확인
+    public bool IsCheckStatus(PieceColorType color)
+    {
+        return _tileMapper.Values.Any(x => x.IsHighLightDanger && x?.Unit?.ColorType == color);
+    }
+
+    /// <summary>
+    /// 위치에 맞는 타일 찾기
+    /// </summary>
+    /// <param name="position"> 키 </param>
+    /// <param name="tileModel"> 값 </param>
+    /// <returns> 성공여부 </returns>
+    public bool TryGetTile(ChessPosition position, out ChessBoardTileModel? tileModel) => _tileMapper.TryGetValue(position, out tileModel);
+
+    /// <summary>
+    /// 적이 이동가능한 모든 경로 
+    /// </summary>
+    /// <returns> 적이 이동 가능한 경로 </returns>
+    public List<ChessPosition> GetEnemyRoute()
+    {
+        var allEnemyRoute = new List<ChessPosition>();
+
+        foreach (var tile in _tileMapper.Values)
+        {
+            if (!tile.IsEmpty && tile.Unit?.IsSameColor(UserPieceColor) == false)
+            {
+                var currentMovableRoute = tile.Unit?.RouteModel?.GetMovablePositions(this);
+
+                allEnemyRoute.AddRange(currentMovableRoute ?? new List<ChessPosition>());
+            }
+        }
+
+        return allEnemyRoute;
+    }
+
+    /// <summary>
+    /// 체크 상태일 때, 킹이 위험한 상태임을 표시
+    /// </summary>
+    /// <param name="checkerPositionCode"> 킹을 위협중인 기물의 위치 </param>
+    public void KingInCheck(string checkerPositionCode)
+    {
+        //킹을 위협중인 기물 찾기
+        var checker = _tileMapper.Values
+            .FirstOrDefault(tile => tile.Position.Code.ToString().ToUpper() == checkerPositionCode.ToUpper())?.Unit;
+
+        //킹 타일 찾기
+        var kingTile = _tileMapper.Values
+            .FirstOrDefault(tile => tile.Unit?.UnitType == ChessUnitType.King && tile.Unit?.IsSameColor(checker?.ColorType) == false);
+
+        //킹 위험 하이라이트 
+        if (kingTile != null)
+            kingTile.IsHighLightDanger = true;
     }
 
     #endregion

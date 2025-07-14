@@ -54,6 +54,9 @@
                                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=IsHighLightEnemy}" Value="True">
                                             <Setter Property="Background" Value="Red"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessBoardTile}}, Path=IsHighLightDanger}" Value="True">
+                                            <Setter Property="Background" Value="Red"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Border.Style>

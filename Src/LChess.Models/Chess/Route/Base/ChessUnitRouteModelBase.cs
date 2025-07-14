@@ -1,4 +1,6 @@
-﻿using LChess.Util.Enums;
+﻿using LChess.Models.Chess.Board;
+
+using LChess.Util.Enums;
 
 namespace LChess.Models.Chess.Route.Base;
 
@@ -42,8 +44,15 @@ public abstract class ChessUnitRouteModelBase
     /// <summary>
     /// 기물의 이동경로를 활성화
     /// </summary>
-    /// <param name="tileMapper"> 현재 위치/기물정보 맵퍼 </param>
-    public abstract void TurnOnUnitRoute(Dictionary<ChessPosition, ChessBoardTileModel> tileMapper);
+    /// <param name="managementModel"> 현재 위치/기물정보 맵퍼 </param>
+    public abstract void TurnOnUnitRoute(BoardManagementModel managementModel);
+
+    /// <summary>
+    /// 움직일 수 있는 경우의 수를 반환
+    /// </summary>
+    /// <param name="managementModel"> 현재 위치/기물정보 맵퍼 </param>
+    /// <returns> 유닛 경로 상 현재 움직일 수 있는 모든 경우의수 </returns>
+    public abstract List<ChessPosition> GetMovablePositions(BoardManagementModel managementModel);
 
     /// <summary>
     /// 유닛경로 모델 생성
