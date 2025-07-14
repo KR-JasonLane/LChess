@@ -87,5 +87,26 @@ public abstract partial class ChessUnitModelBase : ObservableObject
         };
     }
 
+    /// <summary>
+    /// 기물타입과 색상을 기반으로 기물 모델 생성
+    /// </summary>
+    /// <param name="unitType">생성할 기물 타입</param>
+    /// <param name="pieceColorType">기물 색상</param>
+    /// <param name="position">기물이 위치할 좌표</param>
+    /// <returns>생성된 기물 모델</returns>
+    public static ChessUnitModelBase? CreateUnitModel(ChessUnitType unitType, PieceColorType pieceColorType, ChessPosition position)
+    {
+        return unitType switch
+        {
+            ChessUnitType.Pawn   => new PawnModel  (pieceColorType, position),
+            ChessUnitType.Rook   => new RookModel  (pieceColorType, position),
+            ChessUnitType.Knight => new KnightModel(pieceColorType, position),
+            ChessUnitType.Bishop => new BishopModel(pieceColorType, position),
+            ChessUnitType.Queen  => new QueenModel (pieceColorType, position),
+            ChessUnitType.King   => new KingModel  (pieceColorType, position),
+            _ => null
+        };
+    }
+
     #endregion
 }
