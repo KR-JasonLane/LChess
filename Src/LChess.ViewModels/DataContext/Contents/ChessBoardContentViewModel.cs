@@ -2,7 +2,7 @@
 using LChess.Abstract.ViewModel;
 
 using LChess.Models.Chess;
-
+using LChess.Models.Stockfish;
 using LChess.Util.Enums;
 
 using LChess.ViewModels.Messenger;
@@ -101,6 +101,36 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
         }
     }
 
+    /// <summary>
+    /// 게임종료상태 검사
+    /// </summary>
+    /// <param name="moveResult"> 기물움직임 결과 </param>
+    /// <returns> 게임종료 여부 </returns>
+    private bool CheckEndGame(StockfishResultModel? moveResult)
+    {
+        if (moveResult == null) return true;
+
+        //무승부 처리
+        if (moveResult.IsDraw)
+        {
+            Log.Information("======================= 게임종료 [무승부] =======================");
+
+            WeakReferenceMessenger.Default.Send(new EndGameMessage(EndGameType.Draw));
+            return true;
+        }
+
+        //체크메이트 처리
+        if(moveResult.IsCheckMate)
+        {
+            Log.Information("======================= 게임종료 [체크메이트] =======================");
+
+            WeakReferenceMessenger.Default.Send(new EndGameMessage(EndGameType.CheckMate));
+            return true;
+        }
+
+        return false;
+    }
+
 	#endregion
 
 	#region :: Commands ::
@@ -124,16 +154,18 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
                 /// 유저 기물이동 처리
                 ////////////////////////////////////////
                 {
-                    var userMove = await _chessGameService.MovePiece(notation);
-                    BoardModel.ParseCodes(userMove);
+                    var userMoveResult = await _chessGameService.MovePiece(notation);
+                    BoardModel.ParseCodes(userMoveResult);
+
+                    if (CheckEndGame(userMoveResult)) return;
                 }
 
 
                 ////////////////////////////////////////
-                /// 1초 대기 (빠른진행을 막기 위함)
+                /// 0.5초 대기 (빠른진행을 막기 위함)
                 ////////////////////////////////////////
                 {
-                    await Task.Delay(1000);
+                    await Task.Delay(500);
                 }
 
 
@@ -141,8 +173,10 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
                 /// ai 턴 처리
                 ////////////////////////////////////////
                 {
-                    var aiMove = await _chessGameService.ExecuteAIMove();
-                    BoardModel.ParseCodes(aiMove);
+                    var aiMoveResult = await _chessGameService.ExecuteAIMove();
+                    BoardModel.ParseCodes(aiMoveResult);
+
+                    CheckEndGame(aiMoveResult);
                 }
             }
         }

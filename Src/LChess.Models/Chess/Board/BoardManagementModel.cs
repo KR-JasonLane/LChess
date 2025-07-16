@@ -1,5 +1,6 @@
-﻿using LChess.Util.Enums;
-using LChess.Models.Chess.Unit.Base;
+﻿using LChess.Models.Chess.Unit.Base;
+using LChess.Util.Enums;
+using System.Collections.Generic;
 
 namespace LChess.Models.Chess.Board;
 
@@ -38,6 +39,11 @@ public class BoardManagementModel
     /// </summary>
     private ChessBoardTileModel? _selectedTileModel;
 
+    /// <summary>
+    /// 킹이 위협받고 있을 때 하이라이트 되었던 타일 기억
+    /// </summary>
+    private ChessBoardTileModel? _highLightedKingTile;
+
     #endregion
 
     #region :: Methods ::
@@ -69,7 +75,6 @@ public class BoardManagementModel
     public string SelectTileAndGetNotationIfNeeded(ChessBoardTileModel selectedTile)
     {
         var result = string.Empty;
-
 
         // 1. 이미 선택한 모델이면 수행하지 않음.
         if (_selectedTileModel == selectedTile) return result;
@@ -118,11 +123,16 @@ public class BoardManagementModel
         _selectedTileModel = null;
     }
 
-    public void ClearAllDangerHighLights()
+    /// <summary>
+    /// 필요 시 체크 중 하이라이트 되었던 킹의 하이라이트를 제거
+    /// </summary>
+    public void ClearKingHighLightsIfNeeded()
     {
-        //모든 하이라이트 상태 끄기
-        foreach (var tile in _tileMapper.Values)
-            tile.IsHighLightDanger = false;
+        if(_highLightedKingTile != null)
+        {
+            _highLightedKingTile.IsHighLightDanger = false;
+            _highLightedKingTile = null;
+        }
     }
 
     //현재 체크상태인지 확인
@@ -233,20 +243,28 @@ public class BoardManagementModel
     /// <summary>
     /// 체크 상태일 때, 킹이 위험한 상태임을 표시
     /// </summary>
-    /// <param name="checkerPositionCode"> 킹을 위협중인 기물의 위치 </param>
-    public void KingInCheck(string checkerPositionCode)
+    /// <param name="checkers"> 킹을 위협중인 기물의 위치 리스트 </param>
+    public void KingInCheck(List<string> checkers)
     {
+        var checkerPosition = checkers.FirstOrDefault();
+
+        if (string.IsNullOrEmpty(checkerPosition)) return;
+
         //킹을 위협중인 기물 찾기
-        var checker = _tileMapper.Values
-            .FirstOrDefault(tile => tile.Position.Code.ToString().ToUpper() == checkerPositionCode.ToUpper())?.Unit;
+        var checkerUnit = _tileMapper.Values
+            .FirstOrDefault(tile => tile.Position.Code.ToString().ToUpper() == checkerPosition.ToUpper())?.Unit;
 
         //킹 타일 찾기
         var kingTile = _tileMapper.Values
-            .FirstOrDefault(tile => tile.Unit?.UnitType == ChessUnitType.King && tile.Unit?.IsSameColor(checker?.ColorType) == false);
+            .FirstOrDefault(tile => tile.Unit?.UnitType == ChessUnitType.King && tile.Unit?.IsSameColor(checkerUnit?.ColorType) == false);
 
         //킹 위험 하이라이트 
         if (kingTile != null)
+        {
             kingTile.IsHighLightDanger = true;
+
+            _highLightedKingTile = kingTile;
+        }
     }
 
     #endregion

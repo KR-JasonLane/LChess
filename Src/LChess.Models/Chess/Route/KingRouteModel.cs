@@ -38,8 +38,6 @@ public class KingRouteModel : ChessUnitRouteModelBase
            !! 킹은 모든 방향으로 한칸씩 이동이 가능. 
         
            !! TODO : 캐슬링 구현
-
-           !! TODO : 체크, 체크메이트 상태 대응
          
          */
 

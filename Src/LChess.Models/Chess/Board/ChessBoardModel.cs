@@ -1,5 +1,5 @@
 ﻿using LChess.Models.Chess.Board;
-
+using LChess.Models.Stockfish;
 using LChess.Util.Enums;
 
 using LChess.Util.Extension;
@@ -45,15 +45,15 @@ public partial class ChessBoardModel : ObservableObject
     /// 타일 세팅
     /// </summary>
     /// <param name="unitCodes"> Stockfish 엔진에서 얻은 기물코드 문자열 리스트 </param>
-    public void ParseCodes(List<string>? unitCodes)
+    public void ParseCodes(StockfishResultModel? resultModel)
     {
-        // 기물코드 문자가 비어있거나 null인 경우 초기화하지 않음
-        if (unitCodes == null || unitCodes.Count == 0) return;
+        // 결과모델이 null인 경우 초기화하지 않음
+        if (resultModel == null) return;
 
         if (Source == null)
-            CreateBoardDatas(unitCodes);
+            CreateBoardDatas(resultModel.TileCodeList);
         else
-            UpdateTileModels(unitCodes);
+            UpdateTileModels(resultModel);
     }
 
     /// <summary>
@@ -63,7 +63,6 @@ public partial class ChessBoardModel : ObservableObject
     /// <param name="notation"> 기물 이동이 발생 한 경우 기보출력 </param>
     public void SelectTile(ChessBoardTileModel selectedModel, out string notation)
     {
-        // 초기화
         notation = _managementModel.SelectTileAndGetNotationIfNeeded(selectedModel);
     }
 
@@ -120,8 +119,14 @@ public partial class ChessBoardModel : ObservableObject
         Source = result;
     }
 
-    private void UpdateTileModels(List<string> unitCodes)
+    /// <summary>
+    /// 타일 모델상태를 업데이트
+    /// </summary>
+    /// <param name="resultModel"></param>
+    private void UpdateTileModels(StockfishResultModel resultModel)
     {
+        var unitCodes = resultModel.TileCodeList;
+
         // 1. 행 루프
         for (int i = 0; i < 8; i++)
         {
@@ -142,18 +147,17 @@ public partial class ChessBoardModel : ObservableObject
             }
         }
 
-        var checkerLineSplited = unitCodes?.Last().Split(' ');
-
-        var checker = checkerLineSplited?.Length >= 2 ? checkerLineSplited[1] : string.Empty;
-
-        if (!string.IsNullOrEmpty(checker))
+        //체크상태면
+        if (resultModel.IsCheck)
         {
-            _managementModel.KingInCheck(checker);
+            //킹 위협 상태 하이라이트
+            _managementModel.KingInCheck(resultModel.CheckerList);
+
+            return;
         }
-        else
-        {
-            _managementModel.ClearAllDangerHighLights();
-        }
+
+        //킹 하이라이트가 있다면 삭제해줌.
+        _managementModel.ClearKingHighLightsIfNeeded();
     }
 
     #endregion

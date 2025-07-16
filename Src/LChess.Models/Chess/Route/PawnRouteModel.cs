@@ -104,10 +104,10 @@ public class PawnRouteModel : ChessUnitRouteModelBase
         foreach (var go in streight)
         {
             // 타일이 존재하고, 비어있으면
-            if (managementModel.TryGetTile(go, out var tile) && tile != null)
+            if (managementModel.TryGetTile(go, out var tile) && tile != null && tile.IsEmpty)
             {
                 //이동가능.
-                tile.IsHighLightMove = tile.IsEmpty;
+                tile.IsHighLightMove = true;
 
                 //다음단계로 진행
                 continue;

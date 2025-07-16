@@ -1,6 +1,7 @@
 ﻿using LChess.Abstract.Service;
-using System.Diagnostics;
-using System.IO;
+
+using LChess.Models.Stockfish;
+
 namespace LChess.Service.Engine;
 
 /// <summary>
@@ -278,12 +279,14 @@ public class StockfishEngineService : IStockfishEngineService
 	/// 현재 보드 상태 반환
 	/// </summary>
 	/// <returns> StockFish 엔진 응답 </returns>
-	public async Task<List<string>?> GetCurrentBoard()
+	public async Task<StockfishResultModel> GetCurrentBoard()
 	{
+		var result = new StockfishResultModel();
+
         if (_stockfishInput == null || _stockfishOutput == null)
 		{
 			Log.Fatal("Stockfish 엔진 입력 스트림이 초기화되지 않음.");
-			return null;
+			return result;
 		}
 
 		Log.Information($"커맨드 전송 : 'd'");
@@ -292,10 +295,11 @@ public class StockfishEngineService : IStockfishEngineService
 		await _stockfishInput.WriteLineAsync("d");
 		await _stockfishInput.FlushAsync();
 
-		var result = new List<string>();
+		var unitCodes = new List<string>();
+		var checkers = new List<string>();
 
-		//2. Stockfish의 응답은 멀티라인이기 때문에,
-		while (true)
+        //2. Stockfish의 응답은 멀티라인이기 때문에,
+        while (true)
 		{
 			//현재 라인
 			var line = await _stockfishOutput.ReadLineAsync();
@@ -303,19 +307,31 @@ public class StockfishEngineService : IStockfishEngineService
 			// 응답을 찾았는지 확인
 			if (line?.Contains(@"|") == true)
 			{
-				Log.Information($"응답 : '{line}'");
-				result.Add(line);
+				Log.Information($"기물코드 : '{line}'");
+
+                unitCodes.Add(line);
 			}
 
             //마지막줄이면 정보 저장 후 루프 탈출
             if (line?.Contains("Checkers") == true)
             {
-                result.Add(line);
+				Log.Information($"체크 정보 : '{line}'");
+
+				var checkersArray = line.Split(' ');
+
+				if (checkersArray.Length > 1)
+				{
+					checkers.AddRange(checkersArray.Skip(1));
+                }
+
                 break;
             }
         }
 
-		return result;
+		result.SetTileCodeList(unitCodes);
+		result.SetCheckerList (checkers );
+
+        return result;
 	}
 
 	#endregion

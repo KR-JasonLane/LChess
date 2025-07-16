@@ -1,4 +1,6 @@
-﻿namespace LChess.Abstract.Service;
+﻿using LChess.Models.Stockfish;
+
+namespace LChess.Abstract.Service;
 
 /// <summary>
 /// 스톡피쉬 엔진 서비스 인터페이스
@@ -28,5 +30,5 @@ public interface IStockfishEngineService
 	/// 현재 보드 상태 반환
 	/// </summary>
 	/// <returns> StockFish 엔진 응답 </returns>
-	public Task<List<string>?> GetCurrentBoard();
+	public Task<StockfishResultModel> GetCurrentBoard();
 }

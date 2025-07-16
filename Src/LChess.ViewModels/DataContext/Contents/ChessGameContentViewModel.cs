@@ -1,6 +1,7 @@
 ﻿using LChess.Abstract.ViewModel;
 
 using LChess.Util.Enums;
+using LChess.ViewModels.Messenger;
 
 namespace LChess.ViewModels.DataContext.Contents;
 
@@ -27,20 +28,31 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
         {
             ChessBoardContent = Ioc.Default.GetService<ChessBoardContentViewModel>();
 		}
-	}
 
-	#endregion
 
-	#region :: Services ::
+        ////////////////////////////////////////
+        /// 체스보드 Content 뷰모델 생성
+        ////////////////////////////////////////
+        {
+            WeakReferenceMessenger.Default.Register<EndGameMessage>(this, (s, e) =>
+            {
+                // TODO : 게임 종료 메시지 수신 처리
+            });
+        }
+    }
 
-	#endregion
+    #endregion
 
-	#region :: Properties ::
+    #region :: Services ::
 
-	/// <summary>
-	/// Content Type 지정
-	/// </summary>
-	public LChessContentType ContentType { get; init; }
+    #endregion
+
+    #region :: Properties ::
+
+    /// <summary>
+    /// Content Type 지정
+    /// </summary>
+    public LChessContentType ContentType { get; init; }
 
 	/// <summary>
 	/// 체스보드 
