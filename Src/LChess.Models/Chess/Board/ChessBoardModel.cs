@@ -19,7 +19,7 @@ public partial class ChessBoardModel : ObservableObject
     public ChessBoardModel(PieceColorType userColor)
     {
         //보드 관리모델 생성
-        _managementModel = new BoardManagementModel(userColor);
+        _managementModel = new(userColor);
     }
 
     #endregion
@@ -142,7 +142,7 @@ public partial class ChessBoardModel : ObservableObject
                 // 1-2-2. 현재 위치 계산
                 var currentPosition = ChessPositionModel.CalcPositionCode(row, column - 1);
 
-                // 1-2-3. 파싱 데이터 적용
+                // 1-2-3. 파싱 데이터 적용 후 기물 변경이 일어났으면 히스토리 저장
                 _managementModel.UpdateTileUnit(currentPosition, unitCodes?[row][column * 4 - 1] ?? ' ');
             }
         }

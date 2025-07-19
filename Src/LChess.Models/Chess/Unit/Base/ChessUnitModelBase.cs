@@ -16,14 +16,14 @@ public abstract partial class ChessUnitModelBase : ObservableObject
     /// <summary>
     /// 생성자
     /// </summary>
-    /// <param name="unitType"></param>
-    /// <param name="pieceColorType"></param>
-    public ChessUnitModelBase(ChessUnitType unitType, PieceColorType pieceColorType, ChessPosition position)
+    public ChessUnitModelBase(ChessUnitType unitType, PieceColorType pieceColorType, ChessPosition position, char originalCode)
     {
         ColorType = pieceColorType;
         UnitType  = unitType      ;
 
         RouteModel = ChessUnitRouteModelBase.CreateRouteModel(unitType, pieceColorType, position);
+
+        OriginalCode = originalCode;
     }
 
     #endregion
@@ -45,6 +45,11 @@ public abstract partial class ChessUnitModelBase : ObservableObject
     /// 기물 경로모델
     /// </summary>
     public ChessUnitRouteModelBase? RouteModel { get; init; }
+
+    /// <summary>
+    /// 기물코드 원본
+    /// </summary>
+    public readonly char OriginalCode;
 
     #endregion
 
@@ -77,33 +82,33 @@ public abstract partial class ChessUnitModelBase : ObservableObject
 
         return char.ToUpper(unitCode) switch
         {
-            'P' => new PawnModel  (unitColor, position),
-            'R' => new RookModel  (unitColor, position),
-            'N' => new KnightModel(unitColor, position),
-            'B' => new BishopModel(unitColor, position),
-            'Q' => new QueenModel (unitColor, position),
-            'K' => new KingModel  (unitColor, position),
+            'P' => new PawnModel  (unitColor, position, unitCode),
+            'R' => new RookModel  (unitColor, position, unitCode),
+            'N' => new KnightModel(unitColor, position, unitCode),
+            'B' => new BishopModel(unitColor, position, unitCode),
+            'Q' => new QueenModel (unitColor, position, unitCode),
+            'K' => new KingModel  (unitColor, position, unitCode),
             _   => null
         };
     }
 
     /// <summary>
-    /// 기물타입과 색상을 기반으로 기물 모델 생성
+    /// 기물타입과 색상을 기반으로 가상의 기물 모델 생성
     /// </summary>
     /// <param name="unitType">생성할 기물 타입</param>
     /// <param name="pieceColorType">기물 색상</param>
     /// <param name="position">기물이 위치할 좌표</param>
-    /// <returns>생성된 기물 모델</returns>
-    public static ChessUnitModelBase? CreateUnitModel(ChessUnitType unitType, PieceColorType pieceColorType, ChessPosition position)
+    /// <returns>생성된 가상의 기물 모델</returns>
+    public static ChessUnitModelBase? CreateVirtualUnitModel(ChessUnitType unitType, PieceColorType pieceColorType, ChessPosition position)
     {
         return unitType switch
         {
-            ChessUnitType.Pawn   => new PawnModel  (pieceColorType, position),
-            ChessUnitType.Rook   => new RookModel  (pieceColorType, position),
-            ChessUnitType.Knight => new KnightModel(pieceColorType, position),
-            ChessUnitType.Bishop => new BishopModel(pieceColorType, position),
-            ChessUnitType.Queen  => new QueenModel (pieceColorType, position),
-            ChessUnitType.King   => new KingModel  (pieceColorType, position),
+            ChessUnitType.Pawn   => new PawnModel  (pieceColorType, position, ' '),
+            ChessUnitType.Rook   => new RookModel  (pieceColorType, position, ' '),
+            ChessUnitType.Knight => new KnightModel(pieceColorType, position, ' '),
+            ChessUnitType.Bishop => new BishopModel(pieceColorType, position, ' '),
+            ChessUnitType.Queen  => new QueenModel (pieceColorType, position, ' '),
+            ChessUnitType.King   => new KingModel  (pieceColorType, position, ' '),
             _ => null
         };
     }

@@ -14,7 +14,10 @@ public class BoardManagementModel
     public BoardManagementModel(PieceColorType userColor)
     {
         //매퍼 생성
-        _tileMapper = new Dictionary<ChessPosition, ChessBoardTileModel>();
+        _tileMapper = new();
+
+        //기물변경이력 리스트 생성
+        _updatedPositions = new();
 
         //유저 기물색상 설정
         UserPieceColor = userColor;
@@ -44,6 +47,11 @@ public class BoardManagementModel
     /// </summary>
     private ChessBoardTileModel? _highLightedKingTile;
 
+    /// <summary>
+    /// 기물변경 이력이 있는 위치들을 저장
+    /// </summary>
+    private List<ChessPosition> _updatedPositions;
+
     #endregion
 
     #region :: Methods ::
@@ -51,15 +59,23 @@ public class BoardManagementModel
     /// <summary>
     /// 타일 정보 업데이트
     /// </summary>
+    /// <returns> 기물 변경 여부 </returns>
     public void UpdateTileUnit(ChessPosition position, char unitCode) 
     {
-        if (_tileMapper.TryGetValue(position, out var tile)) tile.UpdateUnit(unitCode);
+        if (_tileMapper.TryGetValue(position, out var tile) && tile?.UpdateUnit(unitCode) == true)
+        {
+            _updatedPositions.Add(position);
+        }
     }
 
     /// <summary>
     /// 타일 맵핑정보 초기화
     /// </summary>
-    public void Clear() => _tileMapper.Clear();
+    public void Clear()
+    {
+        _tileMapper.Clear();
+        _updatedPositions.Clear();
+    }
 
     /// <summary>
     /// 타일 맵핑정보 추가
@@ -171,7 +187,7 @@ public class BoardManagementModel
         var originTargetUnit = toTile.Unit;
 
         //이동 기물 생성 (위치 갱신)
-        var movedUnit = ChessUnitModelBase.CreateUnitModel(movingUnit.UnitType, movingUnit.ColorType, toTile.Position.Code);
+        var movedUnit = ChessUnitModelBase.CreateVirtualUnitModel(movingUnit.UnitType, movingUnit.ColorType, toTile.Position.Code);
         if (movedUnit == null) return false;
 
         //가상 이동
@@ -266,6 +282,13 @@ public class BoardManagementModel
             _highLightedKingTile = kingTile;
         }
     }
+
+    /// <summary>
+    /// 해당 위치의 기물이 변경된 이력이 있는지 확인
+    /// </summary>
+    /// <param name="position"> 확인하고자 하는 포지션 </param>
+    /// <returns> 변경이력 여부 </returns>
+    public bool IsTileUpdated(ChessPosition position) => _updatedPositions.Contains(position);
 
     #endregion
 }

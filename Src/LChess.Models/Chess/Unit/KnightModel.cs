@@ -13,7 +13,7 @@ public partial class KnightModel : ChessUnitModelBase
 {
     #region :: Constructor ::
 
-    public KnightModel(PieceColorType pieceColorType, ChessPosition position) : base(ChessUnitType.Knight, pieceColorType, position)
+    public KnightModel(PieceColorType pieceColorType, ChessPosition position, char originalCode) : base(ChessUnitType.Knight, pieceColorType, position, originalCode)
     {
 
     }

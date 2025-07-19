@@ -1,7 +1,5 @@
 ﻿using LChess.Models.Chess.Unit.Base;
 
-using LChess.Models.Chess.Board;
-
 using LChess.Util.Enums;
 
 namespace LChess.Models.Chess.Unit;
@@ -13,7 +11,7 @@ public partial class KingModel : ChessUnitModelBase
 {
     #region :: Constructor ::
 
-    public KingModel(PieceColorType pieceColorType, ChessPosition position) : base(ChessUnitType.King, pieceColorType, position)
+    public KingModel(PieceColorType pieceColorType, ChessPosition position, char originalCode) : base(ChessUnitType.King, pieceColorType, position, originalCode)
     {
 
     }

@@ -13,7 +13,7 @@ public partial class BishopModel : ChessUnitModelBase
 {
     #region :: Constructor ::
 
-    public BishopModel(PieceColorType pieceColorType, ChessPosition position) : base(ChessUnitType.Bishop, pieceColorType, position)
+    public BishopModel(PieceColorType pieceColorType, ChessPosition position, char originalCode) : base(ChessUnitType.Bishop, pieceColorType, position, originalCode)
     {
 
     }

@@ -13,7 +13,7 @@ public partial class RookModel : ChessUnitModelBase
 {
     #region :: Constructor ::
 
-    public RookModel(PieceColorType pieceColorType, ChessPosition position) : base(ChessUnitType.Rook, pieceColorType, position)
+    public RookModel(PieceColorType pieceColorType, ChessPosition position, char originalCode) : base(ChessUnitType.Rook, pieceColorType, position, originalCode)
     {
 
     }

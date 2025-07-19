@@ -11,7 +11,7 @@ public partial class PawnModel : ChessUnitModelBase
 {
     #region :: Constructor ::
 
-    public PawnModel(PieceColorType pieceColorType, ChessPosition position) : base(ChessUnitType.Pawn, pieceColorType, position)
+    public PawnModel(PieceColorType pieceColorType, ChessPosition position, char originalCode) : base(ChessUnitType.Pawn, pieceColorType, position, originalCode)
     {
 
     }

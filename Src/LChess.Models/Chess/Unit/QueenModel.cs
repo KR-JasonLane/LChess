@@ -13,7 +13,7 @@ public partial class QueenModel : ChessUnitModelBase
 {
     #region :: Constructor ::
 
-    public QueenModel(PieceColorType pieceColorType, ChessPosition position) : base(ChessUnitType.Queen, pieceColorType, position)
+    public QueenModel(PieceColorType pieceColorType, ChessPosition position, char originalCode) : base(ChessUnitType.Queen, pieceColorType, position, originalCode)
     {
 
     }

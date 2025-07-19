@@ -88,13 +88,19 @@ public partial class ChessBoardTileModel : ObservableObject
     /// 기물 변경
     /// </summary>
     /// <param name="unitCode"> 변경할 기물 코드 </param>
-    public void UpdateUnit(char unitCode)
+    /// <returns> 기물 변경여부 </returns>
+    public bool UpdateUnit(char unitCode)
     {
         // 하이라이트 초기화
         TurnOffHighLight();
 
+        // 현재 유닛과 동일한 코드라면 변경하지 않음
+        if (Unit?.OriginalCode == unitCode) return false;
+
         //유닛 변경
         Unit = ChessUnitModelBase.CreateUnitModel(unitCode, Position.Code);
+
+        return true;
     }
 
     /// <summary>
