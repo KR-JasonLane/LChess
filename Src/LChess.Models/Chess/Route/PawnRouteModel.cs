@@ -3,7 +3,6 @@
 using LChess.Models.Chess.Route.Base;
 
 using LChess.Util.Enums;
-using System.Reflection.Metadata.Ecma335;
 
 namespace LChess.Models.Chess.Route;
 
@@ -40,9 +39,7 @@ public class PawnRouteModel : ChessUnitRouteModelBase
            !! 폰은 직진 시 적이든, 아군이든 유닛이 없을 때만 이동이 가능하며,
               대각선 방향으로는 적 유닛이 있을 때만 이동이 가능.
            
-           !! 특수한 케이스로 앙파상이 있음.
-
-           !! 상대 진영 끝까지 이동 시 승격 이벤트도 처리해야함.
+           !! 특수이동 : 앙파상
          */
 
         var position = new ChessPositionModel(_currentPosition);
@@ -66,11 +63,7 @@ public class PawnRouteModel : ChessUnitRouteModelBase
     /// <param name="managementModel"> 기물정보 맵퍼 </param>
     private void TurnOnWhiteRoute(ChessPositionModel positionModel, BoardManagementModel managementModel)
     {
-        var isFirstMove = positionModel.Code.ToString().Contains("2");
-
-        List<ChessPosition> streight      = positionModel.GetTopLinePositions         (isFirstMove ? 2 : 1);
-        List<ChessPosition> leftDiagonal  = positionModel.GetLeftTopDiagonalPositions (1                  ); 
-        List<ChessPosition> rightDiagonal = positionModel.GetRightTopDiagonalPositions(1                  );
+        MovablePositionsAtWhite(positionModel, out var streight, out var leftDiagonal, out var rightDiagonal);
 
         TurnOn(streight, leftDiagonal, rightDiagonal, managementModel);
     }
@@ -82,11 +75,7 @@ public class PawnRouteModel : ChessUnitRouteModelBase
     /// <param name="managementModel"> 기물정보 맵퍼 </param>
     private void TurnOnBlackRoute(ChessPositionModel positionModel, BoardManagementModel managementModel)
     {
-        var isFirstMove = positionModel.Code.ToString().Contains("7");
-
-        List<ChessPosition> streight      = positionModel.GetBottomLinePositions         (isFirstMove ? 2 : 1);
-        List<ChessPosition> leftDiagonal  = positionModel.GetLeftBottomDiagonalPositions (1                  ); 
-        List<ChessPosition> rightDiagonal = positionModel.GetRightBottomDiagonalPositions(1                  );
+        MovablePositionsAtBlack(positionModel, out var streight, out var leftDiagonal, out var rightDiagonal);
 
         TurnOn(streight, leftDiagonal, rightDiagonal, managementModel);
     }
@@ -160,11 +149,7 @@ public class PawnRouteModel : ChessUnitRouteModelBase
     /// <returns> 이동 가능한 경우의 수 </returns>
     private List<ChessPosition> MovableWhiteRoute(ChessPositionModel positionModel, BoardManagementModel managementModel)
     {
-        var isFirstMove = positionModel.Code.ToString().Contains("2");
-
-        List<ChessPosition> streight      = positionModel.GetTopLinePositions         (isFirstMove ? 2 : 1);
-        List<ChessPosition> leftDiagonal  = positionModel.GetLeftTopDiagonalPositions (1                  ); 
-        List<ChessPosition> rightDiagonal = positionModel.GetRightTopDiagonalPositions(1                  );
+        MovablePositionsAtWhite(positionModel, out var streight, out var leftDiagonal, out var rightDiagonal);
 
         return GetMovable(streight, leftDiagonal, rightDiagonal, managementModel);
     }
@@ -177,11 +162,7 @@ public class PawnRouteModel : ChessUnitRouteModelBase
     /// <returns> 이동 가능한 경우의 수 </returns>
     private List<ChessPosition> MovableBlackRoute(ChessPositionModel positionModel, BoardManagementModel managementModel)
     {
-        var isFirstMove = positionModel.Code.ToString().Contains("7");
-
-        List<ChessPosition> streight      = positionModel.GetBottomLinePositions         (isFirstMove ? 2 : 1);
-        List<ChessPosition> leftDiagonal  = positionModel.GetLeftBottomDiagonalPositions (1                  );
-        List<ChessPosition> rightDiagonal = positionModel.GetRightBottomDiagonalPositions(1                  );
+        MovablePositionsAtBlack(positionModel, out var streight, out var leftDiagonal, out var rightDiagonal);
 
         return GetMovable(streight, leftDiagonal, rightDiagonal, managementModel);
     }
@@ -234,6 +215,38 @@ public class PawnRouteModel : ChessUnitRouteModelBase
             }
         }
         return result;
+    }
+
+    /// <summary>
+    /// 화이트일때 이동가능한 경로 구하기
+    /// </summary>
+    /// <param name="positionModel"> 포지션모델 </param>
+    /// <param name="streight"> 직진 </param>
+    /// <param name="leftDiagonal"> 좌측대각선 </param>
+    /// <param name="rightDiagonal"> 우측대각선 </param>
+    private static void MovablePositionsAtWhite(ChessPositionModel positionModel, out List<ChessPosition> streight, out List<ChessPosition> leftDiagonal, out List<ChessPosition> rightDiagonal)
+    {
+        var isFirstMove = positionModel.Code.ToString().Contains("2");
+
+        streight      = positionModel.GetTopLinePositions         (isFirstMove ? 2 : 1);
+        leftDiagonal  = positionModel.GetLeftTopDiagonalPositions (1                  ); 
+        rightDiagonal = positionModel.GetRightTopDiagonalPositions(1                  );
+    }
+
+    /// <summary>
+    /// 블랙일때 이동가능한 경로 구하기
+    /// </summary>
+    /// <param name="positionModel"> 포지션모델 </param>
+    /// <param name="streight"> 직진 </param>
+    /// <param name="leftDiagonal"> 좌측대각선 </param>
+    /// <param name="rightDiagonal"> 우측대각선 </param>
+    private static void MovablePositionsAtBlack(ChessPositionModel positionModel, out List<ChessPosition> streight, out List<ChessPosition> leftDiagonal, out List<ChessPosition> rightDiagonal)
+    {
+        var isFirstMove = positionModel.Code.ToString().Contains("7");
+
+        streight      = positionModel.GetBottomLinePositions         (isFirstMove ? 2 : 1);
+        leftDiagonal  = positionModel.GetLeftBottomDiagonalPositions (1                  ); 
+        rightDiagonal = positionModel.GetRightBottomDiagonalPositions(1                  );
     }
 
     #endregion

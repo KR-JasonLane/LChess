@@ -1,26 +1,20 @@
-﻿namespace LChess.Models.Stockfish;
+﻿namespace LChess.Models.Result;
 
 /// <summary>
-/// Stockfish 엔진에서 반환하는 결과 모델
+/// Stockfish 엔진에서 반환하는 Draw 결과 모델
 /// </summary>
-public class StockfishResultModel
+public class StockfishBoardCodeModel
 {
     #region :: Constructor ::
 
     /// <summary>
     /// 생성자
     /// </summary>
-    public StockfishResultModel()
+    public StockfishBoardCodeModel()
     {
         TileCodeList = new();
         CheckerList  = new();
-
-        BestMove     = string.Empty;
     }
-
-    #endregion
-
-    #region :: Services ::
 
     #endregion
 
@@ -35,21 +29,6 @@ public class StockfishResultModel
     /// Stockfish 엔진에서 반환하는 체크중인 기물 리스트
     /// </summary>
     public List<string> CheckerList { get; init; }
-
-    /// <summary>
-    /// Stockfish 엔진에서 반환하는 최적의 이동 기보
-    /// </summary>
-    public string? BestMove { get; set; }
-
-    /// <summary>
-    /// 무승부 여부
-    /// </summary>
-    public bool IsDraw => BestMove?.Contains("none") == true && !IsCheck;
-
-    /// <summary>
-    /// 체크메이트 여부
-    /// </summary>
-    public bool IsCheckMate => BestMove?.Contains("none") == true && IsCheck;
 
     /// <summary>
     /// 현재 체크상태인지 여부

@@ -1,5 +1,5 @@
 ﻿using LChess.Models.Chess.Board;
-using LChess.Models.Stockfish;
+using LChess.Models.Result;
 using LChess.Util.Enums;
 
 using LChess.Util.Extension;
@@ -45,7 +45,7 @@ public partial class ChessBoardModel : ObservableObject
     /// 타일 세팅
     /// </summary>
     /// <param name="unitCodes"> Stockfish 엔진에서 얻은 기물코드 문자열 리스트 </param>
-    public void ParseCodes(StockfishResultModel? resultModel)
+    public void ParseCodes(StockfishBoardCodeModel? resultModel)
     {
         // 결과모델이 null인 경우 초기화하지 않음
         if (resultModel == null) return;
@@ -60,10 +60,10 @@ public partial class ChessBoardModel : ObservableObject
     /// 타일 선택
     /// </summary>
     /// <param name="selectedModel"> 선택된 타일 </param>
-    /// <param name="notation"> 기물 이동이 발생 한 경우 기보출력 </param>
-    public void SelectTile(ChessBoardTileModel selectedModel, out string notation)
+    /// <returns> 기물 이동이 발생 한 경우 기보출력 </returns>
+    public TileSelectedResultModel SelectTile(ChessBoardTileModel selectedModel)
     {
-        notation = _managementModel.SelectTileAndGetNotationIfNeeded(selectedModel);
+        return _managementModel.SelectTileAndGetNotationIfNeeded(selectedModel);
     }
 
     /// <summary>
@@ -123,7 +123,7 @@ public partial class ChessBoardModel : ObservableObject
     /// 타일 모델상태를 업데이트
     /// </summary>
     /// <param name="resultModel"></param>
-    private void UpdateTileModels(StockfishResultModel resultModel)
+    private void UpdateTileModels(StockfishBoardCodeModel resultModel)
     {
         var unitCodes = resultModel.TileCodeList;
 

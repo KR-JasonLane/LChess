@@ -1,4 +1,5 @@
 ﻿using LChess.Util.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LChess.Models.Chess.Board;
 
@@ -50,6 +51,11 @@ public class ChessPositionModel
     /// 포지션 코드
     /// </summary>
     public ChessPosition Code { get; init; }
+
+    /// <summary>
+    /// 보드의 세로 끝 지점인지 여부
+    /// </summary>
+    public bool IsEndPointColumnInBoard => Column == 0 || Column == 8;
 
     #endregion
 

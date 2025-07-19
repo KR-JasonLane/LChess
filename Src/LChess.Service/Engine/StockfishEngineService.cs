@@ -1,6 +1,6 @@
 ﻿using LChess.Abstract.Service;
 
-using LChess.Models.Stockfish;
+using LChess.Models.Result;
 
 namespace LChess.Service.Engine;
 
@@ -279,9 +279,9 @@ public class StockfishEngineService : IStockfishEngineService
 	/// 현재 보드 상태 반환
 	/// </summary>
 	/// <returns> StockFish 엔진 응답 </returns>
-	public async Task<StockfishResultModel> GetCurrentBoard()
+	public async Task<StockfishBoardCodeModel> GetCurrentBoard()
 	{
-		var result = new StockfishResultModel();
+		var result = new StockfishBoardCodeModel();
 
         if (_stockfishInput == null || _stockfishOutput == null)
 		{

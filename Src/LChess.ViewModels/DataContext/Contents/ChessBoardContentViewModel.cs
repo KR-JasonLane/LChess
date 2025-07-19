@@ -2,7 +2,7 @@
 using LChess.Abstract.ViewModel;
 
 using LChess.Models.Chess;
-using LChess.Models.Stockfish;
+using LChess.Models.Result;
 using LChess.Util.Enums;
 
 using LChess.ViewModels.Messenger;
@@ -106,12 +106,12 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
     /// </summary>
     /// <param name="moveResult"> 기물움직임 결과 </param>
     /// <returns> 게임종료 여부 </returns>
-    private bool CheckEndGame(StockfishResultModel? moveResult)
+    private bool CheckEndGame(StockfishBoardCodeModel? moveResult, StockfishBestMoveModel bestMoveResult)
     {
         if (moveResult == null) return true;
 
         //무승부 처리
-        if (moveResult.IsDraw)
+        if (!moveResult.IsCheck && !bestMoveResult.CanMove)
         {
             Log.Information("======================= 게임종료 [무승부] =======================");
 
@@ -120,7 +120,7 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
         }
 
         //체크메이트 처리
-        if(moveResult.IsCheckMate)
+        if (moveResult.IsCheck && !bestMoveResult.CanMove)
         {
             Log.Information("======================= 게임종료 [체크메이트] =======================");
 
@@ -145,7 +145,13 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
 		if(param is ChessBoardTileModel model && BoardModel != null)
 		{
             // 체스보드 모델에 타일 선택 알려줌.
-            BoardModel.SelectTile(model, out string notation);
+            var result = BoardModel.SelectTile(model);
+
+            //TODO : 여기서 승격이 필요하면 승격처리 로직을 추가해야함.
+            // 승격처리 후 q, n, b, r 등등 유닛코드를 notation 뒤에 넣어줘야함.
+
+            //기보
+            var notation = $"{result.Notation}";
 
             // 이동 데이터가 있으면
             if (!string.IsNullOrEmpty(notation))
@@ -157,7 +163,8 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
                     var userMoveResult = await _chessGameService.MovePiece(notation);
                     BoardModel.ParseCodes(userMoveResult);
 
-                    if (CheckEndGame(userMoveResult)) return;
+                    var bestMoveResult = await _chessGameService.BestMove();
+                    if (CheckEndGame(userMoveResult, bestMoveResult)) return;
                 }
 
 
@@ -176,7 +183,8 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
                     var aiMoveResult = await _chessGameService.ExecuteAIMove();
                     BoardModel.ParseCodes(aiMoveResult);
 
-                    CheckEndGame(aiMoveResult);
+                    var bestMoveResult = await _chessGameService.BestMove();
+                    CheckEndGame(aiMoveResult, bestMoveResult);
                 }
             }
         }

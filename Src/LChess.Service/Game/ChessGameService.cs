@@ -1,5 +1,5 @@
 ﻿using LChess.Abstract.Service;
-using LChess.Models.Stockfish;
+using LChess.Models.Result;
 
 namespace LChess.Service.Game;
 
@@ -45,7 +45,7 @@ public class ChessGameService : IChessGameService
     /// <summary>
     /// 새게임 시작
     /// </summary>
-    public async Task<StockfishResultModel?> NewGame()
+    public async Task<StockfishBoardCodeModel?> NewGame()
     {
         _notations.Clear();
 		await _stockfishEngineService.StartEngineAsync();
@@ -58,11 +58,11 @@ public class ChessGameService : IChessGameService
     /// AI 턴
     /// </summary>
     /// <returns> AI 판단 후 기물코드 반환 </returns>
-    public async Task<StockfishResultModel?> ExecuteAIMove()
+    public async Task<StockfishBoardCodeModel?> ExecuteAIMove()
 	{
         var aiMove = await BestMove();
 
-        return await MovePiece(aiMove);
+        return await MovePiece(aiMove.BestMove);
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public class ChessGameService : IChessGameService
     /// </summary>
     /// <param name="notation"> 기물이동 기보 문자열 </param>
     /// <returns> Stockfish 기물 코드 </returns>
-    public async Task<StockfishResultModel?> MovePiece(string? notation)
+    public async Task<StockfishBoardCodeModel?> MovePiece(string? notation)
 	{
         if (string.IsNullOrEmpty(notation) || notation.Contains("none")) return null;
 
@@ -88,23 +88,18 @@ public class ChessGameService : IChessGameService
 
         var result = await _stockfishEngineService.GetCurrentBoard();
 
-        result.BestMove = await BestMove();
-
         return result;
     }
 
     /// <summary>
     /// AI가 판단하는 BestMove 획득
     /// </summary>
-    /// <returns></returns>
-	private async Task<string?> BestMove()
+    /// <returns> BestMove 처리결과 </returns>
+	public async Task<StockfishBestMoveModel> BestMove()
     {
         var bestMove = await _stockfishEngineService.SendCommandAsync("go depth 20", "best");
 
-        if (string.IsNullOrEmpty(bestMove))
-            return null;
-
-        return bestMove.Split(' ').ElementAt(1);
+        return new StockfishBestMoveModel(bestMove?.Split(' ').ElementAt(1) ?? "(none)");
     }
 
     #endregion

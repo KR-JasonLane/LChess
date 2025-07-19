@@ -1,6 +1,7 @@
-﻿using LChess.Models.Chess.Unit.Base;
+﻿using LChess.Models.Chess.Unit;
+using LChess.Models.Chess.Unit.Base;
+using LChess.Models.Result;
 using LChess.Util.Enums;
-using System.Collections.Generic;
 
 namespace LChess.Models.Chess.Board;
 
@@ -18,6 +19,9 @@ public class BoardManagementModel
 
         //기물변경이력 리스트 생성
         _updatedPositions = new();
+
+        //직전 기보 문자열 초기화
+        PreviousNotation = string.Empty;
 
         //유저 기물색상 설정
         UserPieceColor = userColor;
@@ -52,6 +56,11 @@ public class BoardManagementModel
     /// </summary>
     private List<ChessPosition> _updatedPositions;
 
+    /// <summary>
+    /// 직전 기보 기억
+    /// </summary>
+    public string PreviousNotation { get; private set; }
+
     #endregion
 
     #region :: Methods ::
@@ -75,6 +84,8 @@ public class BoardManagementModel
     {
         _tileMapper.Clear();
         _updatedPositions.Clear();
+
+        PreviousNotation = string.Empty;
     }
 
     /// <summary>
@@ -88,9 +99,9 @@ public class BoardManagementModel
     /// </summary>
     /// <param name="selectedTile"> 선택된 타일 </param>
     /// <returns> 기물 이동기보 (이동이 없을 시 빈 문자열) </returns>
-    public string SelectTileAndGetNotationIfNeeded(ChessBoardTileModel selectedTile)
+    public TileSelectedResultModel SelectTileAndGetNotationIfNeeded(ChessBoardTileModel selectedTile)
     {
-        var result = string.Empty;
+        var result = new TileSelectedResultModel();
 
         // 1. 이미 선택한 모델이면 수행하지 않음.
         if (_selectedTileModel == selectedTile) return result;
@@ -102,7 +113,13 @@ public class BoardManagementModel
             if (IsMoveLegal(_selectedTileModel, selectedTile))
             {
                 //2-1. 기물이동 기보 문자열 저장
-                result = $"{_selectedTileModel.Position.Code}{selectedTile.Position.Code}";
+                result.Notation = $"{_selectedTileModel.Position.Code}{selectedTile.Position.Code}";
+
+                //2-2. 기물승격 필요여부 저장
+                result.IsNeedToPromotion = IsNeedToPromotion(_selectedTileModel, selectedTile);
+
+                //2-3. 기보 기억
+                PreviousNotation = result.Notation;
             }
 
             //선택 해제시켜줌.
@@ -124,7 +141,6 @@ public class BoardManagementModel
 
         return result;
     }
-
 
     /// <summary>
     /// 현재 모든 칸의 하이라이트를 제거
@@ -289,6 +305,17 @@ public class BoardManagementModel
     /// <param name="position"> 확인하고자 하는 포지션 </param>
     /// <returns> 변경이력 여부 </returns>
     public bool IsTileUpdated(ChessPosition position) => _updatedPositions.Contains(position);
+
+    /// <summary>
+    /// 기물승격이 필요한지 여부 판단
+    /// </summary>
+    /// <param name="from"> 움직이기전 타일 </param>
+    /// <param name="to"> 움직일 타일 </param>
+    /// <returns> 기물승격 필요 여부 </returns>
+    private static bool IsNeedToPromotion(ChessBoardTileModel from, ChessBoardTileModel to)
+    {
+        return from.Unit is PawnModel pawn && to.Position.IsEndPointColumnInBoard;
+    }
 
     #endregion
 }
