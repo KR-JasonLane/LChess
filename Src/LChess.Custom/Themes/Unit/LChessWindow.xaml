@@ -58,6 +58,22 @@
                                     <bhv:TitleBarMouseBehavior/>
                                 </i:Interaction.Behaviors>
 
+                                <StackPanel VerticalAlignment="Center"
+                                            HorizontalAlignment="Left"
+                                            Orientation="Horizontal">
+                                    
+                                    <Image Source="/LChess.Util;component/Resource/TitleIcon.png"
+                                           Width="30"
+                                           Height="30"
+                                           Margin="5"/>
+
+                                    <TextBlock Text="Made by LeeCoder"
+                                               VerticalAlignment="Center"
+                                               FontWeight="Bold"
+                                               FontSize="17"/>
+
+                                </StackPanel>
+
                                 <StackPanel Orientation="Horizontal"
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Right">

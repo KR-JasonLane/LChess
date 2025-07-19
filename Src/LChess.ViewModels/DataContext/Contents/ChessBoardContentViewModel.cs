@@ -92,12 +92,16 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
         // 유저기물이 흑색이면 백색인 AI부터 시작
         if(userColor == PieceColorType.Black)
         {
+            WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(true));
+
             // 1초 대기 (빠른진행을 막기 위함)
             await Task.Delay(1000);
 
             //AI 턴 처리
             var aiMove = await _chessGameService.ExecuteAIMove();
             BoardModel.ParseCodes(aiMove);
+
+            WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
         }
     }
 
@@ -180,11 +184,16 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
                 /// ai 턴 처리
                 ////////////////////////////////////////
                 {
+                    WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(true));
+
                     var aiMoveResult = await _chessGameService.ExecuteAIMove();
                     BoardModel.ParseCodes(aiMoveResult);
 
+                    WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
+
                     var bestMoveResult = await _chessGameService.BestMove();
                     CheckEndGame(aiMoveResult, bestMoveResult);
+
                 }
             }
         }

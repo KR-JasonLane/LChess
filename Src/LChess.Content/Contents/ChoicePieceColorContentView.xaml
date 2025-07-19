@@ -44,8 +44,16 @@
                              HorizontalAlignment="Left"
                              Command="{Binding SelectColorCommand}"
                              CommandParameter="{x:Static enum:PieceColorType.Black}"/>
-            
+
         </Grid>
+
+        <ui:LChessIconButton IconType="Back"
+                             Width="50"
+                             Height="50"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Margin="10"
+                             Command="{Binding MoveToHomeCommand}"/>
 
     </Grid>
 

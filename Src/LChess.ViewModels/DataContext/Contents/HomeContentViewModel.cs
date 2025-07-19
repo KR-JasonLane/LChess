@@ -54,6 +54,11 @@ public partial class HomeContentViewModel : ObservableRecipient, IContentViewMod
 	[RelayCommand]
 	private void MoveToChoicePieceColor() => WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChoicePieceColor));
 
-	#endregion
+    /// <summary>
+    /// 체스 게임으로 이동
+    /// </summary>
+    [RelayCommand]
+    private void MoveToUserSetting() => WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.UserSetting));
+    #endregion
 
 }

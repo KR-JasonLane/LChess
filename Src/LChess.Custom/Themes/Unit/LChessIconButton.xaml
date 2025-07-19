@@ -1,0 +1,82 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="clr-namespace:LChess.Custom.UI.Unit">
+
+    <Style TargetType="{x:Type ui:LChessIconButton}">
+        <Setter Property="MinWidth" Value="50"/>
+        <Setter Property="MinHeight" Value="20"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ui:LChessIconButton}">
+                    <Grid>
+
+                        <Ellipse x:Name="border"
+                                 Width="{TemplateBinding Width}"
+                                 Height="{TemplateBinding Height}"
+                                 Fill="Transparent"
+                                 Opacity="0.3"/>
+
+
+                        <Image Stretch="Fill"
+                               Margin="8"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               IsHitTestVisible="False">
+                            
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+
+                                    <Style.Resources>
+
+                                        <DrawingImage x:Key="BackIcon">
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup ClipGeometry="M0,0 V1024 H1024 V0 H0 Z">
+                                                    <DrawingGroup.Transform>
+                                                        <TranslateTransform X="0.20298671722412109" Y="0.71508008241653442" />
+                                                    </DrawingGroup.Transform>
+                                                    <GeometryDrawing Brush="#FF000000" Geometry="F1 M1024,1024z M0,0z M222.927,580.115L524.281,908.627C548.635,937.335 545.106,980.351 516.398,1004.705 487.69,1029.059 444.674,1025.53 420.32,996.822L19.576,559.963A67.846,67.846,0,0,1,5.792,539.941A68.03,68.03,0,0,1,-0.185,510.453L-0.184,510.39A68.343,68.343,0,0,1,7.081,481.256A68.28,68.28,0,0,1,8.465,478.656A67.59,67.59,0,0,1,18.567,464.969L429.966,21.113C455.558,-6.498 498.687,-8.134 526.297,17.457 553.907,43.048 555.544,86.178 529.953,113.788L224.088,443.784 954.548,443.784C992.195,443.784 1022.714,474.303 1022.714,511.95 1022.714,549.597 992.195,580.116 954.548,580.116L222.927,580.116z" />
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+                                        
+                                        <DrawingImage x:Key="SaveIcon">
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+                                                    <GeometryDrawing Geometry="F1 M24,24z M0,0z M8,20L6,20C4.89543,20,4,19.1046,4,18L4,6C4,4.89543,4.89543,4,6,4L9,4 M8,20L8,14C8,13.4477,8.44772,13,9,13L15,13C15.5523,13,16,13.4477,16,14L16,20 M8,20L16,20 M16,20L18,20C19.1046,20,20,19.1046,20,18L20,8.82843C20,8.29799,19.7893,7.78929,19.4142,7.41421L16.5858,4.58579C16.2107,4.21071,15.702,4,15.1716,4L15,4 M15,4L15,7C15,7.55228,14.5523,8,14,8L10,8C9.44772,8,9,7.55228,9,7L9,4 M15,4L9,4">
+                                                        <GeometryDrawing.Pen>
+                                                            <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
+                                                        </GeometryDrawing.Pen>
+                                                    </GeometryDrawing>
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+
+                                    </Style.Resources>
+
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessIconButton}}, Path=IconType}" Value="Back">
+                                            <Setter Property="Source" Value="{StaticResource BackIcon}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessIconButton}}, Path=IconType}" Value="Save">
+                                            <Setter Property="Source" Value="{StaticResource SaveIcon}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+
+                                </Style>
+                            </Image.Style>
+                        </Image>
+
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Fill" Value="White"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+</ResourceDictionary>

@@ -24,5 +24,5 @@ public enum LChessContentType
 	/// <summary>
 	/// 설정 컨텐츠
 	/// </summary>
-	Settings,
+	UserSetting,
 }

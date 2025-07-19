@@ -37,9 +37,9 @@ internal class IocBuilder
 		/// Service 등록
 		////////////////////////////////////////
 		{
+			services.AddSingleton<IUserSettingService    , UserSettingService    >();
 			services.AddSingleton<IStockfishEngineService, StockfishEngineService>();
 			services.AddSingleton<IWindowHandlingService , WindowHandlingService >();
-			services.AddSingleton<IUserSettingService    , UserSettingService    >();
 			services.AddSingleton<IChessGameService      , ChessGameService      >();
 		}
 
@@ -53,6 +53,7 @@ internal class IocBuilder
 			services.AddTransient<ChessGameContentViewModel       >();
 			services.AddTransient<ChessBoardContentViewModel      >();
 			services.AddTransient<ChoicePieceColorContentViewModel>();
+			services.AddTransient<UserSettingContentViewModel     >();
         }
 
 		return services.BuildServiceProvider();

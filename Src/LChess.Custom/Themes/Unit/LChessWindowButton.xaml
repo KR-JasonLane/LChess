@@ -18,8 +18,26 @@
                                 Height="{TemplateBinding Height}"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
-                                Background="White"
-                                Opacity="0"/>
+                                Opacity="0">
+
+                            <Border.Style>
+
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="Background" Value="Gray"/>
+
+                                    <Style.Triggers>
+
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ui:LChessWindowButton}}, Path=LChessWindowButtonType}" Value="Close">
+                                            <Setter Property="Background" Value="Red"/>
+                                        </DataTrigger>
+
+                                    </Style.Triggers>
+                                    
+                                </Style>
+                                
+                            </Border.Style>
+                            
+                        </Border>
 
                         <Image x:Name="LChessWindowButtonIconImage"
                                VerticalAlignment="Center"
@@ -85,7 +103,7 @@
 
                         <!-- 마우스 오버 트리거 -->
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Opacity" Value="0.3"/>
+                            <Setter TargetName="border" Property="Opacity" Value="0.5"/>
                         </Trigger>
 
                     </ControlTemplate.Triggers>

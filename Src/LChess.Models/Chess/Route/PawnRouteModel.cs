@@ -108,9 +108,9 @@ public class PawnRouteModel : ChessUnitRouteModelBase
         }
 
         //앙파상 위치 활성화
-        if(enPassant != ChessPosition.Invalid && managementModel.TryGetTile(enPassant, out var tile) && tile != null)
+        if(enPassant != ChessPosition.Invalid && managementModel.TryGetTile(enPassant, out var enPassantTile) && enPassantTile != null)
         {
-            tile.IsHighLightMove = true;
+            enPassantTile.IsHighLightMove = true;
         }
 
         //좌측 대각선

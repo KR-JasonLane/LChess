@@ -204,6 +204,9 @@ public class KingRouteModel : ChessUnitRouteModelBase
                     // 이미 킹이 이동한 경우는 제외했으므로, 리스트의 길이검사는 하지않음.
                     return positionList[1];
                 }
+
+                //룩과 킹 중간에 기물이 껴있으면 더이상 진행하지 않음.
+                break;
             }
         }
 

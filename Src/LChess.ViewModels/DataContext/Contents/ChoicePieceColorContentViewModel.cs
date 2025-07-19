@@ -90,5 +90,11 @@ public partial class ChoicePieceColorContentViewModel : ObservableRecipient, ICo
     [RelayCommand]
     private async Task SelectColor(PieceColorType color) => await MoveToChessGame(color);
 
+    /// <summary>
+    /// 홈으로 이동
+    /// </summary>
+    [RelayCommand]
+    private void MoveToHome() => WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.Home));
+
     #endregion
 }

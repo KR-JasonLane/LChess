@@ -6,6 +6,7 @@
         <ResourceDictionary Source="/LChess.Custom;component/Themes/Unit/LChessWindow.xaml"      />
         <ResourceDictionary Source="/LChess.Custom;component/Themes/Unit/LChessBoardTile.xaml"   />
         <ResourceDictionary Source="/LChess.Custom;component/Themes/Unit/LChessWindowButton.xaml"/>
+        <ResourceDictionary Source="/LChess.Custom;component/Themes/Unit/LChessIconButton.xaml"  />
     </ResourceDictionary.MergedDictionaries>
     
 </ResourceDictionary>
