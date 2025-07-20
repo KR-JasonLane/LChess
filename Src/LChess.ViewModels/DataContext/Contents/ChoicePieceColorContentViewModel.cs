@@ -17,14 +17,13 @@ public partial class ChoicePieceColorContentViewModel : ObservableRecipient, ICo
     /// <summary>
     /// 생성자
     /// </summary>
-    public ChoicePieceColorContentViewModel(IStockfishEngineService stockfishEngineService, IChessGameService chessGameService)
+    public ChoicePieceColorContentViewModel(IStockfishEngineService stockfishEngineService)
     {
         ////////////////////////////////////////
         /// 서비스 등록
         ////////////////////////////////////////
         {
             _stockfishEngineService = stockfishEngineService;
-            _chessGameService       = chessGameService      ;
         }
         
         ////////////////////////////////////////
@@ -43,11 +42,6 @@ public partial class ChoicePieceColorContentViewModel : ObservableRecipient, ICo
     /// Stockfish 엔진 관리 서비스
     /// </summary>
     private readonly IStockfishEngineService _stockfishEngineService;
-
-    /// <summary>
-    /// 체스게임 관리 서비스
-    /// </summary>
-    private readonly IChessGameService _chessGameService;
 
     #endregion
 
@@ -78,6 +72,14 @@ public partial class ChoicePieceColorContentViewModel : ObservableRecipient, ICo
 
         //5. 딤 끄기
         WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
+    }
+
+    /// <summary>
+    /// 메신저 구독해제
+    /// </summary>
+    public void UnRegisterMessengers()
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 
     #endregion

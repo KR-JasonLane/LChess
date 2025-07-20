@@ -1,4 +1,5 @@
 ﻿using LChess.Abstract.Service;
+
 using LChess.Models.Result;
 
 namespace LChess.Service.Game;
@@ -49,7 +50,7 @@ public class ChessGameService : IChessGameService
     {
         _notations.Clear();
 		await _stockfishEngineService.StartEngineAsync();
-        await _stockfishEngineService.SendCommandAsync("ucinewgame", string.Empty);
+        await _stockfishEngineService.SendCommandAsync("position startpos", string.Empty);
 
         return await _stockfishEngineService.GetCurrentBoard();
     }

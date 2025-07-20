@@ -2,6 +2,7 @@
 
 using LChess.ViewModels.Shell;
 using LChess.ViewModels.DataContext.Contents;
+using LChess.ViewModels.DataContext.Popup;
 
 using LChess.Service.Setting;
 using LChess.Service.Window;
@@ -41,7 +42,8 @@ internal class IocBuilder
 			services.AddSingleton<IStockfishEngineService, StockfishEngineService>();
 			services.AddSingleton<IWindowHandlingService , WindowHandlingService >();
 			services.AddSingleton<IChessGameService      , ChessGameService      >();
-		}
+			services.AddSingleton<IPopupWindowService    , PopupWindowService    >();
+        }
 
 
 		////////////////////////////////////////
@@ -56,6 +58,15 @@ internal class IocBuilder
 			services.AddTransient<UserSettingContentViewModel     >();
         }
 
-		return services.BuildServiceProvider();
+
+		////////////////////////////////////////
+		/// Popup ViewModel 등록
+		////////////////////////////////////////
+		{
+			services.AddTransient<MessageDialogPopupWindowViewModel>();
+		}
+
+
+        return services.BuildServiceProvider();
 	}
 }

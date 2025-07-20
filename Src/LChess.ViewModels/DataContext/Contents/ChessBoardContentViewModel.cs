@@ -36,7 +36,6 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
             ContentType = LChessContentType.ChessBoard;
         }
 
-
         ////////////////////////////////////////
         /// 메시지 등록
         ////////////////////////////////////////
@@ -44,6 +43,12 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
             WeakReferenceMessenger.Default.Register<SelectUserPieceColorMessage>(this, (s, m) =>
             {
                 InitBoardSource(m.Value);
+            });
+
+            WeakReferenceMessenger.Default.Register<EndGameMessage>(this, (s, m) =>
+            {
+                BoardModel?.GameEnd();
+                _isEndGame = true;
             });
         }
 	}
@@ -72,6 +77,17 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
 	[ObservableProperty]
 	private ChessBoardModel? _boardModel;
 
+    /// <summary>
+    /// 현재 게임이 종료되었는지 확인
+    /// </summary>
+    private bool _isEndGame;
+
+    /// <summary>
+    /// 현재 턴 저장
+    /// </summary>
+    [ObservableProperty]
+    private PieceColorType _currentTurn;
+
     #endregion
 
     #region :: Methods ::
@@ -79,7 +95,7 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
     /// <summary>
     /// 보드 데이터 초기화
     /// </summary>
-    /// <param name="color"> 기준 색상 </param>
+    /// <param name="userColor"> 기준 색상 </param>
     private async void InitBoardSource(PieceColorType userColor)
     {
         //보드데이터 없으면 생성
@@ -88,6 +104,9 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
         // 새 게임 시작
         var unitCodes = await _chessGameService.NewGame();
         BoardModel.ParseCodes(unitCodes);
+
+        //백색부터 시작
+        CurrentTurn = PieceColorType.White;
 
         // 유저기물이 흑색이면 백색인 AI부터 시작
         if(userColor == PieceColorType.Black)
@@ -103,6 +122,8 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
 
             WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
         }
+
+        _isEndGame = false;
     }
 
     /// <summary>
@@ -119,7 +140,8 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
         {
             Log.Information("======================= 게임종료 [무승부] =======================");
 
-            WeakReferenceMessenger.Default.Send(new EndGameMessage(EndGameType.Draw));
+            WeakReferenceMessenger.Default.Send(new EndGameMessage(new GameResultModel(EndGameType.Draw, CurrentTurn)));
+
             return true;
         }
 
@@ -128,25 +150,34 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
         {
             Log.Information("======================= 게임종료 [체크메이트] =======================");
 
-            WeakReferenceMessenger.Default.Send(new EndGameMessage(EndGameType.CheckMate));
+            WeakReferenceMessenger.Default.Send(new EndGameMessage(new GameResultModel(EndGameType.CheckMate, CurrentTurn)));
+
             return true;
         }
 
         return false;
     }
 
-	#endregion
+    /// <summary>
+    /// 메신저 구독해제
+    /// </summary>
+    public void UnRegisterMessengers()
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(this);
+    }
 
-	#region :: Commands ::
+    #endregion
 
-	/// <summary>
-	/// 타일선택
-	/// </summary>
-	/// <param name="param"> 선택된 타일 모델 </param>
-	[RelayCommand]
+    #region :: Commands ::
+
+    /// <summary>
+    /// 타일선택
+    /// </summary>
+    /// <param name="param"> 선택된 타일 모델 </param>
+    [RelayCommand]
 	private async Task SelectTile(object param)
 	{
-		if(param is ChessBoardTileModel model && BoardModel != null)
+		if(param is ChessBoardTileModel model && BoardModel != null && !_isEndGame)
 		{
             // 체스보드 모델에 타일 선택 알려줌.
             var result = BoardModel.SelectTile(model);
@@ -156,6 +187,9 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
 
             //기보
             var notation = $"{result.Notation}";
+
+            //유저 턴 설정
+            CurrentTurn = BoardModel.UserColor;
 
             // 이동 데이터가 있으면
             if (!string.IsNullOrEmpty(notation))
@@ -184,6 +218,8 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
                 /// ai 턴 처리
                 ////////////////////////////////////////
                 {
+                    CurrentTurn = BoardModel.EnemyColor;
+
                     WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(true));
 
                     var aiMoveResult = await _chessGameService.ExecuteAIMove();
@@ -199,5 +235,15 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
         }
 	}
 
-	#endregion
+    #endregion
+
+    #region :: Events ::
+
+    /// <summary>
+    /// 현재 차례 변경 이벤트
+    /// </summary>
+    /// <param name="value"> 변경된 색상 </param>
+    partial void OnCurrentTurnChanged(PieceColorType value) => WeakReferenceMessenger.Default.Send(new CurrentTurnChangedMessage(value));
+
+    #endregion
 }

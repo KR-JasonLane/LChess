@@ -72,6 +72,14 @@ public partial class UserSettingContentViewModel : ObservableRecipient, IContent
 
     #region :: Methods ::
 
+    /// <summary>
+    /// 메신저 구독해제
+    /// </summary>
+    public void UnRegisterMessengers()
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(this);
+    }
+
     #endregion
 
     #region :: Commands ::

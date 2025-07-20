@@ -1,20 +1,74 @@
 ﻿<UserControl x:Class="LChess.Views.Contents.ChessGameContentView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+             xmlns:ui="clr-namespace:LChess.Custom.UI.Unit;assembly=LChess.Custom">
+
+    <UserControl.Resources>
+
+        <Style x:Key="CurrentTurnTextBlockStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontWeight" Value="ExtraBold"/>
+        </Style>
+
+        <Style x:Key="GameButtonStyle" TargetType="{x:Type ui:LChessButton}">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Height" Value="60"/>
+        </Style>
+            
+    </UserControl.Resources>
     
     <Grid>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="350"/>
         </Grid.ColumnDefinitions>
 
         <ContentControl Grid.Column="0"
                         Content="{Binding ChessBoardContent}"/>
 
-        <Grid Grid.Column="1">
-            
+        <Grid Grid.Column="1"
+              Background="SteelBlue">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        Margin="10">
+
+                <TextBlock Style="{StaticResource CurrentTurnTextBlockStyle}"
+                                   Text="현재순서 : "/>
+
+                <TextBlock Style="{StaticResource CurrentTurnTextBlockStyle}"
+                                   Text="백"/>
+
+            </StackPanel>
+
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto">
+
+
+
+            </ScrollViewer>
+
+            <StackPanel Grid.Row="2">
+                
+                <ui:LChessButton Content="기권"
+                                 Style="{StaticResource GameButtonStyle}"
+                                 Command="{Binding ResignCommand}"/>
+    
+                <ui:LChessButton Content="홈으로"
+                                 Style="{StaticResource GameButtonStyle}"
+                                 Command="{Binding MoveToHomeCommand}"/>
+                
+            </StackPanel>
+
         </Grid>
 
     </Grid>

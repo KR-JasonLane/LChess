@@ -24,7 +24,7 @@ public partial class HomeContentViewModel : ObservableRecipient, IContentViewMod
         {
             ContentType = LChessContentType.Home;
         }
-	}
+    }
 
     #endregion
 
@@ -40,18 +40,26 @@ public partial class HomeContentViewModel : ObservableRecipient, IContentViewMod
     /// </summary>
     public LChessContentType ContentType { get; init; }
 
-	#endregion
+    #endregion
 
-	#region :: Methods ::
+    #region :: Methods ::
 
-	#endregion
+    /// <summary>
+    /// 메신저 구독해제
+    /// </summary>
+    public void UnRegisterMessengers()
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(this);
+    }
 
-	#region :: Commands ::
+    #endregion
 
-	/// <summary>
-	/// 체스 게임으로 이동
-	/// </summary>
-	[RelayCommand]
+    #region :: Commands ::
+
+    /// <summary>
+    /// 체스 게임으로 이동
+    /// </summary>
+    [RelayCommand]
 	private void MoveToChoicePieceColor() => WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChoicePieceColor));
 
     /// <summary>

@@ -37,6 +37,16 @@ public partial class ChessBoardModel : ObservableObject
     [ObservableProperty]
     private List<List<ChessBoardTileModel>>? _source;
 
+    /// <summary>
+    /// 유저 기물색상 필드
+    /// </summary>
+    public PieceColorType UserColor => _managementModel.UserPieceColor;
+
+    /// <summary>
+    /// 적 기물 색상 필드
+    /// </summary>
+    public PieceColorType EnemyColor => UserColor == PieceColorType.White ? PieceColorType.Black : PieceColorType.White;
+
     #endregion
 
     #region :: Methods ::
@@ -159,6 +169,11 @@ public partial class ChessBoardModel : ObservableObject
         //킹 하이라이트가 있다면 삭제해줌.
         _managementModel.ClearKingHighLightsIfNeeded();
     }
+
+    /// <summary>
+    /// 모든 하이라이트 정리
+    /// </summary>
+    public void GameEnd() => _managementModel.ClearAllHighLights();
 
     #endregion
 }

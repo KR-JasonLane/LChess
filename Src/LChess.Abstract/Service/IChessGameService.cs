@@ -1,4 +1,5 @@
 ﻿using LChess.Models.Result;
+using LChess.Util.Enums;
 
 namespace LChess.Abstract.Service;
 

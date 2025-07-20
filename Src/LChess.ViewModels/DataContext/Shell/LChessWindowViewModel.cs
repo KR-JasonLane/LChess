@@ -51,6 +51,8 @@ public partial class LChessWindowViewModel : ObservableRecipient, ILChessWindowV
 			{
 				if (CurrentContent?.ContentType == m.Value) return;
 
+				CurrentContent?.UnRegisterMessengers();
+
 				CurrentContent = m.Value switch
 				{
 					LChessContentType.Home             => Ioc.Default.GetService<HomeContentViewModel            >(),
@@ -60,7 +62,7 @@ public partial class LChessWindowViewModel : ObservableRecipient, ILChessWindowV
 					_ => null
 				};
 			});
-		}
+        }
 	}
 
 	#endregion

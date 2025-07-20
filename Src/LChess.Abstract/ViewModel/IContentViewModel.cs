@@ -11,4 +11,9 @@ public interface IContentViewModel
 	/// Content Type 지정
 	/// </summary>
 	public LChessContentType ContentType { get; init; }
+
+	/// <summary>
+	/// 메신저 구독해제
+	/// </summary>
+	public void UnRegisterMessengers();
 }
