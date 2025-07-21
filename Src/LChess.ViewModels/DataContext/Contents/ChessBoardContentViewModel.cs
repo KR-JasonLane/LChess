@@ -201,6 +201,9 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
                     var userMoveResult = await _chessGameService.MovePiece(notation);
                     BoardModel.ParseCodes(userMoveResult);
 
+                    if (userMoveResult == null)
+                        return;
+
                     var bestMoveResult = await _chessGameService.BestMove();
                     if (CheckEndGame(userMoveResult, bestMoveResult)) return;
                 }
