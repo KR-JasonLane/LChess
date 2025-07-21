@@ -14,12 +14,12 @@ public class ChessGameService : IChessGameService
 	/// <summary>
 	/// 생성자
 	/// </summary>
-	public ChessGameService(IStockfishEngineService stockfishEngineService)
-	{
-		_stockfishEngineService = stockfishEngineService;
+        public ChessGameService(IStockfishEngineService stockfishEngineService)
+        {
+            _stockfishEngineService = stockfishEngineService;
 
-		_notations = new Queue<string>();
-    }
+            _notations = new List<string>();
+        }
 
 	#endregion
 
@@ -37,7 +37,12 @@ public class ChessGameService : IChessGameService
 	/// <summary>
 	/// 기물 움직임 기보
 	/// </summary>
-	private Queue<string> _notations;
+        private List<string> _notations;
+
+        /// <summary>
+        /// 직전 보드 상태
+        /// </summary>
+        private StockfishBoardCodeModel? _previousBoard;
 
     #endregion
 
@@ -49,10 +54,13 @@ public class ChessGameService : IChessGameService
     public async Task<StockfishBoardCodeModel?> NewGame()
     {
         _notations.Clear();
-		await _stockfishEngineService.StartEngineAsync();
+
+        await _stockfishEngineService.StartEngineAsync();
         await _stockfishEngineService.SendCommandAsync("position startpos", string.Empty);
 
-        return await _stockfishEngineService.GetCurrentBoard();
+        _previousBoard = await _stockfishEngineService.GetCurrentBoard();
+
+        return _previousBoard;
     }
 
     /// <summary>
@@ -63,7 +71,14 @@ public class ChessGameService : IChessGameService
 	{
         var aiMove = await BestMove();
 
-        return await MovePiece(aiMove.BestMove);
+        var result = await MovePiece(aiMove.BestMove);
+
+        if(result != null)
+        {
+            result.CurrentMove = aiMove.BestMove;
+        }
+
+        return result;
     }
 
     /// <summary>
@@ -75,8 +90,8 @@ public class ChessGameService : IChessGameService
 	{
         if (string.IsNullOrEmpty(notation) || notation.Contains("none")) return null;
 
-		// 기보 저장
-		_notations.Enqueue(notation);
+        // 기보 저장
+        _notations.Add(notation);
 
 		StringBuilder commandBuilder = new StringBuilder("position startpos moves");
 
@@ -85,9 +100,22 @@ public class ChessGameService : IChessGameService
             commandBuilder.Append($" {history}");
         }
 
-		await _stockfishEngineService.SendCommandAsync(commandBuilder.ToString(), string.Empty);
+        await _stockfishEngineService.SendCommandAsync(commandBuilder.ToString(), string.Empty);
 
         var result = await _stockfishEngineService.GetCurrentBoard();
+
+        // 보드 상태가 변하지 않았으면 마지막 기보를 삭제하고 null 반환
+        if (_previousBoard != null && IsSameBoard(_previousBoard, result))
+        {
+            if (_notations.Count > 0)
+                _notations.RemoveAt(_notations.Count - 1);
+
+            return null;
+        }
+
+        result.CurrentMove = notation;
+
+        _previousBoard = result;
 
         return result;
     }
@@ -96,11 +124,28 @@ public class ChessGameService : IChessGameService
     /// AI가 판단하는 BestMove 획득
     /// </summary>
     /// <returns> BestMove 처리결과 </returns>
-	public async Task<StockfishBestMoveModel> BestMove()
+    public async Task<StockfishBestMoveModel> BestMove()
     {
         var bestMove = await _stockfishEngineService.SendCommandAsync("go depth 20", "best");
 
         return new StockfishBestMoveModel(bestMove?.Split(' ').ElementAt(1) ?? "(none)");
+    }
+
+    /// <summary>
+    /// 두 보드 상태가 동일한지 비교
+    /// </summary>
+    private static bool IsSameBoard(StockfishBoardCodeModel a, StockfishBoardCodeModel b)
+    {
+        if (a.TileCodeList.Count != b.TileCodeList.Count)
+            return false;
+
+        for (int i = 0; i < a.TileCodeList.Count; i++)
+        {
+            if (a.TileCodeList[i] != b.TileCodeList[i])
+                return false;
+        }
+
+        return true;
     }
 
     #endregion

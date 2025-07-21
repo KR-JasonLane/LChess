@@ -4,6 +4,7 @@ using LChess.Models.Result;
 using LChess.Util.Enums;
 
 using LChess.ViewModels.Messenger;
+using System.Collections.ObjectModel;
 
 namespace LChess.ViewModels.DataContext.Contents;
 
@@ -36,7 +37,8 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
         /// 초기화
         ////////////////////////////////////////
         {
-            //CurrentTurn = string.Empty;
+            History = new();
+            IsEndGame = false;
         }
 
 
@@ -56,6 +58,9 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
             {
                 WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(true));
 
+                IsEndGame = true;
+                Winner = m.Value.Winner;
+
                 var endType = m.Value.Type switch
                 {
                     EndGameType.CheckMate => "체크메이트! "   ,
@@ -64,7 +69,7 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
                     _ => string.Empty
                 };
 
-                var winner = m.Value.Winner switch
+                var winner = Winner switch
                 {
                     PieceColorType.Black => "흑이 승리했습니다.",
                     PieceColorType.White => "백이 승리했습니다.",
@@ -79,6 +84,21 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
             WeakReferenceMessenger.Default.Register<CurrentTurnChangedMessage>(this, (s, m) =>
             {
                 CurrentTurn = m.Value;
+            });
+
+            WeakReferenceMessenger.Default.Register<MatchStatusMessage>(this, (s, m) =>
+            {
+                var statusModel = m.Value;
+
+                CurrentTurn = statusModel.NextTurn;
+
+                var currentTurnString = statusModel.CurrentTurn == PieceColorType.White ? "백" : "흑";
+
+                var notation = statusModel.Notation;
+
+                var history = $"{History.Count + 1}. {currentTurnString} : {notation.Substring(0, 2)} → {notation.Substring(2, 2)}";
+
+                History.Add(history);
             });
         }
     }
@@ -107,8 +127,29 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
 	[ObservableProperty]
 	private IContentViewModel? _chessBoardContent;
 
+    /// <summary>
+    /// 현재턴
+    /// </summary>
     [ObservableProperty]
     private PieceColorType _currentTurn;
+
+    /// <summary>
+    /// 승자
+    /// </summary>
+    [ObservableProperty]
+    private PieceColorType _winner;
+
+    /// <summary>
+    /// 이동 이력
+    /// </summary>
+    [ObservableProperty]
+    private ObservableCollection<string> _history;
+
+    /// <summary>
+    /// 현재 게임이 종료되었는지 여부
+    /// </summary>
+    [ObservableProperty]
+    private bool _isEndGame;
 
     #endregion
 
@@ -124,6 +165,23 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
         WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 
+    /// <summary>
+    /// 기보를 저장할건지 여부에 따라 기보 저장
+    /// </summary>
+    private void SaveNotationIfNeeded()
+    {
+        WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(true));
+
+        var result = _popupWindowService.ShowMessagePopup("기보를 저장할까요?", "예", "아니요");
+
+        if (result?.ButtonResult == true)
+        {
+            //TODO : 기보 저장
+        }
+
+        WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
+    }
+
     #endregion
 
     #region :: Commands ::
@@ -132,7 +190,33 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
     /// 홈으로 이동
     /// </summary>
     [RelayCommand]
-    private void MoveToHome() => WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.Home));
+    private void MoveToHome()
+    {
+        //게임이 끝났을 경우
+        if(IsEndGame)
+        {
+            //기보를 저장할건지 여부를 물은뒤
+            SaveNotationIfNeeded();
+
+            //홈으로 이동
+            WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.Home));
+
+            return;
+        }
+
+        //Dim On
+        WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(true));
+
+        //홈으로 이동할건지 입력받음
+        var result = _popupWindowService.ShowMessagePopup("게임을 종료하고 홈으로 이동할까요?", "예", "아니요");
+
+        //Dim Off
+        WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
+
+        // '예'를 선택했으면 홈으로 이동
+        if (result?.ButtonResult == true)
+            WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.Home));
+    }
 
     /// <summary>
     /// 기권
@@ -140,9 +224,40 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
     [RelayCommand]
     private void Resign()
     {
-        var winner = CurrentTurn == PieceColorType.White ? PieceColorType.Black : PieceColorType.White;
+        //Dim On
+        WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(true));
 
-        WeakReferenceMessenger.Default.Send(new EndGameMessage(new GameResultModel(EndGameType.Resign, winner)));
+        //기권여부 판단
+        var result = _popupWindowService.ShowMessagePopup("기권할까요?", "예", "아니요");
+
+        //'예'선택 시
+        if(result?.ButtonResult == true)
+        {
+            //승자 설정
+            Winner = CurrentTurn == PieceColorType.White ? PieceColorType.Black : PieceColorType.White;
+
+            //게임종료 로깅
+            Log.Information("======================= 게임종료 [기권] =======================");
+
+            //게임종료 메시지
+            WeakReferenceMessenger.Default.Send(new EndGameMessage(new GameResultModel(EndGameType.Resign, Winner)));
+        }
+
+        //Dim Off
+        WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
+    }
+
+    /// <summary>
+    /// 새게임
+    /// </summary>
+    [RelayCommand]
+    private void NewGame()
+    {
+        //기보저장
+        SaveNotationIfNeeded();
+
+        //컬러선택으로 이동
+        WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChoicePieceColor));
     }
 
     #endregion

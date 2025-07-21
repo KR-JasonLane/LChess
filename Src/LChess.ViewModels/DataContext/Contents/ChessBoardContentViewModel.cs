@@ -2,7 +2,9 @@
 using LChess.Abstract.ViewModel;
 
 using LChess.Models.Chess;
+using LChess.Models.Chess.Match;
 using LChess.Models.Result;
+
 using LChess.Util.Enums;
 
 using LChess.ViewModels.Messenger;
@@ -120,6 +122,8 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
             var aiMove = await _chessGameService.ExecuteAIMove();
             BoardModel.ParseCodes(aiMove);
 
+            NotifyMatchStatus(new MatchStatusModel(aiMove?.CurrentMove ?? string.Empty, CurrentTurn, false));
+
             WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
         }
 
@@ -166,6 +170,8 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
         WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 
+    public void NotifyMatchStatus(MatchStatusModel model) => WeakReferenceMessenger.Default.Send(new MatchStatusMessage(model));
+
     #endregion
 
     #region :: Commands ::
@@ -201,6 +207,11 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
                     var userMoveResult = await _chessGameService.MovePiece(notation);
                     BoardModel.ParseCodes(userMoveResult);
 
+                    if (userMoveResult == null)
+                        return;
+
+                    NotifyMatchStatus(new MatchStatusModel(notation, CurrentTurn, userMoveResult.IsCheck));
+
                     var bestMoveResult = await _chessGameService.BestMove();
                     if (CheckEndGame(userMoveResult, bestMoveResult)) return;
                 }
@@ -227,9 +238,10 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
 
                     WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
 
+                    NotifyMatchStatus(new MatchStatusModel(aiMoveResult?.CurrentMove ?? string.Empty, CurrentTurn, aiMoveResult?.IsCheck ?? false));
+
                     var bestMoveResult = await _chessGameService.BestMove();
                     CheckEndGame(aiMoveResult, bestMoveResult);
-
                 }
             }
         }

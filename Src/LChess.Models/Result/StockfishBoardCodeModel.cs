@@ -14,6 +14,8 @@ public class StockfishBoardCodeModel
     {
         TileCodeList = new();
         CheckerList  = new();
+
+        CurrentMove = string.Empty;
     }
 
     #endregion
@@ -29,6 +31,11 @@ public class StockfishBoardCodeModel
     /// Stockfish 엔진에서 반환하는 체크중인 기물 리스트
     /// </summary>
     public List<string> CheckerList { get; init; }
+
+    /// <summary>
+    /// 현재 이동기보
+    /// </summary>
+    public string CurrentMove { get; set; }
 
     /// <summary>
     /// 현재 체크상태인지 여부
