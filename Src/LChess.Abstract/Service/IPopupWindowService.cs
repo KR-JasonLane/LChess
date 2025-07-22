@@ -1,4 +1,4 @@
-﻿using LChess.Models.Result;
+using LChess.Models.Result;
 
 namespace LChess.Abstract.Service;
 
@@ -15,7 +15,7 @@ public interface IPopupWindowService
     /// <param name="okButtonContent"> 확인버튼 텍스트 </param>
     /// <param name="cancelButtonContent"> 취소버튼 텍스트 </param>
     public DialogResultModel? ShowMessagePopup(string message, string okButtonContent, string cancelButtonContent);
-
+    
     /// <summary>
     /// 현재 띄워져있는 팝업 윈도우 닫기
     /// </summary>

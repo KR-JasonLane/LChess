@@ -1,4 +1,4 @@
-﻿namespace LChess.ViewModels.Messenger;
+namespace LChess.ViewModels.Messenger;
 
 /// <summary>
 /// 윈도우 Dim 처리 상호작용 메시지

@@ -1,4 +1,4 @@
-﻿namespace LChess.Util.Enums;
+namespace LChess.Util.Enums;
 
 /// <summary>
 /// WeakReferenceMessenger 토큰 타입

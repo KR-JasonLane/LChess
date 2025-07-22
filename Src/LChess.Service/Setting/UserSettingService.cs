@@ -1,4 +1,4 @@
-﻿using LChess.Abstract.Service;
+using LChess.Abstract.Service;
 using LChess.Models.Setting;
 
 namespace LChess.Service.Setting;
@@ -9,24 +9,24 @@ namespace LChess.Service.Setting;
 public class UserSettingService : IUserSettingService
 {
     #region :: Constructor ::
-
+    
     /// <summary>
     /// 생성자
     /// </summary>
     public UserSettingService()
     {
-
+        
     }
-
+    
     #endregion
-
+    
     #region :: Properties ::
-
+    
     #endregion
-
-
+    
+    
     #region :: Methods ::
-
+    
     /// <summary>
     /// 사용자 설정 모델을 불러옴.
     /// </summary>
@@ -35,7 +35,7 @@ public class UserSettingService : IUserSettingService
     {
         return new();
     }
-
+    
     /// <summary>
     /// 사용자 설정을 저장
     /// </summary>
@@ -45,11 +45,11 @@ public class UserSettingService : IUserSettingService
     {
         return true;
     }
-
+    
     #endregion
-
+    
     #region :: Commands ::
-
+    
     #endregion
-
+    
 }

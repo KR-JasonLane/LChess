@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 
 namespace LChess.Util.Debugging;
 
@@ -7,13 +7,13 @@ namespace LChess.Util.Debugging;
 /// </summary>
 public class LogBuilder
 {
-	/// <summary>
-	/// 로그 객체를 빌드
-	/// </summary>
-	public static void Build()
-	{
-		Log.Logger = new LoggerConfiguration()
-			.WriteTo.File($"logs/.log", rollingInterval: RollingInterval.Day)
-			.CreateLogger();
-	}
+    /// <summary>
+    /// 로그 객체를 빌드
+    /// </summary>
+    public static void Build()
+    {
+        Log.Logger = new LoggerConfiguration()
+        .WriteTo.File($"logs/.log", rollingInterval: RollingInterval.Day)
+        .CreateLogger();
+    }
 }

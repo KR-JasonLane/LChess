@@ -1,4 +1,4 @@
-﻿namespace LChess.Util.Enums;
+namespace LChess.Util.Enums;
 
 /// <summary>
 /// LChess에서 사용되는 아이콘 타입 정의

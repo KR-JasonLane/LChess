@@ -1,4 +1,4 @@
-﻿using LChess.Util.Enums;
+using LChess.Util.Enums;
 
 namespace LChess.ViewModels.Messenger;
 

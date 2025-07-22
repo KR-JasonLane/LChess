@@ -1,4 +1,4 @@
-﻿namespace LChess.Custom.UI.Unit;
+namespace LChess.Custom.UI.Unit;
 
 /// <summary>
 /// LChess 커스텀 버튼

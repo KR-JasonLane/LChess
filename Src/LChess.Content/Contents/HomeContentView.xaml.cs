@@ -1,4 +1,4 @@
-﻿namespace LChess.Views.Contents;
+namespace LChess.Views.Contents;
 
 /// <summary>
 /// HomeContentView.xaml에 대한 상호 작용 논리

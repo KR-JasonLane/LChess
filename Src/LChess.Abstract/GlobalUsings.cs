@@ -1,1 +1,1 @@
-﻿global using System.Windows.Input;
+global using System.Windows.Input;

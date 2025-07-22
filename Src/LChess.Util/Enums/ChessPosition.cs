@@ -1,4 +1,4 @@
-﻿namespace LChess.Util.Enums;
+namespace LChess.Util.Enums;
 
 /// <summary>
 /// 체스 위치 열거형
@@ -9,7 +9,7 @@ public enum ChessPosition
     /// 잘못된 위치일때, 초기화 시 적용
     /// </summary>
     Invalid = -1,
-
+    
     /// <summary>
     /// 체스 보드 좌표를 숫자로 표기
     /// </summary>

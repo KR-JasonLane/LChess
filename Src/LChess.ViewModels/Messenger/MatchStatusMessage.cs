@@ -1,4 +1,4 @@
-﻿using LChess.Models.Chess.Match;
+using LChess.Models.Chess.Match;
 
 namespace LChess.ViewModels.Messenger;
 
@@ -7,5 +7,5 @@ namespace LChess.ViewModels.Messenger;
 /// </summary>
 public class MatchStatusMessage : ValueChangedMessage<MatchStatusModel>
 {
-    public MatchStatusMessage(MatchStatusModel value) : base(value) { } 
+    public MatchStatusMessage(MatchStatusModel value) : base(value) { }
 }

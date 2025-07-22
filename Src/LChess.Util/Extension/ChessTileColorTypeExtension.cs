@@ -1,4 +1,4 @@
-﻿using LChess.Util.Enums;
+using LChess.Util.Enums;
 
 namespace LChess.Util.Extension;
 
@@ -19,6 +19,6 @@ public static class ChessTileColorTypeExtension
             ChessTileColorType.Dark  => ChessTileColorType.Light,
             ChessTileColorType.Light => ChessTileColorType.Dark ,
             _ => tileColor
-        };
+            };
+        }
     }
-}

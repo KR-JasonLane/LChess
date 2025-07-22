@@ -1,4 +1,4 @@
-﻿namespace LChess.Util.Converter;
+namespace LChess.Util.Converter;
 
 /// <summary>
 /// 같은문자열인지 여부를 Visibility형태로 변경해주는 컨버터
@@ -19,7 +19,7 @@ public class StringMatchToVisibilityConverter : IValueConverter
         {
             return Visibility.Visible;
         }
-
+        
         return Visibility.Collapsed;
     }
     /// <summary>

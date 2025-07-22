@@ -1,4 +1,4 @@
-﻿using LChess.Util.Enums;
+using LChess.Util.Enums;
 
 namespace LChess.Models.Result;
 
@@ -8,7 +8,7 @@ namespace LChess.Models.Result;
 public class GameResultModel
 {
     #region :: Constructor ::
-
+    
     /// <summary>
     /// 생성자
     /// </summary>
@@ -17,20 +17,20 @@ public class GameResultModel
         Type = type;
         Winner = winner;
     }
-
+    
     #endregion
-
+    
     #region :: Properties ::
-
+    
     /// <summary>
     /// 게임종료 타입
     /// </summary>
     public EndGameType Type;
-
+    
     /// <summary>
     /// 승자
     /// </summary>
     public PieceColorType Winner;
-
+    
     #endregion
 }

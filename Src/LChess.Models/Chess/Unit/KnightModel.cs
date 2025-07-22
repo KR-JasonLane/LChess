@@ -1,4 +1,4 @@
-﻿using LChess.Models.Chess.Unit.Base;
+using LChess.Models.Chess.Unit.Base;
 
 using LChess.Models.Chess.Board;
 
@@ -12,16 +12,16 @@ namespace LChess.Models.Chess.Unit;
 public partial class KnightModel : ChessUnitModelBase
 {
     #region :: Constructor ::
-
+    
     public KnightModel(PieceColorType pieceColorType, ChessPosition position, char originalCode) : base(ChessUnitType.Knight, pieceColorType, position, originalCode)
     {
-
+        
     }
-
+    
     #endregion
-
+    
     #region Methods
-
+    
     #endregion
-
+    
 }

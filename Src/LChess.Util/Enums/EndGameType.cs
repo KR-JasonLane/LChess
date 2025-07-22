@@ -1,4 +1,4 @@
-﻿namespace LChess.Util.Enums;
+namespace LChess.Util.Enums;
 
 /// <summary>
 /// 게임종료 종류

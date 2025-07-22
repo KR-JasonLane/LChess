@@ -1,4 +1,4 @@
-﻿global using System.Windows;
+global using System.Windows;
 
 
 global using Microsoft.Extensions.DependencyInjection;

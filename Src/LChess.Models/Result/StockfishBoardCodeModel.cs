@@ -1,4 +1,4 @@
-﻿namespace LChess.Models.Result;
+namespace LChess.Models.Result;
 
 /// <summary>
 /// Stockfish 엔진에서 반환하는 Draw 결과 모델
@@ -6,7 +6,7 @@
 public class StockfishBoardCodeModel
 {
     #region :: Constructor ::
-
+    
     /// <summary>
     /// 생성자
     /// </summary>
@@ -14,39 +14,39 @@ public class StockfishBoardCodeModel
     {
         TileCodeList = new();
         CheckerList  = new();
-
+        
         CurrentMove = string.Empty;
     }
-
+    
     #endregion
-
+    
     #region :: Properties ::
-
+    
     /// <summary>
     /// Stockfish 엔진에서 반환하는 타일 코드 리스트
     /// </summary>
     public List<string> TileCodeList { get; init; }
-
+    
     /// <summary>
     /// Stockfish 엔진에서 반환하는 체크중인 기물 리스트
     /// </summary>
     public List<string> CheckerList { get; init; }
-
+    
     /// <summary>
     /// 현재 이동기보
     /// </summary>
     public string CurrentMove { get; set; }
-
+    
     /// <summary>
     /// 현재 체크상태인지 여부
     /// </summary>
     public bool IsCheck => CheckerList.Count > 0 && !string.IsNullOrEmpty(CheckerList.First());
-
+    
     #endregion
-
-
+    
+    
     #region :: Methods ::
-
+    
     /// <summary>
     /// 타일 코드리스트 새로 설정
     /// </summary>
@@ -56,7 +56,7 @@ public class StockfishBoardCodeModel
         TileCodeList.Clear();
         TileCodeList.AddRange(tileCodeList);
     }
-
+    
     /// <summary>
     /// 체크 기물 리스트 새로 설정
     /// </summary>
@@ -66,10 +66,10 @@ public class StockfishBoardCodeModel
         CheckerList.Clear();
         CheckerList.AddRange(checkerList);
     }
-
+    
     #endregion
-
+    
     #region :: Commands ::
-
+    
     #endregion
 }

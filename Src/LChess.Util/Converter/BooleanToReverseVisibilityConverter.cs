@@ -1,4 +1,4 @@
-﻿namespace LChess.Util.Converter;
+namespace LChess.Util.Converter;
 
 /// <summary>
 /// Boolean 값의 반대인 Visibility로 변환하는 컨버터
@@ -19,7 +19,7 @@ public class BooleanToReverseVisibilityConverter : IValueConverter
         {
             return boolValue ? Visibility.Collapsed : Visibility.Visible;
         }
-
+        
         return Visibility.Collapsed;
     }
     /// <summary>
@@ -31,7 +31,7 @@ public class BooleanToReverseVisibilityConverter : IValueConverter
         {
             return visibility == Visibility.Collapsed;
         }
-
+        
         return false;
     }
 }

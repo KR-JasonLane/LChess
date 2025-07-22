@@ -1,4 +1,4 @@
-﻿using LChess.Models.Setting;
+using LChess.Models.Setting;
 
 namespace LChess.Abstract.Service;
 
@@ -12,7 +12,7 @@ public interface IUserSettingService
     /// </summary>
     /// <returns> 사용자설정 모델 </returns>
     public UserSettingModel GetUserSettingModel();
-
+    
     /// <summary>
     /// 사용자 설정을 저장
     /// </summary>
