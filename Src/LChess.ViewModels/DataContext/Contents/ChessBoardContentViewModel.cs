@@ -16,12 +16,12 @@ namespace LChess.ViewModels.DataContext.Contents;
 /// </summary>
 public partial class ChessBoardContentViewModel : ObservableRecipient, IContentViewModel
 {
-	#region :: Constructor ::
+    #region :: Constructor ::
 
-	/// <summary>
-	/// 생성자
-	/// </summary>
-	public ChessBoardContentViewModel(IChessGameService chessGameService)
+    /// <summary>
+    /// 생성자
+    /// </summary>
+    public ChessBoardContentViewModel(IChessGameService chessGameService)
     {
         ////////////////////////////////////////
         /// 서비스 등록
@@ -53,7 +53,7 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
                 _isEndGame = true;
             });
         }
-	}
+    }
 
     #endregion
 
@@ -73,11 +73,11 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
     /// </summary>
     public LChessContentType ContentType { get; init; }
 
-	/// <summary>
-	/// 체스보드 데이터 소스
-	/// </summary>
-	[ObservableProperty]
-	private ChessBoardModel? _boardModel;
+    /// <summary>
+    /// 체스보드 데이터 소스
+    /// </summary>
+    [ObservableProperty]
+    private ChessBoardModel? _boardModel;
 
     /// <summary>
     /// 현재 게임이 종료되었는지 확인
@@ -181,10 +181,10 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
     /// </summary>
     /// <param name="param"> 선택된 타일 모델 </param>
     [RelayCommand]
-	private async Task SelectTile(object param)
-	{
-		if(param is ChessBoardTileModel model && BoardModel != null && !_isEndGame)
-		{
+    private async Task SelectTile(object param)
+    {
+        if(param is ChessBoardTileModel model && BoardModel != null && !_isEndGame)
+        {
             // 체스보드 모델에 타일 선택 알려줌.
             var result = BoardModel.SelectTile(model);
 
@@ -245,7 +245,7 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
                 }
             }
         }
-	}
+    }
 
     #endregion
 

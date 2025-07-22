@@ -13,9 +13,9 @@ namespace LChess.ViewModels.DataContext.Contents;
 /// </summary>
 public partial class ChessGameContentViewModel : ObservableRecipient, IContentViewModel
 {
-	#region :: Constructor ::
+    #region :: Constructor ::
 
-	public ChessGameContentViewModel(IPopupWindowService popupWindowService, IChessGameService chessGameService)
+    public ChessGameContentViewModel(IPopupWindowService popupWindowService, IChessGameService chessGameService)
     {
         ////////////////////////////////////////
         /// 서비스 등록
@@ -47,7 +47,7 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
         ////////////////////////////////////////
         {
             ChessBoardContent = Ioc.Default.GetService<ChessBoardContentViewModel>();
-		}
+        }
 
 
         ////////////////////////////////////////
@@ -121,11 +121,11 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
     /// </summary>
     public LChessContentType ContentType { get; init; }
 
-	/// <summary>
-	/// 체스보드 
-	/// </summary>
-	[ObservableProperty]
-	private IContentViewModel? _chessBoardContent;
+    /// <summary>
+    /// 체스보드 
+    /// </summary>
+    [ObservableProperty]
+    private IContentViewModel? _chessBoardContent;
 
     /// <summary>
     /// 현재턴

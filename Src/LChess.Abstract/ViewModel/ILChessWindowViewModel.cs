@@ -5,8 +5,8 @@
 /// </summary>
 public interface ILChessWindowViewModel
 {
-	/// <summary>
-	/// 현재 Content 
-	/// </summary>
-	public IContentViewModel CurrentContent { get; set; }
+    /// <summary>
+    /// 현재 Content 
+    /// </summary>
+    public IContentViewModel CurrentContent { get; set; }
 }

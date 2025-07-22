@@ -9,11 +9,11 @@ namespace LChess.Service.Game;
 /// </summary>
 public class ChessGameService : IChessGameService
 {
-	#region :: Constructure ::
+    #region :: Constructure ::
 
-	/// <summary>
-	/// 생성자
-	/// </summary>
+    /// <summary>
+    /// 생성자
+    /// </summary>
         public ChessGameService(IStockfishEngineService stockfishEngineService)
         {
             _stockfishEngineService = stockfishEngineService;
@@ -21,22 +21,22 @@ public class ChessGameService : IChessGameService
             _notations = new List<string>();
         }
 
-	#endregion
+    #endregion
 
-	#region :: Services ::
+    #region :: Services ::
 
-	/// <summary>
-	/// 엔진관리 서비스
-	/// </summary>
-	private readonly IStockfishEngineService _stockfishEngineService;
+    /// <summary>
+    /// 엔진관리 서비스
+    /// </summary>
+    private readonly IStockfishEngineService _stockfishEngineService;
 
-	#endregion
+    #endregion
 
-	#region :: Properties ::
+    #region :: Properties ::
 
-	/// <summary>
-	/// 기물 움직임 기보
-	/// </summary>
+    /// <summary>
+    /// 기물 움직임 기보
+    /// </summary>
         private List<string> _notations;
 
         /// <summary>
@@ -68,7 +68,7 @@ public class ChessGameService : IChessGameService
     /// </summary>
     /// <returns> AI 판단 후 기물코드 반환 </returns>
     public async Task<StockfishBoardCodeModel?> ExecuteAIMove()
-	{
+    {
         var aiMove = await BestMove();
 
         var result = await MovePiece(aiMove.BestMove);
@@ -87,16 +87,16 @@ public class ChessGameService : IChessGameService
     /// <param name="notation"> 기물이동 기보 문자열 </param>
     /// <returns> Stockfish 기물 코드 </returns>
     public async Task<StockfishBoardCodeModel?> MovePiece(string? notation)
-	{
+    {
         if (string.IsNullOrEmpty(notation) || notation.Contains("none")) return null;
 
         // 기보 저장
         _notations.Add(notation);
 
-		StringBuilder commandBuilder = new StringBuilder("position startpos moves");
+        StringBuilder commandBuilder = new StringBuilder("position startpos moves");
 
-		foreach(var history in _notations)
-		{
+        foreach(var history in _notations)
+        {
             commandBuilder.Append($" {history}");
         }
 

@@ -7,56 +7,56 @@ namespace LChess.Custom.UI.Unit;
 /// </summary>
 public class LChessBoardTile : Control
 {
-	static LChessBoardTile()
-	{
-		DefaultStyleKeyProperty.OverrideMetadata(typeof(LChessBoardTile), new FrameworkPropertyMetadata(typeof(LChessBoardTile)));
-	}
+    static LChessBoardTile()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(LChessBoardTile), new FrameworkPropertyMetadata(typeof(LChessBoardTile)));
+    }
 
-	#region DP
+    #region DP
 
-	/// <summary>
-	/// LChess 기물색상 타입 의존프로퍼티
-	/// </summary>
-	public static readonly DependencyProperty LChessPieceColorTypeProperty =
-		DependencyProperty.Register(nameof(LChessPieceColorType), typeof(PieceColorType), typeof(LChessBoardTile), new FrameworkPropertyMetadata(PieceColorType.White));
+    /// <summary>
+    /// LChess 기물색상 타입 의존프로퍼티
+    /// </summary>
+    public static readonly DependencyProperty LChessPieceColorTypeProperty =
+        DependencyProperty.Register(nameof(LChessPieceColorType), typeof(PieceColorType), typeof(LChessBoardTile), new FrameworkPropertyMetadata(PieceColorType.White));
 
-	/// <summary>
-	/// LChess 기물색상 타입
-	/// </summary>
-	public PieceColorType LChessPieceColorType
-	{
-		get => (PieceColorType)GetValue(LChessPieceColorTypeProperty);
-		set => SetValue(LChessPieceColorTypeProperty, value);
-	}
+    /// <summary>
+    /// LChess 기물색상 타입
+    /// </summary>
+    public PieceColorType LChessPieceColorType
+    {
+        get => (PieceColorType)GetValue(LChessPieceColorTypeProperty);
+        set => SetValue(LChessPieceColorTypeProperty, value);
+    }
 
-	/// <summary>
-	/// LChess 보드타일 색상 타입 의존프로퍼티
-	/// </summary>
-	public static readonly DependencyProperty LChessTileColorTypeProperty =
-		DependencyProperty.Register(nameof(LChessTileColorType), typeof(ChessTileColorType), typeof(LChessBoardTile), new FrameworkPropertyMetadata(ChessTileColorType.Light));
+    /// <summary>
+    /// LChess 보드타일 색상 타입 의존프로퍼티
+    /// </summary>
+    public static readonly DependencyProperty LChessTileColorTypeProperty =
+        DependencyProperty.Register(nameof(LChessTileColorType), typeof(ChessTileColorType), typeof(LChessBoardTile), new FrameworkPropertyMetadata(ChessTileColorType.Light));
 
-	/// <summary>
-	/// LChess 보드타일 색상 타입
-	/// </summary>
-	public ChessTileColorType LChessTileColorType
-	{
-		get => (ChessTileColorType)GetValue(LChessTileColorTypeProperty);
-		set => SetValue(LChessTileColorTypeProperty, value);
-	}
+    /// <summary>
+    /// LChess 보드타일 색상 타입
+    /// </summary>
+    public ChessTileColorType LChessTileColorType
+    {
+        get => (ChessTileColorType)GetValue(LChessTileColorTypeProperty);
+        set => SetValue(LChessTileColorTypeProperty, value);
+    }
 
-	/// <summary>
-	/// LChess 기물 타입 의존프로퍼티
-	/// </summary>
-	public static readonly DependencyProperty LChessUnitTypeProperty =
-		DependencyProperty.Register(nameof(LChessUnitType), typeof(ChessUnitType), typeof(LChessBoardTile), new FrameworkPropertyMetadata(ChessUnitType.Empty));
+    /// <summary>
+    /// LChess 기물 타입 의존프로퍼티
+    /// </summary>
+    public static readonly DependencyProperty LChessUnitTypeProperty =
+        DependencyProperty.Register(nameof(LChessUnitType), typeof(ChessUnitType), typeof(LChessBoardTile), new FrameworkPropertyMetadata(ChessUnitType.Empty));
 
-	/// <summary>
-	/// LChess 기물 타입
-	/// </summary>
-	public ChessUnitType LChessUnitType
-	{
-		get => (ChessUnitType)GetValue(LChessUnitTypeProperty);
-		set => SetValue(LChessUnitTypeProperty, value);
+    /// <summary>
+    /// LChess 기물 타입
+    /// </summary>
+    public ChessUnitType LChessUnitType
+    {
+        get => (ChessUnitType)GetValue(LChessUnitTypeProperty);
+        set => SetValue(LChessUnitTypeProperty, value);
     }
 
     /// <summary>

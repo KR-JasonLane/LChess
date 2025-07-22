@@ -9,8 +9,8 @@ public enum PieceColorType
     /// 백색
     /// </summary>
     White,
-	/// <summary>
-	/// 흑색
-	/// </summary>
-	Black,
+    /// <summary>
+    /// 흑색
+    /// </summary>
+    Black,
 }

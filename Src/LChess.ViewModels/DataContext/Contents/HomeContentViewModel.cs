@@ -11,13 +11,13 @@ namespace LChess.ViewModels.DataContext.Contents;
 /// </summary>
 public partial class HomeContentViewModel : ObservableRecipient, IContentViewModel
 {
-	#region :: Constructor ::
+    #region :: Constructor ::
 
-	/// <summary>
-	/// 생성자
-	/// </summary>
-	public HomeContentViewModel()
-	{
+    /// <summary>
+    /// 생성자
+    /// </summary>
+    public HomeContentViewModel()
+    {
         ////////////////////////////////////////
         /// 타입 지정
         ////////////////////////////////////////
@@ -60,7 +60,7 @@ public partial class HomeContentViewModel : ObservableRecipient, IContentViewMod
     /// 체스 게임으로 이동
     /// </summary>
     [RelayCommand]
-	private void MoveToChoicePieceColor() => WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChoicePieceColor));
+    private void MoveToChoicePieceColor() => WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChoicePieceColor));
 
     /// <summary>
     /// 체스 게임으로 이동
