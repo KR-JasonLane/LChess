@@ -1,10 +1,10 @@
 ﻿using LChess.Abstract.Service;
 using LChess.Abstract.ViewModel;
+using LChess.Models.Chess.Match;
 using LChess.Models.Result;
 using LChess.Util.Enums;
 
 using LChess.ViewModels.Messenger;
-using System.Collections.ObjectModel;
 
 namespace LChess.ViewModels.DataContext.Contents;
 
@@ -37,8 +37,9 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
         /// 초기화
         ////////////////////////////////////////
         {
-            History = new();
-            IsEndGame = false;
+            GameResult = null;
+
+            MatchStatus = new MatchStatusModel(new List<string>(), PieceColorType.White, false);
         }
 
 
@@ -58,10 +59,9 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
             {
                 WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(true));
 
-                IsEndGame = true;
-                Winner = m.Value.Winner;
+                GameResult = m.Value;
 
-                var endType = m.Value.Type switch
+                var endType = GameResult.Type switch
                 {
                     EndGameType.CheckMate => "체크메이트! "   ,
                     EndGameType.Resign    => "기권! "        ,
@@ -69,7 +69,7 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
                     _ => string.Empty
                 };
 
-                var winner = Winner switch
+                var winner = GameResult.Winner switch
                 {
                     PieceColorType.Black => "흑이 승리했습니다.",
                     PieceColorType.White => "백이 승리했습니다.",
@@ -81,24 +81,9 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
                 WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
             });
 
-            WeakReferenceMessenger.Default.Register<CurrentTurnChangedMessage>(this, (s, m) =>
-            {
-                CurrentTurn = m.Value;
-            });
-
             WeakReferenceMessenger.Default.Register<MatchStatusMessage>(this, (s, m) =>
             {
-                var statusModel = m.Value;
-
-                CurrentTurn = statusModel.NextTurn;
-
-                var currentTurnString = statusModel.CurrentTurn == PieceColorType.White ? "백" : "흑";
-
-                var notation = statusModel.Notation;
-
-                var history = $"{History.Count + 1}. {currentTurnString} : {notation.Substring(0, 2)} → {notation.Substring(2, 2)}";
-
-                History.Add(history);
+                MatchStatus = m.Value;
             });
         }
     }
@@ -128,28 +113,17 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
     private IContentViewModel? _chessBoardContent;
 
     /// <summary>
-    /// 현재턴
+    /// 매치상태를 알려줌.
+    /// (기물 이동기준이기 때문에, NextTurn이 현재 진행해야하는 턴이다.)
     /// </summary>
     [ObservableProperty]
-    private PieceColorType _currentTurn;
+    private MatchStatusModel _matchStatus;
 
     /// <summary>
-    /// 승자
+    /// 게임 결과 모델
     /// </summary>
     [ObservableProperty]
-    private PieceColorType _winner;
-
-    /// <summary>
-    /// 이동 이력
-    /// </summary>
-    [ObservableProperty]
-    private ObservableCollection<string> _history;
-
-    /// <summary>
-    /// 현재 게임이 종료되었는지 여부
-    /// </summary>
-    [ObservableProperty]
-    private bool _isEndGame;
+    private GameResultModel? _gameResult;
 
     #endregion
 
@@ -193,7 +167,7 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
     private void MoveToHome()
     {
         //게임이 끝났을 경우
-        if(IsEndGame)
+        if(GameResult != null)
         {
             //기보를 저장할건지 여부를 물은뒤
             SaveNotationIfNeeded();
@@ -233,14 +207,11 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
         //'예'선택 시
         if(result?.ButtonResult == true)
         {
-            //승자 설정
-            Winner = CurrentTurn == PieceColorType.White ? PieceColorType.Black : PieceColorType.White;
-
             //게임종료 로깅
             Log.Information("======================= 게임종료 [기권] =======================");
 
             //게임종료 메시지
-            WeakReferenceMessenger.Default.Send(new EndGameMessage(new GameResultModel(EndGameType.Resign, Winner)));
+            WeakReferenceMessenger.Default.Send(new EndGameMessage(new GameResultModel() { Type = EndGameType.Resign, Winner = MatchStatus.CurrentTurn }));
         }
 
         //Dim Off

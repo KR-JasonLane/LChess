@@ -148,5 +148,11 @@ public class ChessGameService : IChessGameService
         return true;
     }
 
+    /// <summary>
+    /// 기보 받아오기
+    /// </summary>
+    /// <returns> 기보 </returns>
+    public List<string> GetNotationList() => _notations;
+
     #endregion
 }

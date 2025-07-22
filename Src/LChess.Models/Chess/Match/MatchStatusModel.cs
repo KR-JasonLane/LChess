@@ -5,20 +5,22 @@ namespace LChess.Models.Chess.Match;
 /// <summary>
 /// 체스 매치 진행상태를 저장하는 모델
 /// </summary>
-public class MatchStatusModel
+public partial class MatchStatusModel : ObservableObject
 {
     #region :: Constructor ::
 
     /// <summary>
     /// 생성자
     /// </summary>
-    public MatchStatusModel(string notation, PieceColorType currentTurn, bool isCheck)
+    public MatchStatusModel(List<string> notation, PieceColorType currentTurn, bool isCheck)
     {
         Notation = notation;
 
         CurrentTurn = currentTurn;
 
         IsCheck = isCheck;
+
+        NextTurn = currentTurn == PieceColorType.White ? PieceColorType.Black : PieceColorType.White;
     }
 
     #endregion
@@ -28,17 +30,20 @@ public class MatchStatusModel
     /// <summary>
     /// 기보
     /// </summary>
-    public readonly string Notation;
+    [ObservableProperty]
+    private List<string> _notation;
 
     /// <summary>
     /// 현재 턴
     /// </summary>
-    public readonly PieceColorType CurrentTurn;
+    [ObservableProperty]
+    private PieceColorType _currentTurn;
 
     /// <summary>
     /// 다음 턴
     /// </summary>
-    public PieceColorType NextTurn => CurrentTurn == PieceColorType.White ? PieceColorType.Black : PieceColorType.White;
+    [ObservableProperty]
+    private PieceColorType _nextTurn;
 
     /// <summary>
     /// 현재 체크상태인지 여부

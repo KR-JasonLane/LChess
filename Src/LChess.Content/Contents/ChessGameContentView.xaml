@@ -24,6 +24,10 @@
 
         <cvt:BooleanToReverseVisibilityConverter x:Key="BooleanToReverseVisibilityConverter"/>
 
+        <cvt:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+
+        <cvt:NullToCollapsedConverter x:Key="NullToCollapsedConverter"/>
+
     </UserControl.Resources>
     
     <Grid>
@@ -48,18 +52,18 @@
             <StackPanel Orientation="Horizontal"
                         VerticalAlignment="Center"
                         Margin="10"
-                        Visibility="{Binding IsEndGame, Converter={StaticResource BooleanToReverseVisibilityConverter}}">
+                        Visibility="{Binding GameResult, Converter={StaticResource NullToVisibilityConverter}}">
 
                 <TextBlock Style="{StaticResource CurrentTurnTextBlockStyle}"
                            Text="현재순서 : "/>
 
                 <TextBlock Style="{StaticResource CurrentTurnTextBlockStyle}"
-                           Visibility="{Binding CurrentTurn, Converter={StaticResource StringMatchToVisibilityConverter}, ConverterParameter=White}"
+                           Visibility="{Binding MatchStatus.NextTurn, Converter={StaticResource StringMatchToVisibilityConverter}, ConverterParameter=White}"
                            Foreground="White"
                            Text="백"/>
 
                 <TextBlock Style="{StaticResource CurrentTurnTextBlockStyle}"
-                           Visibility="{Binding CurrentTurn, Converter={StaticResource StringMatchToVisibilityConverter}, ConverterParameter=Black}"
+                           Visibility="{Binding MatchStatus.NextTurn, Converter={StaticResource StringMatchToVisibilityConverter}, ConverterParameter=Black}"
                            Text="흑"/>
 
             </StackPanel>
@@ -67,15 +71,15 @@
             <StackPanel Orientation="Horizontal"
                         VerticalAlignment="Center"
                         Margin="10"
-                        Visibility="{Binding IsEndGame, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        Visibility="{Binding GameResult, Converter={StaticResource NullToCollapsedConverter}}">
 
                 <TextBlock Style="{StaticResource CurrentTurnTextBlockStyle}"
-                           Visibility="{Binding Winner, Converter={StaticResource StringMatchToVisibilityConverter}, ConverterParameter=White}"
+                           Visibility="{Binding GameResult.Winner, Converter={StaticResource StringMatchToVisibilityConverter}, ConverterParameter=White}"
                            Foreground="White"
                            Text="백 "/>
 
                 <TextBlock Style="{StaticResource CurrentTurnTextBlockStyle}"
-                           Visibility="{Binding Winner, Converter={StaticResource StringMatchToVisibilityConverter}, ConverterParameter=Black}"
+                           Visibility="{Binding GameResult.Winner, Converter={StaticResource StringMatchToVisibilityConverter}, ConverterParameter=Black}"
                            Text="흑 "/>
 
                 <TextBlock Style="{StaticResource CurrentTurnTextBlockStyle}"
@@ -122,17 +126,17 @@
                 <ui:LChessButton Content="기권"
                                  Style="{StaticResource GameButtonStyle}"
                                  Command="{Binding ResignCommand}"
-                                 Visibility="{Binding IsEndGame, Converter={StaticResource BooleanToReverseVisibilityConverter}}"/>
+                                 Visibility="{Binding GameResult, Converter={StaticResource NullToVisibilityConverter}}"/>
 
                 <ui:LChessButton Content="새 게임"
                                  Style="{StaticResource GameButtonStyle}"
                                  Command="{Binding NewGameCommand}"
-                                 Visibility="{Binding IsEndGame, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                 Visibility="{Binding GameResult, Converter={StaticResource NullToCollapsedConverter}}"/>
 
                 <ui:LChessButton Content="분석"
                                  Style="{StaticResource GameButtonStyle}"
                                  Command="{Binding MoveToAnalysisCommand}"
-                                 Visibility="{Binding IsEndGame, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                 Visibility="{Binding GameResult, Converter={StaticResource NullToCollapsedConverter}}"/>
 
                 <ui:LChessButton Content="홈으로"
                                  Style="{StaticResource GameButtonStyle}"

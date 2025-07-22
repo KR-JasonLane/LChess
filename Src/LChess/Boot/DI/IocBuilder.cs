@@ -8,6 +8,7 @@ using LChess.Service.Setting;
 using LChess.Service.Window;
 using LChess.Service.Engine;
 using LChess.Service.Game;
+using LChess.Service.Json;
 
 namespace LChess.Boot.DI;
 
@@ -43,6 +44,7 @@ internal class IocBuilder
             services.AddSingleton<IWindowHandlingService , WindowHandlingService >();
             services.AddSingleton<IChessGameService      , ChessGameService      >();
             services.AddSingleton<IPopupWindowService    , PopupWindowService    >();
+            services.AddSingleton<IJsonFileService       , JsonFileService       >();
         }
 
 

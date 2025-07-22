@@ -1,5 +1,4 @@
 ﻿using LChess.Models.Result;
-using LChess.Util.Enums;
 
 namespace LChess.Abstract.Service;
 
@@ -32,4 +31,10 @@ public interface IChessGameService
     /// </summary>
     /// <returns> BestMove 처리결과 </returns>
     public Task<StockfishBestMoveModel> BestMove();
+
+    /// <summary>
+    /// 기보 받아오기
+    /// </summary>
+    /// <returns> 기보 </returns>
+    public List<string> GetNotationList();
 }

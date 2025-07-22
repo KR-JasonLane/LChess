@@ -5,3 +5,5 @@ global using CommunityToolkit.Mvvm.Messaging;
 global using CommunityToolkit.Mvvm.Input;
 
 global using Serilog;
+
+global using System.Diagnostics;

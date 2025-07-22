@@ -38,13 +38,22 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
             ContentType = LChessContentType.ChessBoard;
         }
 
+
+        ////////////////////////////////////////
+        /// 초기화
+        ////////////////////////////////////////
+        {
+            _playTimeWatch = new();
+        }
+
+
         ////////////////////////////////////////
         /// 메시지 등록
         ////////////////////////////////////////
         {
             WeakReferenceMessenger.Default.Register<SelectUserPieceColorMessage>(this, (s, m) =>
             {
-                InitBoardSource(m.Value);
+                StartNewGame(m.Value);
             });
 
             WeakReferenceMessenger.Default.Register<EndGameMessage>(this, (s, m) =>
@@ -90,6 +99,11 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
     [ObservableProperty]
     private PieceColorType _currentTurn;
 
+    /// <summary>
+    /// 플레이타임을 재는 스탑워치
+    /// </summary>
+    private Stopwatch _playTimeWatch;
+
     #endregion
 
     #region :: Methods ::
@@ -98,7 +112,7 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
     /// 보드 데이터 초기화
     /// </summary>
     /// <param name="userColor"> 기준 색상 </param>
-    private async void InitBoardSource(PieceColorType userColor)
+    private async void StartNewGame(PieceColorType userColor)
     {
         //보드데이터 없으면 생성
         BoardModel ??= new ChessBoardModel(userColor);
@@ -107,11 +121,10 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
         var unitCodes = await _chessGameService.NewGame();
         BoardModel.ParseCodes(unitCodes);
 
-        //백색부터 시작
-        CurrentTurn = PieceColorType.White;
+        NotifyMatchStatus(new MatchStatusModel(_chessGameService.GetNotationList(), userColor, false));
 
         // 유저기물이 흑색이면 백색인 AI부터 시작
-        if(userColor == PieceColorType.Black)
+        if (userColor == PieceColorType.Black)
         {
             WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(true));
 
@@ -122,12 +135,17 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
             var aiMove = await _chessGameService.ExecuteAIMove();
             BoardModel.ParseCodes(aiMove);
 
-            NotifyMatchStatus(new MatchStatusModel(aiMove?.CurrentMove ?? string.Empty, CurrentTurn, false));
+            NotifyMatchStatus(new MatchStatusModel(_chessGameService.GetNotationList(), CurrentTurn, false));
 
             WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
         }
 
+        //백색부터 시작
+        CurrentTurn = PieceColorType.White;
+
         _isEndGame = false;
+
+        _playTimeWatch = Stopwatch.StartNew();
     }
 
     /// <summary>
@@ -144,7 +162,7 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
         {
             Log.Information("======================= 게임종료 [무승부] =======================");
 
-            WeakReferenceMessenger.Default.Send(new EndGameMessage(new GameResultModel(EndGameType.Draw, CurrentTurn)));
+            WeakReferenceMessenger.Default.Send(new EndGameMessage(CreateGameResult(EndGameType.Draw, null)));
 
             return true;
         }
@@ -154,7 +172,7 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
         {
             Log.Information("======================= 게임종료 [체크메이트] =======================");
 
-            WeakReferenceMessenger.Default.Send(new EndGameMessage(new GameResultModel(EndGameType.CheckMate, CurrentTurn)));
+            WeakReferenceMessenger.Default.Send(new EndGameMessage(CreateGameResult(EndGameType.CheckMate, CurrentTurn)));
 
             return true;
         }
@@ -171,6 +189,20 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
     }
 
     public void NotifyMatchStatus(MatchStatusModel model) => WeakReferenceMessenger.Default.Send(new MatchStatusMessage(model));
+
+    private GameResultModel CreateGameResult(EndGameType type, PieceColorType? Winner)
+    {
+        _playTimeWatch.Stop();
+
+        return new GameResultModel()
+        {
+            Type = EndGameType.Draw,
+            Winner = null,
+            Notation = _chessGameService.GetNotationList(),
+            PlayTime = _playTimeWatch.Elapsed,
+            PlayDateTime = DateTime.Now
+        };
+    }
 
     #endregion
 
@@ -210,7 +242,7 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
                     if (userMoveResult == null)
                         return;
 
-                    NotifyMatchStatus(new MatchStatusModel(notation, CurrentTurn, userMoveResult.IsCheck));
+                    NotifyMatchStatus(new MatchStatusModel(_chessGameService.GetNotationList(), CurrentTurn, userMoveResult.IsCheck));
 
                     var bestMoveResult = await _chessGameService.BestMove();
                     if (CheckEndGame(userMoveResult, bestMoveResult)) return;
@@ -238,7 +270,7 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
 
                     WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
 
-                    NotifyMatchStatus(new MatchStatusModel(aiMoveResult?.CurrentMove ?? string.Empty, CurrentTurn, aiMoveResult?.IsCheck ?? false));
+                    NotifyMatchStatus(new MatchStatusModel(_chessGameService.GetNotationList(), CurrentTurn, aiMoveResult?.IsCheck ?? false));
 
                     var bestMoveResult = await _chessGameService.BestMove();
                     CheckEndGame(aiMoveResult, bestMoveResult);
@@ -250,12 +282,6 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
     #endregion
 
     #region :: Events ::
-
-    /// <summary>
-    /// 현재 차례 변경 이벤트
-    /// </summary>
-    /// <param name="value"> 변경된 색상 </param>
-    partial void OnCurrentTurnChanged(PieceColorType value) => WeakReferenceMessenger.Default.Send(new CurrentTurnChangedMessage(value));
 
     #endregion
 }
