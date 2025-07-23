@@ -1,0 +1,73 @@
+﻿<Window x:Class="LChess.Views.Popup.SelectPromotionUnitPopupWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="clr-namespace:LChess.Custom.UI.Unit;assembly=LChess.Custom"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        Background="Transparent"
+        Width="300"
+        Height="400">
+
+    <Window.Resources>
+
+        <Style x:Key="PromotionButtonStyle" TargetType="{x:Type ui:LChessButton}">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+    </Window.Resources>
+
+    <Border Background="#D9EDF7"
+            CornerRadius="15">
+
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="폰 승격"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap"
+                       FontSize="23"
+                       FontWeight="Bold"
+                       Margin="10"/>
+
+            <StackPanel Grid.Row="1"
+                        HorizontalAlignment="Center">
+
+                <ui:LChessButton Style="{StaticResource PromotionButtonStyle}"
+                                 Content="Queen"
+                                 Command="{Binding SelectPromotionCommand}"
+                                 CommandParameter="q"/>
+
+                <ui:LChessButton Style="{StaticResource PromotionButtonStyle}"
+                                 Content="Rook"
+                                 Command="{Binding SelectPromotionCommand}"
+                                 CommandParameter="r"/>
+
+                <ui:LChessButton Style="{StaticResource PromotionButtonStyle}"
+                                 Content="Bishop"
+                                 Command="{Binding SelectPromotionCommand}"
+                                 CommandParameter="b"/>
+
+                <ui:LChessButton Style="{StaticResource PromotionButtonStyle}"
+                                 Content="Knight"
+                                 Command="{Binding SelectPromotionCommand}"
+                                 CommandParameter="n"/>
+
+            </StackPanel>
+
+        </Grid>
+
+    </Border>
+
+</Window>

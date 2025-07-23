@@ -19,20 +19,21 @@ public partial class UserSettingContentViewModel : ObservableRecipient, IContent
     /// <summary>
     /// 생성자
     /// </summary>
-    public UserSettingContentViewModel(IUserSettingService userSettingService)
+    public UserSettingContentViewModel(IUserSettingService userSettingService, IPopupWindowService popupWindowService)
     {
         ////////////////////////////////////////
         // 서비스 등록
         ////////////////////////////////////////
         {
             _userSettingService = userSettingService;
+            _popupWindowService = popupWindowService;
         }
 
         ////////////////////////////////////////
         // 사용자 설정 모델 불러오기
         ////////////////////////////////////////
         { 
-            UserSettingModel = userSettingService.GetUserSettingModel();
+            UserSetting = userSettingService.GetUserSetting();
         }
 
         ////////////////////////////////////////
@@ -45,12 +46,14 @@ public partial class UserSettingContentViewModel : ObservableRecipient, IContent
 
     #endregion
 
-        #region :: Services ::
+    #region :: Services ::
 
-        /// <summary>
-        /// 사용자설정 핸들링서비스
-        /// </summary>
+    /// <summary>
+    /// 사용자설정 핸들링서비스
+    /// </summary>
     private readonly IUserSettingService _userSettingService;
+
+    private readonly IPopupWindowService _popupWindowService;
 
     #endregion
 
@@ -60,7 +63,7 @@ public partial class UserSettingContentViewModel : ObservableRecipient, IContent
     /// 사용자설정 모델
     /// </summary>
     [ObservableProperty]
-    private UserSettingModel _userSettingModel;
+    private UserSettingModel _userSetting;
 
     /// <summary>
     /// Content Type 지정
@@ -91,10 +94,36 @@ public partial class UserSettingContentViewModel : ObservableRecipient, IContent
     private void MoveToHome() => WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.Home));
 
     /// <summary>
+    /// 기보저장 폴더 선택
+    /// </summary>
+    [RelayCommand]
+    private void SelectNotationSaveDirectory()
+    {
+        var directory = _popupWindowService.ShowSelectFolderPopup();
+
+        if(!string.IsNullOrEmpty(directory))
+        {
+            UserSetting.SystemSetting.NotationSaveDirectory = directory;
+        }
+
+    }
+
+    /// <summary>
     /// 사용자설정 저장
     /// </summary>
     [RelayCommand]
-    private void SaveSetting() => _userSettingService.SaveUserSettingModel(UserSettingModel);
+    private void SaveSetting()
+    {
+        var result = _userSettingService.SaveUserSettingModel(UserSetting);
+
+        var message = result ? "설정이 저장되었습니다." : "설정 저장에 실패하였습니다.";
+
+        WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(true));
+
+        _popupWindowService.ShowMessagePopup(message, "확인", string.Empty);
+
+        WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
+    }
 
     #endregion
 

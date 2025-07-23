@@ -39,12 +39,12 @@ internal class IocBuilder
         /// Service 등록
         ////////////////////////////////////////
         {
+            services.AddSingleton<IJsonFileService       , JsonFileService       >();
             services.AddSingleton<IUserSettingService    , UserSettingService    >();
             services.AddSingleton<IStockfishEngineService, StockfishEngineService>();
             services.AddSingleton<IWindowHandlingService , WindowHandlingService >();
             services.AddSingleton<IChessGameService      , ChessGameService      >();
             services.AddSingleton<IPopupWindowService    , PopupWindowService    >();
-            services.AddSingleton<IJsonFileService       , JsonFileService       >();
         }
 
 
@@ -65,7 +65,8 @@ internal class IocBuilder
         /// Popup ViewModel 등록
         ////////////////////////////////////////
         {
-            services.AddTransient<MessageDialogPopupWindowViewModel>();
+            services.AddTransient<MessageDialogPopupWindowViewModel      >();
+            services.AddTransient<SelectPromotionUnitPopupWindowViewModel>();
         }
 
 

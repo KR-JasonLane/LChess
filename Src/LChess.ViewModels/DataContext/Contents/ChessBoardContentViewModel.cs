@@ -21,13 +21,14 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
     /// <summary>
     /// 생성자
     /// </summary>
-    public ChessBoardContentViewModel(IChessGameService chessGameService)
+    public ChessBoardContentViewModel(IChessGameService chessGameService, IPopupWindowService popupWindowService)
     {
         ////////////////////////////////////////
         /// 서비스 등록
         ////////////////////////////////////////
         {
-            _chessGameService = chessGameService;
+            _chessGameService   = chessGameService;
+            _popupWindowService = popupWindowService;
         }
 
 
@@ -61,6 +62,13 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
                 BoardModel?.GameEnd();
                 _isEndGame = true;
             });
+
+            WeakReferenceMessenger.Default.Register<RequestPlayTimeMessage>(this, (s, m) =>
+            {
+                _playTimeWatch.Stop();
+
+                m.Reply(_playTimeWatch.Elapsed);
+            });
         }
     }
 
@@ -69,9 +77,14 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
     #region :: Services ::
 
     /// <summary>
-    /// Stockfish 엔전 관리 서비스
+    /// 체스 게임 서비스
     /// </summary>
     private readonly IChessGameService _chessGameService;
+
+    /// <summary>
+    /// PopupWindow 서비스
+    /// </summary>
+    private readonly IPopupWindowService _popupWindowService;
 
     #endregion
 
@@ -121,7 +134,8 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
         var unitCodes = await _chessGameService.NewGame();
         BoardModel.ParseCodes(unitCodes);
 
-        NotifyMatchStatus(new MatchStatusModel(_chessGameService.GetNotationList(), userColor, false));
+        //기물이동이 없었기 때문에, Color는 null을 넣어준다(초기값)
+        NotifyMatchStatus(new MatchStatusModel(_chessGameService.GetNotationList(), null, false));
 
         // 유저기물이 흑색이면 백색인 AI부터 시작
         if (userColor == PieceColorType.Black)
@@ -139,9 +153,6 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
 
             WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
         }
-
-        //백색부터 시작
-        CurrentTurn = PieceColorType.White;
 
         _isEndGame = false;
 
@@ -188,8 +199,16 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
         WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 
+    /// <summary>
+    /// 매치상태 전송
+    /// </summary>
     public void NotifyMatchStatus(MatchStatusModel model) => WeakReferenceMessenger.Default.Send(new MatchStatusMessage(model));
 
+    /// <summary>
+    /// 게임결과 전송
+    /// </summary>
+    /// <param name="type"> 게임종료 타입 </param>
+    /// <param name="Winner"> 승자 </param>
     private GameResultModel CreateGameResult(EndGameType type, PieceColorType? Winner)
     {
         _playTimeWatch.Stop();
@@ -220,11 +239,14 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
             // 체스보드 모델에 타일 선택 알려줌.
             var result = BoardModel.SelectTile(model);
 
-            //TODO : 여기서 승격이 필요하면 승격처리 로직을 추가해야함.
-            // 승격처리 후 q, n, b, r 등등 유닛코드를 notation 뒤에 넣어줘야함.
+            var promotion = string.Empty;
+
+            //승격여부 판단
+            if (result.IsNeedToPromotion)
+                promotion = _popupWindowService.ShowSelectPromotionPopup();
 
             //기보
-            var notation = $"{result.Notation}";
+            var notation = $"{result.Notation}{promotion}";
 
             //유저 턴 설정
             CurrentTurn = BoardModel.UserColor;

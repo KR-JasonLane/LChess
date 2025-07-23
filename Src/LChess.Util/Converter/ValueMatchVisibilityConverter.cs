@@ -15,7 +15,7 @@ public class StringMatchToVisibilityConverter : IValueConverter
     /// <returns> Visibility 값 </returns>
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value.ToString() == parameter.ToString())
+        if ((value?.ToString() ?? "Null") == (parameter?.ToString() ?? "NULL"))
         {
             return Visibility.Visible;
         }

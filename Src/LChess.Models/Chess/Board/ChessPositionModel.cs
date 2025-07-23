@@ -55,7 +55,7 @@ public class ChessPositionModel
     /// <summary>
     /// 보드의 세로 끝 지점인지 여부
     /// </summary>
-    public bool IsEndPointColumnInBoard => Column == 0 || Column == 8;
+    public bool IsEndPointColumnInBoard => Code.ToString().Contains("1") || Code.ToString().Contains("8");
 
     #endregion
 

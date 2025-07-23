@@ -11,7 +11,7 @@ public interface IUserSettingService
     /// 사용자 설정 모델을 불러옴.
     /// </summary>
     /// <returns> 사용자설정 모델 </returns>
-    public UserSettingModel GetUserSettingModel();
+    public UserSettingModel GetUserSetting();
 
     /// <summary>
     /// 사용자 설정을 저장

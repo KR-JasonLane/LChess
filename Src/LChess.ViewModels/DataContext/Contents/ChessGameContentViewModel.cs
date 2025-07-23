@@ -15,13 +15,15 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
 {
     #region :: Constructor ::
 
-    public ChessGameContentViewModel(IPopupWindowService popupWindowService, IChessGameService chessGameService)
+    public ChessGameContentViewModel(IPopupWindowService popupWindowService, IChessGameService chessGameService, IUserSettingService userSettingService, IJsonFileService jsonFileService)
     {
         ////////////////////////////////////////
         /// 서비스 등록
         ////////////////////////////////////////
         {
             _popupWindowService = popupWindowService;
+            _userSettingService = userSettingService;
+            _jsonFileService    = jsonFileService   ;
         }
 
 
@@ -97,6 +99,16 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
     /// </summary>
     private readonly IPopupWindowService _popupWindowService;
 
+    /// <summary>
+    /// 유저설정 서비스
+    /// </summary>
+    private readonly IUserSettingService _userSettingService;
+
+    /// <summary>
+    /// Json 파일 서비스
+    /// </summary>
+    private readonly IJsonFileService _jsonFileService;
+
     #endregion
 
     #region :: Properties ::
@@ -144,16 +156,21 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
     /// </summary>
     private void SaveNotationIfNeeded()
     {
-        WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(true));
+        if (GameResult == null) return;
 
         var result = _popupWindowService.ShowMessagePopup("기보를 저장할까요?", "예", "아니요");
-
+        
         if (result?.ButtonResult == true)
         {
-            //TODO : 기보 저장
-        }
+            var setting  = _userSettingService.GetUserSetting();
+            var path     = setting.SystemSetting.NotationSaveDirectory;
+            var fileName = $"{GameResult.PlayDateTime:yyyy년MM월dd일HH시mm분}_{GameResult.PlayTime.Minutes}분{GameResult.PlayTime.Seconds}초경기.chess";
 
-        WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
+            if(!string.IsNullOrEmpty(path))
+            {
+                _jsonFileService.SaveJsonProperties(GameResult, Path.Combine(path, fileName));
+            }
+        }
     }
 
     #endregion
@@ -166,30 +183,24 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
     [RelayCommand]
     private void MoveToHome()
     {
-        //게임이 끝났을 경우
-        if(GameResult != null)
-        {
-            //기보를 저장할건지 여부를 물은뒤
-            SaveNotationIfNeeded();
-
-            //홈으로 이동
-            WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.Home));
-
-            return;
-        }
-
         //Dim On
         WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(true));
 
         //홈으로 이동할건지 입력받음
         var result = _popupWindowService.ShowMessagePopup("게임을 종료하고 홈으로 이동할까요?", "예", "아니요");
 
+        // '예'를 선택
+        if (result?.ButtonResult == true)
+        {
+            //게임이 끝났으면 기보저장 여부 판단 후
+            if (GameResult != null) SaveNotationIfNeeded();
+
+            //홈으로 이동
+            WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.Home));
+        }
+
         //Dim Off
         WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
-
-        // '예'를 선택했으면 홈으로 이동
-        if (result?.ButtonResult == true)
-            WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.Home));
     }
 
     /// <summary>
@@ -210,8 +221,20 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
             //게임종료 로깅
             Log.Information("======================= 게임종료 [기권] =======================");
 
+            var requestMessage = new RequestPlayTimeMessage();
+
+            WeakReferenceMessenger.Default.Send(requestMessage);
+
+            var gameResult = new GameResultModel()
+            {
+                Type = EndGameType.Resign,
+                Winner = MatchStatus.CurrentTurn,
+                PlayDateTime = DateTime.Now,
+                PlayTime = requestMessage.Response
+            };
+
             //게임종료 메시지
-            WeakReferenceMessenger.Default.Send(new EndGameMessage(new GameResultModel() { Type = EndGameType.Resign, Winner = MatchStatus.CurrentTurn }));
+            WeakReferenceMessenger.Default.Send(new EndGameMessage(gameResult));
         }
 
         //Dim Off
@@ -224,11 +247,24 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
     [RelayCommand]
     private void NewGame()
     {
-        //기보저장
-        SaveNotationIfNeeded();
+        //Dim On
+        WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(true));
 
-        //컬러선택으로 이동
-        WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChoicePieceColor));
+        //새게임 할건지 입력받음
+        var result = _popupWindowService.ShowMessagePopup("새로운 게임으로 이동 할까요?", "예", "아니요");
+
+        // '예'를 선택
+        if (result?.ButtonResult == true)
+        {
+            //게임이 끝났으면 기보저장 여부 판단 후
+            if (GameResult != null) SaveNotationIfNeeded();
+
+            //컬러선택으로 이동
+            WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChoicePieceColor));
+        }
+
+        //Dim Off
+        WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
     }
 
     #endregion

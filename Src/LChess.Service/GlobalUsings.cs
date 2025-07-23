@@ -6,3 +6,5 @@ global using System.IO;
 global using Serilog;
 
 global using CommunityToolkit.Mvvm.DependencyInjection;
+
+global using Microsoft.Win32;

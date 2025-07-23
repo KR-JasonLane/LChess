@@ -263,6 +263,9 @@ public class StockfishEngineService : IStockfishEngineService
         //   한줄씩 읽으면서 특정 단어가 들어가 있는 응답을 찾아야함.
         while (true)
         {
+            if (_stockfishOutput == null)
+                continue;
+
             //현재 라인
             var result = await _stockfishOutput.ReadLineAsync();
 
@@ -301,6 +304,9 @@ public class StockfishEngineService : IStockfishEngineService
         //2. Stockfish의 응답은 멀티라인이기 때문에,
         while (true)
         {
+            if (_stockfishOutput == null)
+                continue;
+
             //현재 라인
             var line = await _stockfishOutput.ReadLineAsync();
 

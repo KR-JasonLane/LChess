@@ -20,4 +20,16 @@ public interface IPopupWindowService
     /// 현재 띄워져있는 팝업 윈도우 닫기
     /// </summary>
     public void CloseCurrentPopupWinodw();
+
+    /// <summary>
+    /// 폰 승격 선택 팝업 띄우기
+    /// </summary>
+    /// <returns> 승격코드 </returns>
+    public string ShowSelectPromotionPopup();
+
+    /// <summary>
+    /// 폴더선택 팝업 띄우기
+    /// </summary>
+    /// <returns> 선택된 경로 </returns>
+    public string ShowSelectFolderPopup();
 }

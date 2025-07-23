@@ -14,10 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LChess.Content\LChess.Views.csproj" />
     <ProjectReference Include="..\LChess.Custom\LChess.Custom.csproj" />
     <ProjectReference Include="..\LChess.Service\LChess.Service.csproj" />
     <ProjectReference Include="..\LChess.ViewModels\LChess.ViewModels.csproj" />
+    <ProjectReference Include="..\LChess.Views\LChess.Views.csproj" />
   </ItemGroup>
 
 </Project>

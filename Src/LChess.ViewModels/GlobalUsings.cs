@@ -7,3 +7,4 @@ global using CommunityToolkit.Mvvm.Input;
 global using Serilog;
 
 global using System.Diagnostics;
+global using System.IO;

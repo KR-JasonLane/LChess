@@ -46,7 +46,6 @@ public partial class MessageDialogPopupWindowViewModel : ObservableRecipient
 
     #region :: Properties ::
 
-
     /// <summary>
     /// 다이얼로그 결과
     /// </summary>
@@ -59,13 +58,13 @@ public partial class MessageDialogPopupWindowViewModel : ObservableRecipient
     private string _message;
 
     /// <summary>
-    /// 확인버튼 클릭
+    /// 확인버튼
     /// </summary>
     [ObservableProperty]
     private string _okButtonContent;
 
     /// <summary>
-    /// 취소버튼 클릭
+    /// 취소버튼
     /// </summary>
     [ObservableProperty]
     private string _cancelButtonContent;

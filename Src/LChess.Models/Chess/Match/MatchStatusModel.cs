@@ -12,11 +12,12 @@ public partial class MatchStatusModel : ObservableObject
     /// <summary>
     /// 생성자
     /// </summary>
-    public MatchStatusModel(List<string> notation, PieceColorType currentTurn, bool isCheck)
+    public MatchStatusModel(List<string> notation, PieceColorType? currentTurn, bool isCheck)
     {
-        Notation = notation;
+        Notation = [.. notation];
 
-        CurrentTurn = currentTurn;
+        //컬러가 null이면 초기상태이므로, 다음턴이 백색이 될 수 있게 Black값을 넣어준다.
+        CurrentTurn = currentTurn ?? PieceColorType.Black;
 
         IsCheck = isCheck;
 

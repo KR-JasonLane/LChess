@@ -15,6 +15,7 @@ public partial class GameResultModel : ObservableObject
     public GameResultModel()
     {
         Notation = new();
+        PlayDateTime = DateTime.Now;
     }
 
     #endregion

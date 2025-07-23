@@ -23,7 +23,7 @@ public partial class StockfishSettingModel : ObservableObject
     /// 스톡피쉬 판단 깊이 (클수록 난이도가 높고 오래걸림)
     /// </summary>
     [ObservableProperty]
-    private string _stockfishTinkingDepth = "10";
+    private string _tinkingDepth = "20";
 
 
     #endregion

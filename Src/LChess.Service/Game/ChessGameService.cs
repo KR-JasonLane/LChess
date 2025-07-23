@@ -1,6 +1,7 @@
 ﻿using LChess.Abstract.Service;
 
 using LChess.Models.Result;
+using LChess.Models.Setting;
 
 namespace LChess.Service.Game;
 
@@ -14,12 +15,13 @@ public class ChessGameService : IChessGameService
     /// <summary>
     /// 생성자
     /// </summary>
-        public ChessGameService(IStockfishEngineService stockfishEngineService)
-        {
-            _stockfishEngineService = stockfishEngineService;
+    public ChessGameService(IStockfishEngineService stockfishEngineService, IUserSettingService userSettingService)
+    {
+        _stockfishEngineService = stockfishEngineService;
+        _userSettingService     = userSettingService    ;
 
-            _notations = new List<string>();
-        }
+        _notations = new List<string>();
+    }
 
     #endregion
 
@@ -30,6 +32,8 @@ public class ChessGameService : IChessGameService
     /// </summary>
     private readonly IStockfishEngineService _stockfishEngineService;
 
+    private readonly IUserSettingService _userSettingService;
+
     #endregion
 
     #region :: Properties ::
@@ -37,12 +41,12 @@ public class ChessGameService : IChessGameService
     /// <summary>
     /// 기물 움직임 기보
     /// </summary>
-        private List<string> _notations;
+    private List<string> _notations;
 
-        /// <summary>
-        /// 직전 보드 상태
-        /// </summary>
-        private StockfishBoardCodeModel? _previousBoard;
+    /// <summary>
+    /// 직전 보드 상태
+    /// </summary>
+    private StockfishBoardCodeModel? _previousBoard;
 
     #endregion
 
@@ -126,7 +130,9 @@ public class ChessGameService : IChessGameService
     /// <returns> BestMove 처리결과 </returns>
     public async Task<StockfishBestMoveModel> BestMove()
     {
-        var bestMove = await _stockfishEngineService.SendCommandAsync("go depth 20", "best");
+        var userSetting = _userSettingService.GetUserSetting();
+
+        var bestMove = await _stockfishEngineService.SendCommandAsync($"go depth {userSetting.StockfishSetting.TinkingDepth}", "best");
 
         return new StockfishBestMoveModel(bestMove?.Split(' ').ElementAt(1) ?? "(none)");
     }

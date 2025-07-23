@@ -20,13 +20,11 @@
 
         <cvt:StringMatchToVisibilityConverter x:Key="StringMatchToVisibilityConverter"/>
 
-        <cvt:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-
-        <cvt:BooleanToReverseVisibilityConverter x:Key="BooleanToReverseVisibilityConverter"/>
-
         <cvt:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
 
         <cvt:NullToCollapsedConverter x:Key="NullToCollapsedConverter"/>
+
+        <cvt:PrettyNotaionStringConverter x:Key="PrettyNotaionStringConverter"/>
 
     </UserControl.Resources>
     
@@ -73,17 +71,26 @@
                         Margin="10"
                         Visibility="{Binding GameResult, Converter={StaticResource NullToCollapsedConverter}}">
 
-                <TextBlock Style="{StaticResource CurrentTurnTextBlockStyle}"
-                           Visibility="{Binding GameResult.Winner, Converter={StaticResource StringMatchToVisibilityConverter}, ConverterParameter=White}"
-                           Foreground="White"
-                           Text="백 "/>
+                <StackPanel Orientation="Horizontal"
+                            Visibility="{Binding GameResult.Winner, Converter={StaticResource NullToCollapsedConverter}}">                
+                    
+                    <TextBlock Style="{StaticResource CurrentTurnTextBlockStyle}"
+                               Visibility="{Binding GameResult.Winner, Converter={StaticResource StringMatchToVisibilityConverter}, ConverterParameter=White}"
+                               Foreground="White"
+                               Text="백 "/>
+    
+                    <TextBlock Style="{StaticResource CurrentTurnTextBlockStyle}"
+                               Visibility="{Binding GameResult.Winner, Converter={StaticResource StringMatchToVisibilityConverter}, ConverterParameter=Black}"
+                               Text="흑 "/>
+    
+                    <TextBlock Style="{StaticResource CurrentTurnTextBlockStyle}"
+                               Text="승리!"/>
+                    
+                </StackPanel>
 
                 <TextBlock Style="{StaticResource CurrentTurnTextBlockStyle}"
-                           Visibility="{Binding GameResult.Winner, Converter={StaticResource StringMatchToVisibilityConverter}, ConverterParameter=Black}"
-                           Text="흑 "/>
-
-                <TextBlock Style="{StaticResource CurrentTurnTextBlockStyle}"
-                           Text="승리!"/>
+                               Visibility="{Binding GameResult.Winner, Converter={StaticResource NullToVisibilityConverter}}"
+                               Text="- 무승부 -"/>
 
             </StackPanel>
 
@@ -91,16 +98,16 @@
                           VerticalScrollBarVisibility="Auto"
                           Background="#4F93CC">
 
-                <ItemsControl ItemsSource="{Binding History}">
+                <ItemsControl ItemsSource="{Binding MatchStatus.Notation}">
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             
                             <Border Background="#5AA8E8"
-                                    CornerRadius="5"                                         
+                                    CornerRadius="5"
                                     Margin="5">
-                                
-                                <TextBlock Text="{Binding}"  
+
+                                <TextBlock Text="{Binding Path=., Converter={StaticResource PrettyNotaionStringConverter}}"
                                            Foreground="LightCyan"
                                            Margin="10"
                                            FontSize="16"
@@ -117,7 +124,6 @@
                     </ItemsControl.ItemsPanel>
                     
                 </ItemsControl>
-
 
             </ScrollViewer>
 

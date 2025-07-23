@@ -67,12 +67,55 @@ public class PopupWindowService : IPopupWindowService
     }
 
     /// <summary>
+    /// 폰 승격 선택 팝업 띄우기
+    /// </summary>
+    /// <returns> 승격코드 </returns>
+    public string ShowSelectPromotionPopup()
+    {
+        if (_currnetPopup != null)
+        {
+            CloseCurrentPopupWinodw();
+        }
+
+        var popupViewModel = Ioc.Default.GetRequiredService<SelectPromotionUnitPopupWindowViewModel>();
+
+        var popupView = new SelectPromotionUnitPopupWindowView()
+        {
+            DataContext = popupViewModel,
+            Owner = Application.Current.MainWindow
+        };
+
+        _currnetPopup = popupView;
+
+        popupView.ShowDialog();
+
+        return popupViewModel.Result?.Response ?? string.Empty;
+    }
+
+    /// <summary>
     /// 현재 띄워져있는 팝업 윈도우 닫기
     /// </summary>
     public void CloseCurrentPopupWinodw()
     {
         _currnetPopup?.Close();
         _currnetPopup = null;
+    }
+
+
+    /// <summary>
+    /// 폴더선택 팝업 띄우기
+    /// </summary>
+    /// <returns> 선택된 경로 </returns>
+    public string ShowSelectFolderPopup()
+    {
+        var dialog = new OpenFolderDialog() { Multiselect = false };
+
+        if(dialog.ShowDialog() == true)
+        {
+            return dialog.FolderName;
+        }
+
+        return string.Empty;
     }
 
     #endregion
