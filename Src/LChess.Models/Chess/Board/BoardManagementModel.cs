@@ -99,7 +99,7 @@ public class BoardManagementModel
     /// </summary>
     /// <param name="selectedTile"> 선택된 타일 </param>
     /// <returns> 기물 이동기보 (이동이 없을 시 빈 문자열) </returns>
-    public TileSelectedResultModel SelectTileAndGetNotationIfNeeded(ChessBoardTileModel selectedTile)
+    public TileSelectedResultModel SelectTileAndGetNotationIfNeeded(ChessBoardTileModel selectedTile, bool allowEnemySelect)
     {
         var result = new TileSelectedResultModel();
 
@@ -126,9 +126,12 @@ public class BoardManagementModel
             _selectedTileModel = null;
         }
 
-        // 3. 현재 선택한 타일에 사용자 기물이 있는 경우
-        else if (!selectedTile.IsEmpty && selectedTile.Unit?.IsSameColor(UserPieceColor) == true)
+        // 3. 현재 선택한 타일이 비어있지 않을때
+        else if (!selectedTile.IsEmpty)
         {
+            // 적 기물 선택가능여부 및 그에따른 색상 검사
+            if (!allowEnemySelect && selectedTile.Unit?.IsSameColor(UserPieceColor) == false) return result;
+
             // 3-1. 하이라이트 제거
             ClearAllHighLights();
 

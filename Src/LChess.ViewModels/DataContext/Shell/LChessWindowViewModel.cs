@@ -59,6 +59,8 @@ public partial class LChessWindowViewModel : ObservableRecipient, ILChessWindowV
                     LChessContentType.ChoicePieceColor => Ioc.Default.GetService<ChoicePieceColorContentViewModel>(),
                     LChessContentType.ChessGame        => Ioc.Default.GetService<ChessGameContentViewModel       >(),
                     LChessContentType.UserSetting      => Ioc.Default.GetService<UserSettingContentViewModel     >(),
+                    LChessContentType.ChoiceNotation   => Ioc.Default.GetService<ChoiceNotationContentViewModel  >(),
+                    LChessContentType.Analysis         => Ioc.Default.GetService<AnalysisContentViewModel        >(),
                     _ => null
                 };
             });

@@ -22,5 +22,13 @@
     <DataTemplate DataType="{x:Type vm:UserSettingContentViewModel}">
         <v:UserSettingContentView/>
     </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:ChoiceNotationContentViewModel}">
+        <v:ChoiceNotationContentView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:AnalysisContentViewModel}">
+        <v:AnalysisContentView/>
+    </DataTemplate>
     
 </ResourceDictionary>

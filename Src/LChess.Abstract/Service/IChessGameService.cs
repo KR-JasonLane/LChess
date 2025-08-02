@@ -1,4 +1,5 @@
-﻿using LChess.Models.Result;
+﻿using LChess.Models.Chess.Match;
+using LChess.Models.Result;
 
 namespace LChess.Abstract.Service;
 
@@ -25,6 +26,13 @@ public interface IChessGameService
     /// <returns> Stockfish 기물 코드 </returns>
     public Task<StockfishBoardCodeModel?> MovePiece(string notation);
 
+    /// <summary>
+    /// 한번에 여러 기물 이동
+    /// </summary>
+    /// <param name="notations"> 기물이동 기보 리스트 </param>
+    /// <returns> Stockfish 기물 코드 </returns>
+    public Task<StockfishBoardCodeModel?> MovePiece(List<NotationModel> notations);
+
 
     /// <summary>
     /// AI가 판단하는 BestMove 획득
@@ -36,5 +44,5 @@ public interface IChessGameService
     /// 기보 받아오기
     /// </summary>
     /// <returns> 기보 </returns>
-    public List<string> GetNotationList();
+    public List<NotationModel> GetNotationList();
 }

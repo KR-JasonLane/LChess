@@ -17,4 +17,8 @@ public enum LChessIconType
     /// 저장 아이콘
     /// </summary>
     Save,
+    /// <summary>
+    /// 불러오기 아이콘
+    /// </summary>
+    Load,
 }

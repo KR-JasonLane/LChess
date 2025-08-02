@@ -52,7 +52,8 @@
 
             <ui:LChessButton Grid.Row="2"
                              Style="{StaticResource HomeContentButtonStyle}"
-                             Content="기보분석"/>
+                             Content="기보분석"
+                             Command="{Binding MoveToChoiceNotationCommand}"/>
 
 
             <ui:LChessButton Grid.Row="3"

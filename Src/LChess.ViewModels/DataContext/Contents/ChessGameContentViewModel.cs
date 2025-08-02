@@ -1,7 +1,9 @@
 ﻿using LChess.Abstract.Service;
 using LChess.Abstract.ViewModel;
+
 using LChess.Models.Chess.Match;
 using LChess.Models.Result;
+
 using LChess.Util.Enums;
 
 using LChess.ViewModels.Messenger;
@@ -41,7 +43,7 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
         {
             GameResult = null;
 
-            MatchStatus = new MatchStatusModel(new List<string>(), PieceColorType.White, false);
+            MatchStatus = new MatchStatusModel(new(), PieceColorType.White, false);
         }
 
 
@@ -162,15 +164,35 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
         
         if (result?.ButtonResult == true)
         {
-            var setting  = _userSettingService.GetUserSetting();
-            var path     = setting.SystemSetting.NotationSaveDirectory;
-            var fileName = $"{GameResult.PlayDateTime:yyyy년MM월dd일HH시mm분}_{GameResult.PlayTime.Minutes}분{GameResult.PlayTime.Seconds}초경기.chess";
-
-            if(!string.IsNullOrEmpty(path))
-            {
-                _jsonFileService.SaveJsonProperties(GameResult, Path.Combine(path, fileName));
-            }
+            SaveNotation();
         }
+    }
+
+    /// <summary>
+    /// 기보저장
+    /// </summary>
+    /// <returns> 저장 된 모델 반환 </returns>
+    private GameHistoryFileModel? SaveNotation()
+    {
+        if (GameResult == null) return null;
+
+        var setting = _userSettingService.GetUserSetting();
+        var path = setting.SystemSetting.NotationSaveDirectory;
+
+        if (!string.IsNullOrEmpty(path))
+        {
+            var gameHistoryFile = new GameHistoryFileModel()
+            {
+                FileName = $"{GameResult.PlayDateTime:yyyy년MM월dd일HH시mm분}_{GameResult.PlayTime.Minutes}분{GameResult.PlayTime.Seconds}초경기.chess",
+                GameResult = GameResult,
+            };
+
+            _jsonFileService.SaveJsonProperties(gameHistoryFile, Path.Combine(path, gameHistoryFile.FileName));
+
+            return gameHistoryFile;
+        }
+
+        return null;
     }
 
     #endregion
@@ -204,6 +226,36 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
     }
 
     /// <summary>
+    /// 분석화면 이동
+    /// </summary>
+    [RelayCommand]
+    private void MoveToAnalysis()
+    {
+        //Dim On
+        WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(true));
+
+        //분석 페이지로 이동할건지 여부 확인
+        var result = _popupWindowService.ShowMessagePopup("현재 게임을 저장하고 분석 화면으로 이동합니다.", "예", "아니요");
+
+        if(result?.ButtonResult == true)
+        {
+            var historyModel = SaveNotation();
+
+            if(historyModel != null)
+            {
+                //분석화면 이동
+                WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.Analysis));
+
+                //게임결과 전송
+                WeakReferenceMessenger.Default.Send(new GameHistoryMessage(historyModel));
+            }
+        }
+
+        //Dim Off
+        WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));
+    }
+
+    /// <summary>
     /// 기권
     /// </summary>
     [RelayCommand]
@@ -221,17 +273,16 @@ public partial class ChessGameContentViewModel : ObservableRecipient, IContentVi
             //게임종료 로깅
             Log.Information("======================= 게임종료 [기권] =======================");
 
-            var requestMessage = new RequestPlayTimeMessage();
+            var requestMessage = new RequestGameResultMessage();
 
+            //게임결과 요청
             WeakReferenceMessenger.Default.Send(requestMessage);
 
-            var gameResult = new GameResultModel()
-            {
-                Type = EndGameType.Resign,
-                Winner = MatchStatus.CurrentTurn,
-                PlayDateTime = DateTime.Now,
-                PlayTime = requestMessage.Response
-            };
+            //게임결과 받아오기
+            var gameResult = requestMessage.Response;
+
+            //게임 종료 타입 변경
+            gameResult.Type = EndGameType.Resign;
 
             //게임종료 메시지
             WeakReferenceMessenger.Default.Send(new EndGameMessage(gameResult));

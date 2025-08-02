@@ -118,5 +118,21 @@ public class PopupWindowService : IPopupWindowService
         return string.Empty;
     }
 
+    /// <summary>
+    /// 파일선택 팝업 띄우기
+    /// </summary>
+    /// <returns> 선택된 경로 </returns>
+    public string ShowSelectFilePopup()
+    {
+        var dialog = new OpenFileDialog() { Multiselect = false, Filter= "chess files (*.chess)|*.chess" };
+
+        if(dialog.ShowDialog() == true)
+        {
+            return dialog.FileName;
+        }
+
+        return string.Empty;
+    }
+
     #endregion
 }

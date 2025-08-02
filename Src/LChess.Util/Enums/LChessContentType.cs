@@ -22,7 +22,15 @@ public enum LChessContentType
     /// </summary>
     ChessBoard,
     /// <summary>
+    /// 기보선택 컨텐츠
+    /// </summary>
+    ChoiceNotation,
+    /// <summary>
     /// 설정 컨텐츠
     /// </summary>
     UserSetting,
+    /// <summary>
+    /// 기보분석 컨텐츠
+    /// </summary>
+    Analysis,
 }

@@ -32,4 +32,10 @@ public interface IPopupWindowService
     /// </summary>
     /// <returns> 선택된 경로 </returns>
     public string ShowSelectFolderPopup();
+
+    /// <summary>
+    /// 파일선택 팝업 띄우기
+    /// </summary>
+    /// <returns> 선택된 경로 </returns>
+    public string ShowSelectFilePopup();
 }

@@ -58,6 +58,8 @@ internal class IocBuilder
             services.AddTransient<ChessBoardContentViewModel      >();
             services.AddTransient<ChoicePieceColorContentViewModel>();
             services.AddTransient<UserSettingContentViewModel     >();
+            services.AddTransient<ChoiceNotationContentViewModel  >();
+            services.AddTransient<AnalysisContentViewModel        >();
         }
 
 

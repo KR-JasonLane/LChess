@@ -71,9 +71,9 @@ public partial class ChessBoardModel : ObservableObject
     /// </summary>
     /// <param name="selectedModel"> 선택된 타일 </param>
     /// <returns> 기물 이동이 발생 한 경우 기보출력 </returns>
-    public TileSelectedResultModel SelectTile(ChessBoardTileModel selectedModel)
+    public TileSelectedResultModel SelectTile(ChessBoardTileModel selectedModel, bool allowEnemySelect)
     {
-        return _managementModel.SelectTileAndGetNotationIfNeeded(selectedModel);
+        return _managementModel.SelectTileAndGetNotationIfNeeded(selectedModel, allowEnemySelect);
     }
 
     /// <summary>

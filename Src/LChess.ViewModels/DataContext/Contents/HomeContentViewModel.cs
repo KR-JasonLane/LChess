@@ -67,6 +67,12 @@ public partial class HomeContentViewModel : ObservableRecipient, IContentViewMod
     /// </summary>
     [RelayCommand]
     private void MoveToUserSetting() => WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.UserSetting));
+
+    /// <summary>
+    /// 분석 할 기보 선택 화면으로 이동
+    /// </summary>
+    [RelayCommand]
+    private void MoveToChoiceNotation() => WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChoiceNotation));
     #endregion
 
 }

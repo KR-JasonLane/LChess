@@ -1,7 +1,6 @@
 ﻿using LChess.Abstract.Service;
-
+using LChess.Models.Chess.Match;
 using LChess.Models.Result;
-using LChess.Models.Setting;
 
 namespace LChess.Service.Game;
 
@@ -20,7 +19,7 @@ public class ChessGameService : IChessGameService
         _stockfishEngineService = stockfishEngineService;
         _userSettingService     = userSettingService    ;
 
-        _notations = new List<string>();
+        _notations = new();
     }
 
     #endregion
@@ -41,7 +40,7 @@ public class ChessGameService : IChessGameService
     /// <summary>
     /// 기물 움직임 기보
     /// </summary>
-    private List<string> _notations;
+    private List<NotationModel> _notations;
 
     /// <summary>
     /// 직전 보드 상태
@@ -95,13 +94,36 @@ public class ChessGameService : IChessGameService
         if (string.IsNullOrEmpty(notation) || notation.Contains("none")) return null;
 
         // 기보 저장
-        _notations.Add(notation);
+        _notations.Add(CreateNotationModel(notation));
 
+        return await MovePiece();
+    }
+
+    /// <summary>
+    /// 한번에 여러 기물 이동
+    /// </summary>
+    /// <param name="notations"> 기물이동 기보 리스트 </param>
+    /// <returns> Stockfish 기물 코드 </returns>
+    public async Task<StockfishBoardCodeModel?> MovePiece(List<NotationModel> notations)
+    {
+        if(notations.Count == 0) return null;
+
+        _notations = notations;
+
+        return await MovePiece();
+    }
+
+    /// <summary>
+    /// 기물이동 코어로직
+    /// </summary>
+    /// <returns> Stockfish 기물 코드 </returns>
+    private async Task<StockfishBoardCodeModel?> MovePiece()
+    {
         StringBuilder commandBuilder = new StringBuilder("position startpos moves");
 
-        foreach(var history in _notations)
+        foreach (var history in _notations)
         {
-            commandBuilder.Append($" {history}");
+            commandBuilder.Append($" {history.Notation}");
         }
 
         await _stockfishEngineService.SendCommandAsync(commandBuilder.ToString(), string.Empty);
@@ -117,7 +139,7 @@ public class ChessGameService : IChessGameService
             return null;
         }
 
-        result.CurrentMove = notation;
+        result.CurrentMove = _notations.Last()?.Notation ?? string.Empty;
 
         _previousBoard = result;
 
@@ -155,10 +177,22 @@ public class ChessGameService : IChessGameService
     }
 
     /// <summary>
+    /// 기보모델 생성
+    /// </summary>
+    private NotationModel CreateNotationModel(string notation)
+    {
+        return new()
+        {
+            TurnCount = _notations.Count + 1,
+            Notation  = notation
+        };
+    }
+
+    /// <summary>
     /// 기보 받아오기
     /// </summary>
     /// <returns> 기보 </returns>
-    public List<string> GetNotationList() => _notations;
+    public List<NotationModel> GetNotationList() => _notations;
 
     #endregion
 }

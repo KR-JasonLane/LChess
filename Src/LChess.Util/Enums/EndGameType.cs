@@ -6,6 +6,10 @@
 public enum EndGameType
 {
     /// <summary>
+    /// 초기화
+    /// </summary>
+    Init,
+    /// <summary>
     /// 체크메이트
     /// </summary>
     CheckMate,

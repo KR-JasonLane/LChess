@@ -1,4 +1,6 @@
-﻿using LChess.Util.Enums;
+﻿using LChess.Models.Chess.Match;
+using LChess.Util.Enums;
+using System.Collections.ObjectModel;
 
 namespace LChess.Models.Result;
 
@@ -47,10 +49,16 @@ public partial class GameResultModel : ObservableObject
     private PieceColorType? _winner;
 
     /// <summary>
+    /// 유저 색상
+    /// </summary>
+    [ObservableProperty]
+    private PieceColorType _userColor;
+
+    /// <summary>
     /// 기보
     /// </summary>
     [ObservableProperty]
-    private List<string> _notation;
+    private ObservableCollection<NotationModel> _notation;
 
     #endregion
 }

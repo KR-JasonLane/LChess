@@ -107,7 +107,7 @@
                                     CornerRadius="5"
                                     Margin="5">
 
-                                <TextBlock Text="{Binding Path=., Converter={StaticResource PrettyNotaionStringConverter}}"
+                                <TextBlock Text="{Binding Path=Notation, Converter={StaticResource PrettyNotaionStringConverter}}"
                                            Foreground="LightCyan"
                                            Margin="10"
                                            FontSize="16"

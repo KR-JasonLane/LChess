@@ -1,6 +1,8 @@
 ﻿using LChess.Abstract.Service;
 using LChess.Abstract.ViewModel;
 
+using LChess.Models.Chess.Board;
+
 using LChess.Util.Enums;
 
 using LChess.ViewModels.Messenger;
@@ -67,8 +69,8 @@ public partial class ChoicePieceColorContentViewModel : ObservableRecipient, ICo
         //3. 체스 게임 컨텐츠로 이동
         WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChessGame));
 
-        //4. 사용자 색상 전달
-        WeakReferenceMessenger.Default.Send(new SelectUserPieceColorMessage(color));
+        //4. 보드 초기화 메시지
+        WeakReferenceMessenger.Default.Send(new InitBoardMessage(new ChessBoardInitPropertyModel(ChessBoardMode.Game, color, null, new TimeSpan(0))));
 
         //5. 딤 끄기
         WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));

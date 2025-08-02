@@ -114,4 +114,29 @@ public class JsonFileService : IJsonFileService
 
         return result != null;
     }
+
+    /// <summary>
+    /// 폴더에 있는 모든 파일을 파싱.
+    /// </summary>
+    /// <typeparam name="T"> 파싱 타입 </typeparam>
+    /// <param name="directoryPath"> 폴더 경로 </param>
+    /// <param name="result"> 파싱결과 </param>
+    /// <returns> 성공여부 </returns>
+    public bool TryParseJsonPropertiesInDirectory<T>(string directoryPath, out List<T> result) where T : new()
+    {
+        result = new();
+
+        if (!Directory.Exists(directoryPath))  return false;
+
+        string[] files = Directory.GetFiles(directoryPath);
+
+        foreach(var file in files)
+        {
+            if (!TryParseJsonProperties(file, out T? parsed) || parsed == null) continue;
+
+            result.Add(parsed);
+        }
+
+        return result.Count != 0;
+    }
 }

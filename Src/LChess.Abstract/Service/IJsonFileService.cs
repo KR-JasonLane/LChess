@@ -21,4 +21,13 @@ public interface IJsonFileService
     /// <param name="jsonPath"> 파싱할 파일 경로 </param>
     /// <returns> 파싱데이터 </returns>
     public bool TryParseJsonProperties<T>(string jsonPath, out T? result) where T : new();
+
+    /// <summary>
+    /// 폴더에 있는 모든 파일을 파싱.
+    /// </summary>
+    /// <typeparam name="T"> 파싱 타입 </typeparam>
+    /// <param name="directoryPath"> 폴더 경로 </param>
+    /// <param name="result"> 파싱결과 </param>
+    /// <returns> 성공여부 </returns>
+    public bool TryParseJsonPropertiesInDirectory<T>(string directoryPath, out List<T> result) where T : new();
 }

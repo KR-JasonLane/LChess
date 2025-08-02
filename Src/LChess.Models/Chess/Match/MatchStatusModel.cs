@@ -12,7 +12,7 @@ public partial class MatchStatusModel : ObservableObject
     /// <summary>
     /// 생성자
     /// </summary>
-    public MatchStatusModel(List<string> notation, PieceColorType? currentTurn, bool isCheck)
+    public MatchStatusModel(List<NotationModel> notation, PieceColorType? currentTurn, bool isCheck)
     {
         Notation = [.. notation];
 
@@ -32,7 +32,7 @@ public partial class MatchStatusModel : ObservableObject
     /// 기보
     /// </summary>
     [ObservableProperty]
-    private List<string> _notation;
+    private List<NotationModel> _notation;
 
     /// <summary>
     /// 현재 턴
