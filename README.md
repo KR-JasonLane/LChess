@@ -91,6 +91,10 @@
 - 판단깊이 : Stockfish 엔진이 얼만큼의 앞 수를 계산할지에 대한 설정. 해당 값이 높을수록 AI의 수가 견고해지며, 판단 시간이 오래 걸린다. (20 ~ 30 권장)
 - 기보저장폴더 : 게임이 끝난 후 기보를 어느 경로에 저장 할 것인지에 대한 설정. 해당 경로에 포함된 기보가 아니더라도 기보 선택 화면에서 불러올 수 있다.
 
+## **💾다운로드**
+
+### [LChess.zip](https://drive.google.com/file/d/1M2ZRLjIJUt2PdXcRrQfH_owSQ6EdEe-i/view?usp=drive_link)
+
 <br/>
 <br/>
 <br/>
