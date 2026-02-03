@@ -59,6 +59,9 @@ public class ChessBoardModelTests
         board.GameEnd();
 
         // 모든 타일의 하이라이트가 해제되어야 함
+        if (board.Source is null)
+            throw new InvalidOperationException("Board source should not be null after parsing.");
+
         foreach (var row in board.Source)
         {
             foreach (var tile in row)
