@@ -1,44 +1,48 @@
-﻿namespace LChess.Util.Converter;
+namespace LChess.Util.Converter;
 
 /// <summary>
-/// 기보를 꾸며주는 컨버터
+/// 체스 기보 노테이션을 읽기 쉬운 형태로 변환하는 컨버터
 /// </summary>
-public class PrettyNotaionStringConverter : IValueConverter
+public class PrettyNotationStringConverter : IValueConverter
 {
+    private const int PromotionNotationLength = 5;
+    private const int SquareLength = 2;
+
     /// <summary>
-    /// 기보를 꾸며주는 컨버터
+    /// 노테이션 문자열을 "출발지 → 도착지 [승격(기물)]" 형태로 변환
     /// </summary>
-    /// <param name="value">검사값</param>
+    /// <param name="value">노테이션 문자열 (예: "e2e4", "e7e8q")</param>
     /// <param name="targetType">타겟 타입</param>
-    /// <param name="parameter"> 현재 턴 </param>
+    /// <param name="parameter">추가 파라미터</param>
     /// <param name="culture">문화 정보</param>
-    /// <returns> Visibility 값 </returns>
+    /// <returns>포맷팅된 기보 문자열</returns>
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is string notation)
+        if (value is not string notation)
+            return string.Empty;
+
+        var from = notation.Substring(0, SquareLength);
+        var to = notation.Substring(SquareLength, SquareLength);
+
+        if (notation.Length == PromotionNotationLength)
         {
-            if(notation.Length == 5)
+            var promotion = notation.Substring(SquareLength * 2) switch
             {
-                var promotion = notation.Substring(4, 1) switch
-                {
-                    "q" => "Queen",
-                    "r" => "Rook",
-                    "n" => "Night",
-                    "b" => "Bishop",
-                    _ => "NotFound"
-                };
+                "q" => "Queen",
+                "r" => "Rook",
+                "n" => "Knight",
+                "b" => "Bishop",
+                _ => "NotFound"
+            };
 
-                return $"{notation.Substring(0, 2)} → {notation.Substring(2, 2)} [승격({promotion})]";
-            }
-
-            return $"{notation.Substring(0, 2)} → {notation.Substring(2, 2)}";
+            return $"{from} → {to} [승격({promotion})]";
         }
 
-        return new List<string>();
+        return $"{from} → {to}";
     }
 
     /// <summary>
-    /// Null이면 Collapsed 반환
+    /// 역변환 (사용하지 않음)
     /// </summary>
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {

@@ -19,13 +19,13 @@
             <Setter Property="Height" Value="60"/>
         </Style>
 
-        <cvt:StringMatchToVisibilityConverter x:Key="StringMatchToVisibilityConverter"/>
+        <cvt:ValueMatchVisibilityConverter x:Key="ValueMatchVisibilityConverter"/>
 
         <cvt:GameEndTypeToTextConverter x:Key="GameEndTypeToTextConverter"/>
 
         <cvt:WinnerColorToTextConverter x:Key="WinnerColorToTextConverter"/>
 
-        <cvt:PrettyNotaionStringConverter x:Key="PrettyNotaionStringConverter"/>
+        <cvt:PrettyNotationStringConverter x:Key="PrettyNotationStringConverter"/>
 
     </UserControl.Resources>
 
@@ -106,7 +106,7 @@
                                     </i:EventTrigger>                                    
                                 </i:Interaction.Triggers>
 
-                                <TextBlock Text="{Binding Path=Notation, Converter={StaticResource PrettyNotaionStringConverter}}"
+                                <TextBlock Text="{Binding Path=Notation, Converter={StaticResource PrettyNotationStringConverter}}"
                                            Foreground="LightCyan"
                                            Margin="10"
                                            FontSize="16"

@@ -1,19 +1,21 @@
-﻿using Serilog;
+using Serilog;
 
 namespace LChess.Util.Debugging;
 
 /// <summary>
-/// 로그객체빌더
+/// Serilog 로그 객체를 구성하는 빌더
 /// </summary>
-public class LogBuilder
+public static class LogBuilder
 {
+    private const string LogFilePath = "logs/lchess.log";
+
     /// <summary>
-    /// 로그 객체를 빌드
+    /// Serilog 전역 로거를 일별 롤링 파일로 구성합니다.
     /// </summary>
     public static void Build()
     {
         Log.Logger = new LoggerConfiguration()
-            .WriteTo.File($"logs/.log", rollingInterval: RollingInterval.Day)
+            .WriteTo.File(LogFilePath, rollingInterval: RollingInterval.Day)
             .CreateLogger();
     }
 }

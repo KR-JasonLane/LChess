@@ -22,7 +22,7 @@ public class WinnerColorToTextConverter : IValueConverter
             };
         }
 
-        return "무승부";
+        return string.Empty;
     }
 
     /// <summary>

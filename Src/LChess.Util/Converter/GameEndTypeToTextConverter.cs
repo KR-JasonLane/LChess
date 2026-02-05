@@ -17,7 +17,7 @@ public class GameEndTypeToTextConverter : IValueConverter
             return type switch
             {
                 EndGameType.CheckMate => "체크메이트" ,
-                EndGameType.Draw      => "스테일메이트",
+                EndGameType.Draw      => "무승부"      ,
                 EndGameType.Resign    => "기권"       ,
                 _ => string.Empty
             };
