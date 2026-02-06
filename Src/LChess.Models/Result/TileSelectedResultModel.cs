@@ -7,26 +7,12 @@ namespace LChess.Models.Result;
 /// </summary>
 public class TileSelectedResultModel
 {
-    #region :: Constructor ::
-
-    /// <summary>
-    /// 생성자
-    /// </summary>
-    public TileSelectedResultModel()
-    {
-        Notation = string.Empty;
-
-        IsNeedToPromotion = false;
-    }
-
-    #endregion
-        
     #region :: Properties ::
 
     /// <summary>
     /// 기물이동 기보
     /// </summary>
-    public string Notation { get; set; }
+    public string Notation { get; set; } = string.Empty;
 
     /// <summary>
     /// 기물이동이 필요한지 여부

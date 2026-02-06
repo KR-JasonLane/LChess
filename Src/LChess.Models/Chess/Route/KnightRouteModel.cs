@@ -6,6 +6,9 @@ using LChess.Util.Enums;
 
 namespace LChess.Models.Chess.Route;
 
+/// <summary>
+/// 나이트 이동경로 모델
+/// </summary>
 public class KnightRouteModel : ChessUnitRouteModelBase
 {
     #region :: Constructor ::

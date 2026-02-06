@@ -28,7 +28,7 @@ public class UserSettingServiceTests
     {
         // Arrange
         var expected = new UserSettingModel();
-        expected.StockfishSetting.TinkingDepth = "25";
+        expected.StockfishSetting.ThinkingDepth = "25";
 
         _mockJsonFileService
             .Setup(j => j.TryParseJsonProperties(It.IsAny<string>(), out expected))
@@ -39,7 +39,7 @@ public class UserSettingServiceTests
 
         // Assert
         result.Should().NotBeNull();
-        result.StockfishSetting.TinkingDepth.Should().Be("25");
+        result.StockfishSetting.ThinkingDepth.Should().Be("25");
     }
 
     [Fact]
@@ -57,7 +57,7 @@ public class UserSettingServiceTests
 
         // Assert
         result.Should().NotBeNull();
-        result.StockfishSetting.TinkingDepth.Should().Be("20");
+        result.StockfishSetting.ThinkingDepth.Should().Be("20");
     }
 
     [Fact]

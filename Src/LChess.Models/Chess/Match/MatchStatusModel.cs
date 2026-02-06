@@ -49,12 +49,7 @@ public partial class MatchStatusModel : ObservableObject
     /// <summary>
     /// 현재 체크상태인지 여부
     /// </summary>
-    public bool IsCheck;
-
-    #endregion
-
-
-    #region :: Methods ::
+    public bool IsCheck { get; init; }
 
     #endregion
 }

@@ -170,7 +170,11 @@ public class BoardManagementModel
         }
     }
 
-    //현재 체크상태인지 확인
+    /// <summary>
+    /// 현재 체크 상태인지 확인
+    /// </summary>
+    /// <param name="color">확인할 킹의 색상</param>
+    /// <returns>체크 상태 여부</returns>
     public bool IsCheckStatus(PieceColorType color)
     {
         return _tileMapper.Values.Any(x => x.IsHighLightDanger && x?.Unit?.ColorType == color);

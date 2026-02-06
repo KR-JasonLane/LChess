@@ -19,9 +19,4 @@ public partial class KnightModel : ChessUnitModelBase
     }
 
     #endregion
-
-    #region Methods
-
-    #endregion
-
 }

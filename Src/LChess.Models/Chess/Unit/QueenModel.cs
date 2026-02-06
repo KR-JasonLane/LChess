@@ -19,9 +19,4 @@ public partial class QueenModel : ChessUnitModelBase
     }
 
     #endregion
-
-    #region Methods
-
-    #endregion
-
 }

@@ -84,7 +84,7 @@
                             ToolTip="값이 클수록 난이도가 높고 오래걸립니다."
                             ToolTipService.InitialShowDelay="1"
                             ToolTipService.HorizontalOffset="200"
-                            Value="{Binding UserSetting.StockfishSetting.TinkingDepth}"
+                            Value="{Binding UserSetting.StockfishSetting.ThinkingDepth}"
                             Style="{StaticResource ValueSliderStyle}"/>
 
                 </Grid>

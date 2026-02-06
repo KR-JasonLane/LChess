@@ -19,7 +19,7 @@ public class SettingModelTests
     {
         var model = new StockfishSettingModel();
 
-        model.TinkingDepth.Should().Be("20");
+        model.ThinkingDepth.Should().Be("20");
     }
 
     [Fact]

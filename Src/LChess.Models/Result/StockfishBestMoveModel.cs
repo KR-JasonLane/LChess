@@ -30,13 +30,4 @@ public class StockfishBestMoveModel
     public bool CanMove => !BestMove.Contains("none");
 
     #endregion
-
-    #region :: Methods ::
-
-    #endregion
-
-    #region :: Commands ::
-
-    #endregion
-
 }

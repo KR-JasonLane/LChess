@@ -5,6 +5,11 @@
 /// </summary>
 public partial class StockfishSettingModel : ObservableObject
 {
+    /// <summary>
+    /// 기본 탐색 깊이
+    /// </summary>
+    private const string DefaultDepth = "20";
+
     #region :: Constructor ::
 
     /// <summary>
@@ -23,7 +28,7 @@ public partial class StockfishSettingModel : ObservableObject
     /// 스톡피쉬 판단 깊이 (클수록 난이도가 높고 오래걸림)
     /// </summary>
     [ObservableProperty]
-    private string _tinkingDepth = "20";
+    private string _thinkingDepth = DefaultDepth;
 
 
     #endregion

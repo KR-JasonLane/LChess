@@ -154,7 +154,7 @@ public class ChessGameService : IChessGameService
     {
         var userSetting = _userSettingService.GetUserSetting();
 
-        var bestMove = await _stockfishEngineService.SendCommandAsync($"go depth {userSetting.StockfishSetting.TinkingDepth}", "best");
+        var bestMove = await _stockfishEngineService.SendCommandAsync($"go depth {userSetting.StockfishSetting.ThinkingDepth}", "best");
 
         return new StockfishBestMoveModel(bestMove?.Split(' ').ElementAt(1) ?? "(none)");
     }

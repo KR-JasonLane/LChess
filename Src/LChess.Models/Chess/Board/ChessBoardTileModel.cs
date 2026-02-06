@@ -22,7 +22,7 @@ public partial class ChessBoardTileModel : ObservableObject
 
         Unit = ChessUnitModelBase.CreateUnitModel(unitCode, Position.Code);
 
-        TileColorType  = tileColor ;
+        TileColorType = tileColor;
     }
 
     #endregion

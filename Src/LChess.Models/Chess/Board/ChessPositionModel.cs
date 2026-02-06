@@ -1,5 +1,4 @@
 ﻿using LChess.Util.Enums;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LChess.Models.Chess.Board;
 
@@ -8,6 +7,21 @@ namespace LChess.Models.Chess.Board;
 /// </summary>
 public class ChessPositionModel
 {
+    /// <summary>
+    /// ChessPosition enum의 행 간격 (10진법 인코딩)
+    /// </summary>
+    private const int RowStride = 10;
+
+    /// <summary>
+    /// 보드의 첫 번째 행 인덱스
+    /// </summary>
+    private const int FirstRow = 0;
+
+    /// <summary>
+    /// 보드의 마지막 행 인덱스
+    /// </summary>
+    private const int LastRow = 7;
+
     #region :: Constructor ::
 
     /// <summary>
@@ -22,13 +36,13 @@ public class ChessPositionModel
     }
 
     /// <summary>
-    /// 생성자 오버로딩
+    /// ChessPosition enum 값으로부터 위치 모델 생성
     /// </summary>
-    /// <param name="position"></param>
+    /// <param name="position">체스 보드 위치</param>
     public ChessPositionModel(ChessPosition position)
     {
-        Row    = (int)position / 10;
-        Column = (int)position % 10;
+        Row    = (int)position / RowStride;
+        Column = (int)position % RowStride;
 
         Code = position;
     }
@@ -55,7 +69,10 @@ public class ChessPositionModel
     /// <summary>
     /// 보드의 세로 끝 지점인지 여부
     /// </summary>
-    public bool IsEndPointColumnInBoard => Code.ToString().Contains("1") || Code.ToString().Contains("8");
+    /// <summary>
+    /// 보드의 세로 끝 지점인지 여부 (프로모션 행)
+    /// </summary>
+    public bool IsEndPointColumnInBoard => Row == FirstRow || Row == LastRow;
 
     #endregion
 
@@ -144,7 +161,7 @@ public class ChessPositionModel
     /// <returns> 변환된 위치 </returns>
     public static ChessPosition CalcPositionCode(int row, int column)
     {
-        var position = row * 10 + column;
+        var position = row * RowStride + column;
         if (Enum.TryParse(typeof(ChessPosition), position.ToString(), out var parse) && Enum.IsDefined(typeof(ChessPosition), parse) && parse is ChessPosition result)
         {
             return result;

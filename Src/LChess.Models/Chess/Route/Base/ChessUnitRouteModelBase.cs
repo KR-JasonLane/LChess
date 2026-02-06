@@ -55,6 +55,65 @@ public abstract class ChessUnitRouteModelBase
     public abstract List<ChessPosition> GetMovablePositions(BoardManagementModel managementModel);
 
     /// <summary>
+    /// 슬라이딩 기물(룩, 비숍, 퀸, 킹)의 이동경로를 하이라이트
+    /// </summary>
+    /// <param name="routes">방향별 이동 경로 리스트</param>
+    /// <param name="managementModel">보드 관리 모델</param>
+    protected void TurnOnSlidingRoute(List<List<ChessPosition>> routes, BoardManagementModel managementModel)
+    {
+        foreach (var line in routes)
+        {
+            foreach (var position in line)
+            {
+                if (!managementModel.TryGetTile(position, out var tile) || tile == null)
+                    continue;
+
+                if (tile.IsEmpty)
+                {
+                    tile.IsHighLightMove = true;
+                    continue;
+                }
+
+                tile.IsHighLightEnemy = tile.Unit?.IsSameColor(_unitColor) == false;
+                break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 슬라이딩 기물(룩, 비숍, 퀸, 킹)의 이동 가능한 위치를 수집
+    /// </summary>
+    /// <param name="routes">방향별 이동 경로 리스트</param>
+    /// <param name="managementModel">보드 관리 모델</param>
+    /// <returns>이동 가능한 위치 리스트</returns>
+    protected List<ChessPosition> GetSlidingMovablePositions(List<List<ChessPosition>> routes, BoardManagementModel managementModel)
+    {
+        var result = new List<ChessPosition>();
+
+        foreach (var line in routes)
+        {
+            foreach (var position in line)
+            {
+                if (!managementModel.TryGetTile(position, out var tile) || tile == null)
+                    continue;
+
+                if (tile.IsEmpty)
+                {
+                    result.Add(position);
+                    continue;
+                }
+
+                if (tile.Unit?.IsSameColor(_unitColor) == false)
+                    result.Add(position);
+
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    /// <summary>
     /// 유닛경로 모델 생성
     /// </summary>
     /// <param name="unitType"> 기물타입 </param>

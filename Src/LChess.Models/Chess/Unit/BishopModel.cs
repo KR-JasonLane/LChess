@@ -19,9 +19,4 @@ public partial class BishopModel : ChessUnitModelBase
     }
 
     #endregion
-
-    #region Methods
-
-    #endregion
-
 }

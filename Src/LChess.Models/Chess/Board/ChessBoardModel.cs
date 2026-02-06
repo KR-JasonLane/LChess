@@ -11,6 +11,11 @@ namespace LChess.Models.Chess;
 /// </summary>
 public partial class ChessBoardModel : ObservableObject
 {
+    /// <summary>
+    /// 체스 보드 크기 (8x8)
+    /// </summary>
+    private const int BoardSize = 8;
+
     #region :: Constructor ::
 
     /// <summary>
@@ -91,19 +96,19 @@ public partial class ChessBoardModel : ObservableObject
         var tileColor = ChessTileColorType.Dark;
 
         // 3. 타일 행 생성 루프
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < BoardSize; i++)
         {
             // 3-1. 각 행의 타일 컬렉션 생성
             var line = new List<ChessBoardTileModel>();
 
             // 3-2. 사용자 기물 색상에 따라 행 인덱스 조정
-            var row = _managementModel.UserPieceColor == PieceColorType.White ? i : 7 - i;
+            var row = _managementModel.UserPieceColor == PieceColorType.White ? i : BoardSize - 1 - i;
 
             // 3-3. 타일 열 생성 루프
-            for (int j = 1; j <= 8; j++)
+            for (int j = 1; j <= BoardSize; j++)
             {
                 // 3-3-1. 사용자 기물 색상에 따라 열 인덱스 조정
-                var column = _managementModel.UserPieceColor == PieceColorType.White ? j : 9 - j;
+                var column = _managementModel.UserPieceColor == PieceColorType.White ? j : BoardSize + 1 - j;
 
                 // 3-3-2. 체스 보드 타일 모델 생성
                 var current = new ChessBoardTileModel(tileColor, row, column - 1, unitCodes?[row][column * 4 - 1] ?? ' ');
@@ -115,7 +120,7 @@ public partial class ChessBoardModel : ObservableObject
                 _managementModel.AddTile(current);
 
                 // 3-3-5. 필요 시 타일 색상 변경
-                if (j != 8)
+                if (j != BoardSize)
                 {
                     tileColor = tileColor.ChangeColor();
                 }
@@ -138,16 +143,16 @@ public partial class ChessBoardModel : ObservableObject
         var unitCodes = resultModel.TileCodeList;
 
         // 1. 행 루프
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < BoardSize; i++)
         {
             // 1-1. 행 인덱스 조정
-            var row = _managementModel.UserPieceColor == PieceColorType.White ? i : 7 - i;
+            var row = _managementModel.UserPieceColor == PieceColorType.White ? i : BoardSize - 1 - i;
 
             // 1-2. 열 루프
-            for (int j = 1; j <= 8; j++)
+            for (int j = 1; j <= BoardSize; j++)
             {
                 // 1-2-1. 열 인덱스 조절
-                var column = _managementModel.UserPieceColor == PieceColorType.White ? j : 9 - j;
+                var column = _managementModel.UserPieceColor == PieceColorType.White ? j : BoardSize + 1 - j;
 
                 // 1-2-2. 현재 위치 계산
                 var currentPosition = ChessPositionModel.CalcPositionCode(row, column - 1);

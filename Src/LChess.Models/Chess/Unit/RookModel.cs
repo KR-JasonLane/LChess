@@ -19,9 +19,4 @@ public partial class RookModel : ChessUnitModelBase
     }
 
     #endregion
-
-    #region Methods
-
-
-    #endregion
 }

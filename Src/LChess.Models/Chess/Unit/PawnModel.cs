@@ -17,8 +17,4 @@ public partial class PawnModel : ChessUnitModelBase
     }
 
     #endregion
-
-    #region Methods
-
-    #endregion
 }

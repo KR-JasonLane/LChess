@@ -3,6 +3,9 @@ using LChess.Util.Enums;
 
 namespace LChess.Models.Chess.Board;
 
+/// <summary>
+/// 체스보드 초기화 속성 모델
+/// </summary>
 public class ChessBoardInitPropertyModel
 {
     #region :: Constructor ::

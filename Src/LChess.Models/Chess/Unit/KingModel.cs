@@ -17,10 +17,4 @@ public partial class KingModel : ChessUnitModelBase
     }
 
     #endregion
-
-    #region Methods
-
-
-    #endregion
-
 }

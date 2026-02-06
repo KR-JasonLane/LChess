@@ -7,18 +7,6 @@ namespace LChess.Models.Chess.Match;
 /// </summary>
 public class NotationModel
 {
-    #region :: Constructor ::
-
-    /// <summary>
-    /// 생성자
-    /// </summary>
-    public NotationModel()
-    {
-
-    }
-
-    #endregion
-
     #region :: Properties ::
 
     /// <summary>

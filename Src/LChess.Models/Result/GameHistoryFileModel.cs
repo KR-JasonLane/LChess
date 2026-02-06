@@ -5,18 +5,6 @@
 /// </summary>
 public partial class GameHistoryFileModel : ObservableObject
 {
-    #region :: Constructor ::
-
-    /// <summary>
-    /// 생성자
-    /// </summary>
-    public GameHistoryFileModel()
-    {
-
-    }
-
-    #endregion
-
     #region :: Properties ::
 
     /// <summary>

@@ -68,8 +68,4 @@ public class StockfishBoardCodeModel
     }
 
     #endregion
-
-    #region :: Commands ::
-
-    #endregion
 }

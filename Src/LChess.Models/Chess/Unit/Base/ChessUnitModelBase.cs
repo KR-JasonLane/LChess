@@ -34,7 +34,7 @@ public abstract partial class ChessUnitModelBase : ObservableObject
     /// 기물 색상
     /// </summary>
     [ObservableProperty]
-    private PieceColorType _ColorType;
+    private PieceColorType _colorType;
     /// <summary>
     /// 기물 타입
     /// </summary>
