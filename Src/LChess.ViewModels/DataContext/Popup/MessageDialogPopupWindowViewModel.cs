@@ -86,7 +86,7 @@ public partial class MessageDialogPopupWindowViewModel : ObservableRecipient
     {
         Result = new DialogResultModel(true, string.Empty);
 
-        _popupWindowService.CloseCurrentPopupWinodw();
+        _popupWindowService.CloseCurrentPopupWindow();
     }
 
     /// <summary>
@@ -97,7 +97,7 @@ public partial class MessageDialogPopupWindowViewModel : ObservableRecipient
     {
         Result = new DialogResultModel(false, string.Empty);
 
-        _popupWindowService.CloseCurrentPopupWinodw();
+        _popupWindowService.CloseCurrentPopupWindow();
     }
 
     #endregion

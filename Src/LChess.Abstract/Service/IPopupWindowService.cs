@@ -19,7 +19,7 @@ public interface IPopupWindowService
     /// <summary>
     /// 현재 띄워져있는 팝업 윈도우 닫기
     /// </summary>
-    public void CloseCurrentPopupWinodw();
+    public void CloseCurrentPopupWindow();
 
     /// <summary>
     /// 폰 승격 선택 팝업 띄우기

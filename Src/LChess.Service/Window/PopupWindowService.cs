@@ -27,7 +27,7 @@ public class PopupWindowService : IPopupWindowService
 
     #region :: Properties ::
 
-    private System.Windows.Window? _currnetPopup;
+    private System.Windows.Window? _currentPopup;
 
     #endregion
 
@@ -42,9 +42,9 @@ public class PopupWindowService : IPopupWindowService
     /// <param name="cancelButtonContent"> 취소버튼 텍스트 </param>
     public DialogResultModel? ShowMessagePopup(string message, string okButtonContent, string cancelButtonContent)
     {
-        if(_currnetPopup != null)
+        if(_currentPopup != null)
         {
-            CloseCurrentPopupWinodw();
+            CloseCurrentPopupWindow();
         }
 
         var popupViewModel = Ioc.Default.GetRequiredService<MessageDialogPopupWindowViewModel>();
@@ -59,7 +59,7 @@ public class PopupWindowService : IPopupWindowService
             Owner = Application.Current.MainWindow
         };
 
-        _currnetPopup = popupView;
+        _currentPopup = popupView;
 
         popupView.ShowDialog();
 
@@ -72,9 +72,9 @@ public class PopupWindowService : IPopupWindowService
     /// <returns> 승격코드 </returns>
     public string ShowSelectPromotionPopup()
     {
-        if (_currnetPopup != null)
+        if (_currentPopup != null)
         {
-            CloseCurrentPopupWinodw();
+            CloseCurrentPopupWindow();
         }
 
         var popupViewModel = Ioc.Default.GetRequiredService<SelectPromotionUnitPopupWindowViewModel>();
@@ -85,7 +85,7 @@ public class PopupWindowService : IPopupWindowService
             Owner = Application.Current.MainWindow
         };
 
-        _currnetPopup = popupView;
+        _currentPopup = popupView;
 
         popupView.ShowDialog();
 
@@ -95,10 +95,10 @@ public class PopupWindowService : IPopupWindowService
     /// <summary>
     /// 현재 띄워져있는 팝업 윈도우 닫기
     /// </summary>
-    public void CloseCurrentPopupWinodw()
+    public void CloseCurrentPopupWindow()
     {
-        _currnetPopup?.Close();
-        _currnetPopup = null;
+        _currentPopup?.Close();
+        _currentPopup = null;
     }
 
 

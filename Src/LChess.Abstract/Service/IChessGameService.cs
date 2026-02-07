@@ -33,7 +33,6 @@ public interface IChessGameService
     /// <returns> Stockfish 기물 코드 </returns>
     public Task<StockfishBoardCodeModel?> MovePiece(List<NotationModel> notations);
 
-
     /// <summary>
     /// AI가 판단하는 BestMove 획득
     /// </summary>

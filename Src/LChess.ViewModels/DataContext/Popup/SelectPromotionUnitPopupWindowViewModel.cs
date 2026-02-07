@@ -58,7 +58,7 @@ public partial class SelectPromotionUnitPopupWindowViewModel : ObservableRecipie
         {
             Result = new DialogResultModel(true, promotionCode);
 
-            _popupWindowService.CloseCurrentPopupWinodw();
+            _popupWindowService.CloseCurrentPopupWindow();
         }
     }
 
