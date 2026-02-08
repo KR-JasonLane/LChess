@@ -13,20 +13,11 @@ namespace LChess.Service.Window;
 /// </summary>
 public class PopupWindowService : IPopupWindowService
 {
-    #region :: Constructor ::
-
-    /// <summary>
-    /// 생성자
-    /// </summary>
-    public PopupWindowService()
-    {
-
-    }
-
-    #endregion
-
     #region :: Properties ::
 
+    /// <summary>
+    /// 현재 팝업 윈도우
+    /// </summary>
     private System.Windows.Window? _currentPopup;
 
     #endregion
@@ -100,7 +91,6 @@ public class PopupWindowService : IPopupWindowService
         _currentPopup?.Close();
         _currentPopup = null;
     }
-
 
     /// <summary>
     /// 폴더선택 팝업 띄우기

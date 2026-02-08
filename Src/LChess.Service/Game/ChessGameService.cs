@@ -9,7 +9,7 @@ namespace LChess.Service.Game;
 /// </summary>
 public class ChessGameService : IChessGameService
 {
-    #region :: Constructure ::
+    #region :: Constructor ::
 
     /// <summary>
     /// 생성자
@@ -31,6 +31,9 @@ public class ChessGameService : IChessGameService
     /// </summary>
     private readonly IStockfishEngineService _stockfishEngineService;
 
+    /// <summary>
+    /// 사용자 설정 서비스
+    /// </summary>
     private readonly IUserSettingService _userSettingService;
 
     #endregion
@@ -164,16 +167,7 @@ public class ChessGameService : IChessGameService
     /// </summary>
     private static bool IsSameBoard(StockfishBoardCodeModel a, StockfishBoardCodeModel b)
     {
-        if (a.TileCodeList.Count != b.TileCodeList.Count)
-            return false;
-
-        for (int i = 0; i < a.TileCodeList.Count; i++)
-        {
-            if (a.TileCodeList[i] != b.TileCodeList[i])
-                return false;
-        }
-
-        return true;
+        return a.TileCodeList.SequenceEqual(b.TileCodeList);
     }
 
     /// <summary>

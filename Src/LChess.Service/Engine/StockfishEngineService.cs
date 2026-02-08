@@ -160,7 +160,7 @@ public class StockfishEngineService : IStockfishEngineService
             //1. 엔진 실행 파일 경로 설정 및 파일 존재여부 확인
             if(Path.Exists(_stockfishExecutablePath))
             {
-                Log.Information($"이미 Stockfish 엔진이 존재하여 리소스 추출 생략.");
+                Log.Information("이미 Stockfish 엔진이 존재하여 리소스 추출 생략.");
                 return true;
             }
 
@@ -168,7 +168,7 @@ public class StockfishEngineService : IStockfishEngineService
             using var stream = GetStockfishResourceStream();
             if (stream == null)
             {
-                Log.Fatal($"Stockfish 엔진 리소스 획득 실패.");
+                Log.Fatal("Stockfish 엔진 리소스 획득 실패.");
                 return false;
             }
 
@@ -176,21 +176,21 @@ public class StockfishEngineService : IStockfishEngineService
             if(!Directory.Exists(_stockfishEngineDirectory))
             {
                 Directory.CreateDirectory(_stockfishEngineDirectory);
-                Log.Information($"엔진 폴더 생성");
+                Log.Information("엔진 폴더 생성");
             }
 
             //4. 엔진 리소스 출력디렉터리로 복사
             using var fileStream = new FileStream(_stockfishExecutablePath, FileMode.Create, FileAccess.Write);
             stream.CopyTo(fileStream);
 
-            Log.Information($"Stockfish 엔진 리소스 추출 성공.");
+            Log.Information("Stockfish 엔진 리소스 추출 성공.");
 
             // 성공
             return true;
         }
         catch (Exception ex)
         {
-            Log.Error(ex, $"Stockfish 엔진 리소스 추출 중 오류 발생");
+            Log.Error(ex, "Stockfish 엔진 리소스 추출 중 오류 발생");
             return false;
         }
     }
@@ -292,7 +292,7 @@ public class StockfishEngineService : IStockfishEngineService
             return result;
         }
 
-        Log.Information($"커맨드 전송 : 'd'");
+        Log.Information("커맨드 전송 : 'd'");
 
         //1. 커맨드 전송
         await _stockfishInput.WriteLineAsync("d");

@@ -26,12 +26,17 @@ public class UserSettingService : IUserSettingService
 
     #region :: Properties ::
 
+    /// <summary>
+    /// 설정 파일 경로
+    /// </summary>
     private readonly string _settingFilePath;
 
+    /// <summary>
+    /// JSON 파일 서비스
+    /// </summary>
     private readonly IJsonFileService _jsonFileService;
 
     #endregion
-
 
     #region :: Methods ::
 
@@ -57,9 +62,4 @@ public class UserSettingService : IUserSettingService
     }
 
     #endregion
-
-    #region :: Commands ::
-
-    #endregion
-
 }

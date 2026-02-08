@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 
 namespace LChess.Service.Json;
 
+/// <summary>
+/// JSON 파일 직렬화/역직렬화 서비스
+/// </summary>
 public class JsonFileService : IJsonFileService
 {
     /// <summary>
@@ -22,7 +25,7 @@ public class JsonFileService : IJsonFileService
         {
             if(string.IsNullOrEmpty(directoryPath) || string.IsNullOrEmpty(jsonPath))
             {
-                Log.Error($"======== Json 저장 실패");
+                Log.Error("======== Json 저장 실패");
                 Log.Error($"Json 경로가 비어있음.");
 
                 return false;
@@ -39,7 +42,7 @@ public class JsonFileService : IJsonFileService
             }
             catch(Exception e)
             {
-                Log.Error($"======== Json 저장 실패");
+                Log.Error("======== Json 저장 실패");
                 Log.Error(e, "폴더 생성 중 예외 발생");
 
                 return false;
@@ -58,7 +61,7 @@ public class JsonFileService : IJsonFileService
             }
             catch (Exception e)
             {
-                Log.Error($"======== Json 저장 실패");
+                Log.Error("======== Json 저장 실패");
                 Log.Error(e, "파일 작성 중 예외 발생");
 
                 return false;
@@ -105,7 +108,7 @@ public class JsonFileService : IJsonFileService
             }
             catch (Exception e)
             {
-                Log.Error($"======== Json 파싱 실패");
+                Log.Error("======== Json 파싱 실패");
                 Log.Error(e, "파일 읽는 중 예외발생");
 
                 result = default;

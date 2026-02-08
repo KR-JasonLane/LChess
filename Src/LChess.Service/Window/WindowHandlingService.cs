@@ -7,7 +7,7 @@ namespace LChess.Service.Window;
 /// </summary>
 public class WindowHandlingService : IWindowHandlingService
 {
-    #region :: Constructor::
+    #region :: Constructor ::
 
     /// <summary>
     /// 생성자
@@ -19,7 +19,7 @@ public class WindowHandlingService : IWindowHandlingService
 
     #endregion
 
-    #region ::  Properties  ::
+    #region :: Properties ::
 
     /// <summary>
     /// 윈도우 기억
@@ -27,13 +27,13 @@ public class WindowHandlingService : IWindowHandlingService
     private readonly System.Windows.Window _shellWindow = Application.Current.MainWindow;
 
     /// <summary>
-    /// Sockfish 엔진 서비스
+    /// Stockfish 엔진 서비스
     /// </summary>
     private readonly IStockfishEngineService _stockfishEngineService;
 
     #endregion
 
-    #region ::  Methods  ::
+    #region :: Methods ::
 
     /// <summary>
     /// 쉘 윈도우 최대화
