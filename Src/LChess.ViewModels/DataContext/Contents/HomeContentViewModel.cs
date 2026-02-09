@@ -28,11 +28,6 @@ public partial class HomeContentViewModel : ObservableRecipient, IContentViewMod
 
     #endregion
 
-    #region :: Services ::
-
-
-    #endregion
-
     #region :: Properties ::
 
     /// <summary>
@@ -57,13 +52,13 @@ public partial class HomeContentViewModel : ObservableRecipient, IContentViewMod
     #region :: Commands ::
 
     /// <summary>
-    /// 체스 게임으로 이동
+    /// 기물색상 선택 화면으로 이동
     /// </summary>
     [RelayCommand]
     private void MoveToChoicePieceColor() => WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChoicePieceColor));
 
     /// <summary>
-    /// 체스 게임으로 이동
+    /// 사용자설정 화면으로 이동
     /// </summary>
     [RelayCommand]
     private void MoveToUserSetting() => WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.UserSetting));

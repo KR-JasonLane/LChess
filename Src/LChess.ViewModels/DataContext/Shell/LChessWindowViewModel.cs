@@ -94,10 +94,6 @@ public partial class LChessWindowViewModel : ObservableRecipient, ILChessWindowV
 
     #endregion
 
-    #region :: Methods ::
-
-    #endregion
-
     #region :: Commands ::
 
     /// <summary>

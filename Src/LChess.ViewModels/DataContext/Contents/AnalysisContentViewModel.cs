@@ -21,7 +21,7 @@ public partial class AnalysisContentViewModel : ObservableRecipient, IContentVie
     /// <summary>
     /// 생성자
     /// </summary>
-    /// <param name="popupWindowService"></param>
+    /// <param name="popupWindowService"> 팝업윈도우 서비스 </param>
     public AnalysisContentViewModel(IPopupWindowService popupWindowService)
     {
         ////////////////////////////////////////
@@ -91,7 +91,10 @@ public partial class AnalysisContentViewModel : ObservableRecipient, IContentVie
     [ObservableProperty]
     private GameHistoryFileModel _currentAnalysisFile = new();
 
-    private List<NotationModel> _lastestNotationList = new();
+    /// <summary>
+    /// 마지막 분석 기보 리스트
+    /// </summary>
+    private List<NotationModel> _latestNotationList = new();
 
     #endregion
 
@@ -138,7 +141,7 @@ public partial class AnalysisContentViewModel : ObservableRecipient, IContentVie
 
             //리스트를 메시지로 보내는 순간 ChessGameService의 _notation객체가 되므로,
             //새로운 객체를 만들어 줘야함.
-            _lastestNotationList = new(result);
+            _latestNotationList = new(result);
         }
     }
 
@@ -169,7 +172,7 @@ public partial class AnalysisContentViewModel : ObservableRecipient, IContentVie
         WeakReferenceMessenger.Default.Send(new MoveContentMessage(LChessContentType.ChessGame));
 
         //3. 보드 초기화 메시지
-        WeakReferenceMessenger.Default.Send(new InitBoardMessage(new ChessBoardInitPropertyModel(ChessBoardMode.Game, gameResult.UserColor, _lastestNotationList, gameResult.PlayTime)));
+        WeakReferenceMessenger.Default.Send(new InitBoardMessage(new ChessBoardInitPropertyModel(ChessBoardMode.Game, gameResult.UserColor, _latestNotationList, gameResult.PlayTime)));
 
         //4. 딤 끄기
         WeakReferenceMessenger.Default.Send(new WindowDimmingMessage(false));

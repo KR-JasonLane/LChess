@@ -40,11 +40,6 @@ public partial class SelectPromotionUnitPopupWindowViewModel : ObservableRecipie
 
     #endregion
 
-
-    #region :: Methods ::
-
-    #endregion
-
     #region :: Commands ::
 
     /// <summary>

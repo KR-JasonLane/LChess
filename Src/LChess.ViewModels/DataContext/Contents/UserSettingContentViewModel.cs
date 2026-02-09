@@ -53,6 +53,9 @@ public partial class UserSettingContentViewModel : ObservableRecipient, IContent
     /// </summary>
     private readonly IUserSettingService _userSettingService;
 
+    /// <summary>
+    /// 팝업윈도우 서비스
+    /// </summary>
     private readonly IPopupWindowService _popupWindowService;
 
     #endregion
@@ -71,7 +74,6 @@ public partial class UserSettingContentViewModel : ObservableRecipient, IContent
     public LChessContentType ContentType { get; init; }
 
     #endregion
-
 
     #region :: Methods ::
 

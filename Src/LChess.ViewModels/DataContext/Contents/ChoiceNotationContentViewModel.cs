@@ -6,8 +6,6 @@ using LChess.Util.Converter;
 using LChess.Util.Enums;
 using LChess.ViewModels.Messenger;
 using System.Collections.ObjectModel;
-using System.Net.Http.Headers;
-
 namespace LChess.ViewModels.DataContext.Contents;
 
 /// <summary>
@@ -20,7 +18,9 @@ public partial class ChoiceNotationContentViewModel : ObservableRecipient, ICont
     /// <summary>
     /// 생성자
     /// </summary>
-    /// <param name="popupWindowService"></param>
+    /// <param name="popupWindowService"> 팝업윈도우 서비스 </param>
+    /// <param name="jsonFileService"> JSON 파일 서비스 </param>
+    /// <param name="userSettingService"> 사용자 설정 서비스 </param>
     public ChoiceNotationContentViewModel(IPopupWindowService popupWindowService, IJsonFileService jsonFileService, IUserSettingService userSettingService)
     {
         ////////////////////////////////////////

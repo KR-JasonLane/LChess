@@ -137,7 +137,6 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
     /// 보드 초기화
     /// </summary>
     /// <param name="initPropertyModel"> 보드 초기화 모델 </param>
-    /// <returns></returns>
     private async void InitBoard(ChessBoardInitPropertyModel initPropertyModel)
     {
         _currentMode = initPropertyModel.Mode;
@@ -165,7 +164,7 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
 
         if (_currentMode == ChessBoardMode.Game)
         {
-            await StartContine(notations);
+            await StartContinue(notations);
         }
     }
 
@@ -186,8 +185,7 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
     /// <summary>
     /// 보드 데이터생성
     /// </summary>
-    /// <param name="userColor"></param>
-    /// <returns></returns>
+    /// <param name="userColor"> 유저 색상 </param>
     private async Task CreateBoardDataWithoutForceMove(PieceColorType userColor)
     {
         //보드데이터 없으면 생성
@@ -240,7 +238,7 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
     /// 이어하기
     /// </summary>
     /// <param name="notations"> 이동 기보 </param>
-    private async Task StartContine(List<NotationModel> notations)
+    private async Task StartContinue(List<NotationModel> notations)
     {
         if (BoardModel == null) return;
 
@@ -428,7 +426,4 @@ public partial class ChessBoardContentViewModel : ObservableRecipient, IContentV
 
     #endregion
 
-    #region :: Events ::
-
-    #endregion
 }

@@ -71,11 +71,6 @@ public partial class MessageDialogPopupWindowViewModel : ObservableRecipient
 
     #endregion
 
-
-    #region :: Methods ::
-
-    #endregion
-
     #region :: Commands ::
 
     /// <summary>
